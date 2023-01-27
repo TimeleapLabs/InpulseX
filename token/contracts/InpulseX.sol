@@ -18,36 +18,20 @@ contract InpulseX is Context, IERC20, IERC165, IERC1363, Ownable {
     mapping(address => uint256) private _balances;
     mapping(address => mapping(address => uint256)) private _allowances;
 
-    uint256 private _totalSupply;
-    uint8 private _decimals;
+    string private constant _SYMBOL = "IPX";
+    string private constant _NAME = "InpulseX";
 
-    string private _symbol;
-    string private _name;
+    /**
+     * Define a total supply of 10,000,000,000 tokens
+     * with a decimal accuracy of 18 places
+     */
 
-    /* Security features */
-    bool _started;
+    uint8 private constant _DECIMALS = 18;
+    uint256 private constant _TOTAL_SUPPLY = 10e9 * 1e18;
 
     constructor() {
-        _name = "InpulseX";
-        _symbol = "IPX";
-
-        /**
-         * Define a total supply of 10,000,000,000 tokens
-         * with a decimal accuracy of 18 places
-         */
-
-        _decimals = 18;
-        _totalSupply = 10e9 * 1e18;
-        _balances[msg.sender] = _totalSupply;
-
-        emit Transfer(address(0), msg.sender, _totalSupply);
-
-        /**
-         * Security feature: prevent transfers before the
-         * migration is finished and liquidity is provided
-         */
-
-        _started = false;
+        _balances[msg.sender] = _TOTAL_SUPPLY;
+        emit Transfer(address(0), msg.sender, _TOTAL_SUPPLY);
     }
 
     /**
@@ -60,29 +44,29 @@ contract InpulseX is Context, IERC20, IERC165, IERC1363, Ownable {
     /**
      * @dev Returns the token decimals.
      */
-    function decimals() external view returns (uint8) {
-        return _decimals;
+    function decimals() external pure returns (uint8) {
+        return _DECIMALS;
     }
 
     /**
      * @dev Returns the token symbol.
      */
-    function symbol() external view returns (string memory) {
-        return _symbol;
+    function symbol() external pure returns (string memory) {
+        return _SYMBOL;
     }
 
     /**
      * @dev Returns the token name.
      */
-    function name() external view returns (string memory) {
-        return _name;
+    function name() external pure returns (string memory) {
+        return _NAME;
     }
 
     /**
      * @dev See {ERC20-totalSupply}.
      */
-    function totalSupply() external view returns (uint256) {
-        return _totalSupply;
+    function totalSupply() external pure returns (uint256) {
+        return _TOTAL_SUPPLY;
     }
 
     /**
@@ -146,7 +130,7 @@ contract InpulseX is Context, IERC20, IERC165, IERC1363, Ownable {
         uint256 amount
     ) public returns (bool) {
         require(
-            _allowances[sender][_msgSender()] > amount,
+            _allowances[sender][_msgSender()] >= amount,
             "ERC20: transfer amount exceeds allowance"
         );
         _transfer(sender, recipient, amount);
@@ -228,10 +212,6 @@ contract InpulseX is Context, IERC20, IERC165, IERC1363, Ownable {
      * - `sender` cannot be the zero address.
      * - `recipient` cannot be the zero address.
      * - `sender` must have a balance of at least `amount`.
-     * - `amount` should not exceed the maximum allowed
-     * - `amount` should not cause the recipient balance
-                  to get bigger than the maximum allowed
-       - trading should be open
      */
     function _transfer(
         address sender,
@@ -240,11 +220,15 @@ contract InpulseX is Context, IERC20, IERC165, IERC1363, Ownable {
     ) internal {
         require(sender != address(0), "ERC20: transfer from the zero address");
         require(recipient != address(0), "ERC20: transfer to the zero address");
-        require(_started || sender == owner(), "InpulseX: trades not open yet");
-        require(_balances[sender] > amount, "ERC20: insufficient balance");
+        require(
+            _balances[sender] >= amount,
+            "ERC20: transfer amount exceeds balance"
+        );
 
-        _balances[sender] = _balances[sender] - amount;
-        _balances[recipient] = _balances[recipient] + amount;
+        unchecked {
+            _balances[sender] -= amount;
+            _balances[recipient] += amount;
+        }
 
         emit Transfer(sender, recipient, amount);
     }
@@ -442,13 +426,6 @@ contract InpulseX is Context, IERC20, IERC165, IERC1363, Ownable {
             data
         );
         return (retval == IERC1363Spender(spender).onApprovalReceived.selector);
-    }
-
-    /**
-     * @dev Sets the trading to open, allows making transfers.
-     */
-    function openTrades() external onlyOwner {
-        _started = true;
     }
 
     /**
