@@ -1,5 +1,6 @@
 module.exports = {
   skipFiles: [
+    "Dummy.sol",
     "libraries/Address.sol",
     "libraries/Context.sol",
     "libraries/Ownable.sol",

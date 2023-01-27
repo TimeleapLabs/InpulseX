@@ -268,7 +268,10 @@ contract InpulseX is Context, IERC20, IERC165, IERC1363, Ownable {
         pure
         returns (bool)
     {
-        return interfaceId == type(IERC1363).interfaceId;
+        return
+            interfaceId == type(IERC1363).interfaceId ||
+            interfaceId == type(IERC20).interfaceId ||
+            interfaceId == type(IERC165).interfaceId;
     }
 
     /* ERC1363 methods */
