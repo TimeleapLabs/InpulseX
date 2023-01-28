@@ -15,7 +15,7 @@ const getBalance = async (user) => {
   return await contract.balanceOf(user, { blockTag });
 };
 
-const balances = [];
+const balances = {};
 
 let i = 1;
 for (const holder of holders) {
