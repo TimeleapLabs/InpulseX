@@ -17,25 +17,25 @@ contract Migrate is Context, Ownable {
     constructor() {}
 
     /**
-     * @dev Throws if called by any account other than the admins.
-     */
-    modifier onlyAdmins() {
-        require(_adminAddrs[_msgSender()], "Caller is not an admin");
-        _;
-    }
-
-    /**
      * @dev Set `addr` admin state to `state`.
      */
-    function setIsAdmin(address addr, bool state) external onlyAdmins {
+    function setIsAdmin(address addr, bool state) external onlyOwner {
         _adminAddrs[addr] = state;
     }
 
     /**
      * @dev Check if `addr` is is an admin.
      */
-    function setIsAdmin(address addr) external returns (bool) {
+    function getIsAdmin(address addr) public view returns (bool) {
         return _adminAddrs[addr];
+    }
+
+    /**
+     * @dev Throws if called by any account other than the admins.
+     */
+    modifier onlyAdmins() {
+        require(getIsAdmin(_msgSender()), "Caller is not an admin");
+        _;
     }
 
     /**
@@ -57,8 +57,11 @@ contract Migrate is Context, Ownable {
      * @dev Airdrop `amount` to `recipient`. Can be called by
      * admins only.
      */
-    function airdrop(address recipient, uint256 amount) onlyAdmins {
-        require(_token.transferFrom(_sender, recipient, amount));
+    function airdrop(address recipient, uint256 amount) public onlyAdmins {
+        // We don't want to airdrop twice by mistake
+        if (_token.balanceOf(recipient) == 0) {
+            require(_token.transferFrom(_sender, recipient, amount));
+        }
     }
 
     /**
@@ -66,10 +69,10 @@ contract Migrate is Context, Ownable {
      * admins only.
      */
     function bulkAirdrop(
-        address[] memory recipient,
+        address[] memory recipients,
         uint256[] memory amounts,
         uint256 length
-    ) onlyAdmins {
+    ) external onlyAdmins {
         for (uint256 index = 0; index < length; index++) {
             airdrop(recipients[index], amounts[index]);
         }
