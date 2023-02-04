@@ -14,7 +14,9 @@
     "prescan:slither": "npm run clean",
     "clean": "rm -rf artifacts cache",
     "scan": "npm run scan:myth; npm run scan:slither",
-    "flat": "poa-solidity-flattener $PWD/contracts/Migrate.sol"
+    "flat": "poa-solidity-flattener $PWD/contracts/Migrate.sol",
+    "freeze": "cd scripts && node freeze.mjs",
+    "airdrop": "cd scripts && node migrate.mjs"
   },
   "keywords": [],
   "author": "",

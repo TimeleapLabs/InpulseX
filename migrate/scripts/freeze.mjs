@@ -10,11 +10,12 @@ const exported = JSON.parse(fs.readFileSync("./bscScanExport.json"));
 const holders = exported.map((line) => line.HolderAddress);
 const provider = new ethers.providers.JsonRpcProvider(process.env.PROVIDER);
 
-const abi = ["function balanceOf(address user) view returns (uint256)"];
-const address = "0x1A3eE33da561642bA6bE4671A06267ee0F36cEDd";
+const { blockTag, v1TokenAddress } = JSON.parse(
+  fs.readFileSync("./config.json")
+);
 
-const contract = new ethers.Contract(address, abi, provider);
-const blockTag = "latest";
+const abi = ["function balanceOf(address user) view returns (uint256)"];
+const contract = new ethers.Contract(v1TokenAddress, abi, provider);
 
 const getBalance = async (user) => {
   const balance = await contract.balanceOf(user, { blockTag });

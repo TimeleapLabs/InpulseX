@@ -11,13 +11,15 @@ const balances = JSON.parse(fs.readFileSync("./balances.json"));
 const provider = new ethers.providers.JsonRpcProvider(process.env.PROVIDER);
 const signer = new ethers.Wallet(process.env.ADMIN_KEY, provider);
 const manager = new NonceManager(signer);
-const contractAddr = "0x6Eb273785F66502f30402cd6A0A0d03CA1E6214a";
 
+const { migrationContractAddress } = JSON.parse(
+  fs.readFileSync("./config.json")
+);
 const abi = [
   "function bulkAirdrop(address[] addresses, uint256[] balances, uint256 length) external",
 ];
 
-const contract = new ethers.Contract(contractAddr, abi, manager);
+const contract = new ethers.Contract(migrationContractAddress, abi, manager);
 
 const airdrop = async (addresses, balances) => {
   return await contract.bulkAirdrop(addresses, balances, balances.length);
