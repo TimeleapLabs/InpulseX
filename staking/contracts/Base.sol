@@ -5,8 +5,14 @@ import "./libraries/Context.sol";
 import "./libraries/Ownable.sol";
 
 contract BaseStaking is Context, Ownable {
-    uint256 private _unlockTime;
-    uint256 private _stakingWindow;
+    uint256 internal _stakePoolSize;
+    uint256 internal _rewardPoolSize;
+    uint256 internal _unlockTime;
+    uint256 internal _stakingWindow;
+    address internal _penaltyAddress;
+    mapping(address => bool) internal _exceptions;
+    mapping(address => uint256) internal _penalties;
+    mapping(address => uint256) internal _stake;
 
     constructor() {}
 
@@ -14,8 +20,20 @@ contract BaseStaking is Context, Ownable {
         _unlockTime = timestamp;
     }
 
+    function reduceUnlockTime(uint256 timestamp) external onlyOwner {
+        require(
+            timestamp < _unlockTime,
+            "Unlock time bigger than the current one"
+        );
+        _unlockTime = timestamp;
+    }
+
     function getUnlockTime() external view returns (uint256) {
         return _unlockTime;
+    }
+
+    function setPenaltyAddress(address penalty) external onlyOwner {
+        _penaltyAddress = penalty;
     }
 
     function setStakingWindow(uint256 timestamp) external onlyOwner {
@@ -24,5 +42,22 @@ contract BaseStaking is Context, Ownable {
 
     function getStakingWindow() external view returns (uint256) {
         return _stakingWindow;
+    }
+
+    function allowUnstakeWithPenalty(address user, uint256 penalty)
+        external
+        onlyOwner
+    {
+        _exceptions[user] = true;
+        _penalties[user] = penalty;
+    }
+
+    function disallowUnstakeWithPenalty(address user) external onlyOwner {
+        _exceptions[user] = false;
+        _penalties[user] = 0;
+    }
+
+    function getStake(address user) external view returns (uint256) {
+        return _stake[user];
     }
 }
