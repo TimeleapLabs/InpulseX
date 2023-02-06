@@ -5,9 +5,10 @@ import "../Base.sol";
 import "../interfaces/IERC20.sol";
 import "../interfaces/IERC1155.sol";
 import "../interfaces/IERC1155Receiver.sol";
+import "../rewards/ERC20.sol";
+import "../rewards/ERC1155.sol";
 
-contract ERC1155Staking is BaseStaking, IERC1155Receiver {
-    IERC20 private _rewardToken;
+abstract contract ERC1155Staking is BaseStaking, IERC1155Receiver {
     IERC1155 private _stakeToken;
     uint256 private _stakeNftId;
 
@@ -19,27 +20,6 @@ contract ERC1155Staking is BaseStaking, IERC1155Receiver {
 
     function getStakingToken() external view returns (address, uint256) {
         return (address(_stakeToken), _stakeNftId);
-    }
-
-    function setRewardToken(address token) external onlyOwner {
-        require(token != address(0), "Can't set token to address(0)");
-        _rewardToken = IERC20(token);
-    }
-
-    function getRewardToken() external view returns (address) {
-        return address(_rewardToken);
-    }
-
-    function addReward(uint256 amount) external {
-        require(amount > 0, "Cannot stake 0 tokens");
-        _rewardPoolSize += amount;
-        _rewardToken.transferFrom(_msgSender(), address(this), amount);
-    }
-
-    function recoverRewards(uint256 amount) external onlyOwner {
-        require(amount > 0, "Cannot remove 0 tokens");
-        _rewardPoolSize -= amount;
-        _rewardToken.transferFrom(address(this), _msgSender(), amount);
     }
 
     function stake(uint256 amount) external {
@@ -101,7 +81,7 @@ contract ERC1155Staking is BaseStaking, IERC1155Receiver {
             );
             uint256 reward = (((amount * 100) / _stakePoolSize) *
                 _rewardPoolSize) / 100;
-            _rewardToken.transferFrom(address(this), user, reward);
+            sendRewards(user, reward);
             emit UnStaked(user, amount);
         }
     }
@@ -135,3 +115,7 @@ contract ERC1155Staking is BaseStaking, IERC1155Receiver {
         return interfaceId == type(IERC1155Receiver).interfaceId;
     }
 }
+
+contract ERC1155StakerERC20Rewarder is ERC1155Staking, ERC20Rewards {}
+
+contract ERC1155StakerERC1155Rewarder is ERC1155Staking, ERC1155Rewards {}

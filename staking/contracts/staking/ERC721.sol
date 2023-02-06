@@ -5,10 +5,11 @@ import "../Base.sol";
 import "../interfaces/IERC20.sol";
 import "../interfaces/IERC721.sol";
 import "../interfaces/IERC721Receiver.sol";
+import "../rewards/ERC20.sol";
+import "../rewards/ERC1155.sol";
 
-contract ERC721Staking is BaseStaking, IERC721Receiver {
+abstract contract ERC721Staking is BaseStaking, IERC721Receiver {
     IERC721 private _stakeToken;
-    IERC20 private _rewardToken;
 
     mapping(address => uint256[]) _stakeIds;
 
@@ -19,27 +20,6 @@ contract ERC721Staking is BaseStaking, IERC721Receiver {
 
     function getStakingToken() external view returns (address) {
         return address(_stakeToken);
-    }
-
-    function setRewardToken(address token) external onlyOwner {
-        require(token != address(0), "Can't set token to address(0)");
-        _rewardToken = IERC20(token);
-    }
-
-    function getRewardToken() external view returns (address) {
-        return address(_rewardToken);
-    }
-
-    function addReward(uint256 amount) external {
-        require(amount > 0, "Cannot stake 0 tokens");
-        _rewardPoolSize += amount;
-        _rewardToken.transferFrom(_msgSender(), address(this), amount);
-    }
-
-    function recoverRewards(uint256 amount) external onlyOwner {
-        require(amount > 0, "Cannot remove 0 tokens");
-        _rewardPoolSize -= amount;
-        _rewardToken.transferFrom(address(this), _msgSender(), amount);
     }
 
     function stake(uint256 id) external {
@@ -83,7 +63,7 @@ contract ERC721Staking is BaseStaking, IERC721Receiver {
         } else {
             uint256 reward = (((amount * 100) / _stakePoolSize) *
                 _rewardPoolSize) / 100;
-            _rewardToken.transferFrom(address(this), user, reward);
+            sendRewards(user, reward);
         }
     }
 
@@ -105,3 +85,7 @@ contract ERC721Staking is BaseStaking, IERC721Receiver {
         return interfaceId == type(IERC721Receiver).interfaceId;
     }
 }
+
+contract ERC721StakerERC20Rewarder is ERC721Staking, ERC20Rewards {}
+
+contract ERC721StakerERC1155Rewarder is ERC721Staking, ERC1155Rewards {}

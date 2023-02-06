@@ -4,7 +4,7 @@ pragma solidity ^0.8.17;
 import "./libraries/Context.sol";
 import "./libraries/Ownable.sol";
 
-contract BaseStaking is Context, Ownable {
+abstract contract BaseStaking is Context, Ownable {
     uint256 internal _stakePoolSize;
     uint256 internal _rewardPoolSize;
     uint256 internal _unlockTime;
@@ -64,4 +64,6 @@ contract BaseStaking is Context, Ownable {
     function getStake(address user) external view returns (uint256) {
         return _stake[user];
     }
+
+    function sendRewards(address user, uint256 amount) internal virtual;
 }
