@@ -70,7 +70,7 @@ contract ERC1155Staking is BaseStaking, IERC1155Receiver {
         );
         uint256 amount = _stake[user];
         _stake[user] = 0;
-        if (_penalties[user] > 0) {
+        if (_exceptions[user] && block.timestamp < _unlockTime) {
             uint256 penalty = (amount * _penalties[user]) / 100;
             _stakeToken.safeTransferFrom(
                 address(this),
