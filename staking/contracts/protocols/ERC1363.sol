@@ -64,6 +64,7 @@ contract ERC20Staking is BaseStaking, IERC1363Receiver {
                 _stakeToken.transfer(user, amount - penalty),
                 "Transfer failed!"
             );
+            emit UnStaked(user, amount - penalty);
             /**
              * No reward distributed, decrease the stake pool size
              */
@@ -73,6 +74,7 @@ contract ERC20Staking is BaseStaking, IERC1363Receiver {
                 _rewardPoolSize) / 100;
             require(_stakeToken.transfer(user, amount), "Transfer failed!");
             require(_rewardToken.transfer(user, reward), "Transfer failed!");
+            emit UnStaked(user, amount);
         }
     }
 
@@ -90,6 +92,8 @@ contract ERC20Staking is BaseStaking, IERC1363Receiver {
         require(amount > 0, "Cannot stake 0 tokens");
         _stake[user] += amount;
         _stakePoolSize += amount;
+
+        emit Staked(user, amount);
 
         return IERC1363Receiver(this).onTransferReceived.selector;
     }

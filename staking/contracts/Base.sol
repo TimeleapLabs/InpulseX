@@ -10,9 +10,13 @@ contract BaseStaking is Context, Ownable {
     uint256 internal _unlockTime;
     uint256 internal _stakingWindow;
     address internal _penaltyAddress;
+
     mapping(address => bool) internal _exceptions;
     mapping(address => uint256) internal _penalties;
     mapping(address => uint256) internal _stake;
+
+    event Staked(address user, uint256 amount);
+    event UnStaked(address user, uint256 amount);
 
     constructor() {}
 

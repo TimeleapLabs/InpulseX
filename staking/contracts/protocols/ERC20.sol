@@ -35,6 +35,7 @@ contract ERC20Staking is BaseStaking {
             _stakeToken.transferFrom(user, address(this), amount),
             "Transfer failed!"
         );
+        emit Staked(user, amount);
     }
 
     function addReward(uint256 amount) external {
@@ -74,6 +75,7 @@ contract ERC20Staking is BaseStaking {
                 _stakeToken.transfer(user, amount - penalty),
                 "Transfer failed!"
             );
+            emit UnStaked(user, amount - penalty);
             /**
              * No reward distributed, decrease the stake pool size
              */
@@ -83,6 +85,7 @@ contract ERC20Staking is BaseStaking {
                 _rewardPoolSize) / 100;
             require(_stakeToken.transfer(user, amount), "Transfer failed!");
             require(_rewardToken.transfer(user, reward), "Transfer failed!");
+            emit UnStaked(user, amount);
         }
     }
 }
