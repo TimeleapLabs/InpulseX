@@ -2,12 +2,13 @@
 pragma solidity ^0.8.17;
 
 import "../Base.sol";
+import "../interfaces/IERC20.sol";
 import "../interfaces/IERC1363.sol";
 import "../interfaces/IERC1363Receiver.sol";
 
 contract ERC1363Staking is BaseStaking, IERC1363Receiver {
+    IERC20 private _rewardToken;
     IERC1363 private _stakeToken;
-    IERC1363 private _rewardToken;
 
     function setStakingToken(address token) external onlyOwner {
         require(token != address(0), "Can't set token to address(0)");
@@ -20,7 +21,7 @@ contract ERC1363Staking is BaseStaking, IERC1363Receiver {
 
     function setRewardToken(address token) external onlyOwner {
         require(token != address(0), "Can't set token to address(0)");
-        _stakeToken = IERC1363(token);
+        _rewardToken = IERC20(token);
     }
 
     function getRewardToken() external view returns (address) {
