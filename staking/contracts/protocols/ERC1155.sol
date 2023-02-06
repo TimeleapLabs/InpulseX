@@ -112,7 +112,7 @@ contract ERC1155Staking is BaseStaking, IERC1155Receiver {
         uint256,
         uint256,
         bytes calldata
-    ) external returns (bytes4) {
+    ) external view returns (bytes4) {
         return IERC1155Receiver(this).onERC1155Received.selector;
     }
 
