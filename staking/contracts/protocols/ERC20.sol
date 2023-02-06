@@ -47,7 +47,7 @@ contract ERC20Staking is BaseStaking {
         );
     }
 
-    function recoverRewards(uint256 amount) external {
+    function recoverRewards(uint256 amount) external onlyOwner {
         require(amount > 0, "Cannot remove 0 tokens");
         _rewardPoolSize -= amount;
         require(

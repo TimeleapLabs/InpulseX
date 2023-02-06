@@ -5,7 +5,7 @@ import "../Base.sol";
 import "../interfaces/IERC1363.sol";
 import "../interfaces/IERC1363Receiver.sol";
 
-contract ERC20Staking is BaseStaking, IERC1363Receiver {
+contract ERC1363Staking is BaseStaking, IERC1363Receiver {
     IERC1363 private _stakeToken;
     IERC1363 private _rewardToken;
 
@@ -36,7 +36,7 @@ contract ERC20Staking is BaseStaking, IERC1363Receiver {
         );
     }
 
-    function recoverRewards(uint256 amount) external {
+    function recoverRewards(uint256 amount) external onlyOwner {
         require(amount > 0, "Cannot remove 0 tokens");
         _rewardPoolSize -= amount;
         require(
