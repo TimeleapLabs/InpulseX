@@ -45,7 +45,7 @@ contract Swap is Context, Ownable, Operatable, IERC165, IERC1363Receiver {
             "SwapRequest(uint256 fromChain,uint256 toChain,address operator,address recipient,uint256 amount,uint256 nonce)"
         );
 
-    bytes32 DOMAIN_SEPARATOR;
+    bytes32 immutable DOMAIN_SEPARATOR;
 
     constructor() {
         DOMAIN_SEPARATOR = hash(
@@ -140,13 +140,6 @@ contract Swap is Context, Ownable, Operatable, IERC165, IERC1363Receiver {
 
         _usedNonces[swapRequest.fromChain][swapRequest.nonce] = true;
 
-        bool success = _inpulsex.transfer(
-            swapRequest.recipient,
-            swapRequest.amount
-        );
-
-        require(success, "PegSwap: TransferFrom failed");
-
         emit Claimed(
             swapRequest.fromChain,
             swapRequest.toChain,
@@ -154,6 +147,13 @@ contract Swap is Context, Ownable, Operatable, IERC165, IERC1363Receiver {
             swapRequest.recipient,
             swapRequest.amount
         );
+
+        bool success = _inpulsex.transfer(
+            swapRequest.recipient,
+            swapRequest.amount
+        );
+
+        require(success, "PegSwap: TransferFrom failed");
     }
 
     function isClaimed(uint256 fromChain, uint256 nonce)
