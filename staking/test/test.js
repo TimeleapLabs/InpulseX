@@ -5,6 +5,9 @@ const tx = async (tx) => await (await tx).wait();
 
 const TRANSFER721 = "safeTransferFrom(address,address,uint256)";
 
+const later = (days) =>
+  Math.floor(new Date().valueOf() / 1000) + days * 60 * 60 * 24 * 1000;
+
 const deployAll = async () => {
   const Dummy20 = await ethers.getContractFactory("Dummy20");
   const dummy20 = await Dummy20.deploy();
@@ -107,10 +110,11 @@ describe("Staking", function () {
 
     await tx(token.transfer(user.address, 100));
     await tx(staker.setStakingToken(token.address));
+    await tx(staker.setUnlockTime(later(1)));
     await tx(token.connect(user).approve(staker.address, 100));
     await tx(staker.connect(user).stake(100));
 
-    expect(staker.connect(user).unstake()).to.be.revertedWith(
+    await expect(staker.connect(user).unstake()).to.be.revertedWith(
       "Cannot unstake yet"
     );
   });
@@ -122,9 +126,10 @@ describe("Staking", function () {
 
     await tx(token.transfer(user.address, 100));
     await tx(staker.setStakingToken(token.address));
+    await tx(staker.setUnlockTime(later(1)));
     await tx(token.connect(user).transferAndCall(staker.address, 100, 0x0));
 
-    expect(staker.connect(user).unstake()).to.be.revertedWith(
+    await expect(staker.connect(user).unstake()).to.be.revertedWith(
       "Cannot unstake yet"
     );
   });
@@ -136,10 +141,11 @@ describe("Staking", function () {
 
     await tx(token[TRANSFER721](owner.address, user.address, 0));
     await tx(staker.setStakingToken(token.address));
+    await tx(staker.setUnlockTime(later(1)));
     await tx(token.connect(user).approve(staker.address, 0));
     await tx(staker.connect(user).stake(0));
 
-    expect(staker.connect(user).unstake()).to.be.revertedWith(
+    await expect(staker.connect(user).unstake()).to.be.revertedWith(
       "Cannot unstake yet"
     );
   });
@@ -151,10 +157,11 @@ describe("Staking", function () {
 
     await tx(token.safeTransferFrom(owner.address, user.address, 0, 100, 0x0));
     await tx(staker.setStakingToken(token.address, 0));
+    await tx(staker.setUnlockTime(later(1)));
     await tx(token.connect(user).setApprovalForAll(staker.address, true));
     await tx(staker.connect(user).stake(100));
 
-    expect(staker.connect(user).unstake()).to.be.revertedWith(
+    await expect(staker.connect(user).unstake()).to.be.revertedWith(
       "Cannot unstake yet"
     );
   });

@@ -8,6 +8,8 @@ import "../interfaces/IERC721Receiver.sol";
 import "../rewards/ERC20.sol";
 import "../rewards/ERC1155.sol";
 
+import "hardhat/console.sol";
+
 abstract contract ERC721Staking is BaseStaking, IERC721Receiver {
     IERC721 private _stakeToken;
 
