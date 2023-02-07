@@ -52,13 +52,15 @@ abstract contract ERC1155Staking is BaseStaking, IERC1155Receiver {
         _stake[user] = 0;
         if (block.timestamp < _unlockTime) {
             uint256 penalty = (amount * _penalties[user]) / 100;
-            _stakeToken.safeTransferFrom(
-                address(this),
-                _penaltyAddress,
-                _stakeNftId,
-                penalty,
-                ""
-            );
+            if (penalty > 0) {
+                _stakeToken.safeTransferFrom(
+                    address(this),
+                    _penaltyAddress,
+                    _stakeNftId,
+                    penalty,
+                    ""
+                );
+            }
             _stakeToken.safeTransferFrom(
                 address(this),
                 user,

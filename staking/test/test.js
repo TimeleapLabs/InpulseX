@@ -412,4 +412,95 @@ describe("Staking", function () {
     expect(await token.balanceOf(user1.address, 0)).to.be.equal("103");
     expect(await token.balanceOf(user2.address, 0)).to.be.equal("309");
   });
+
+  it("ERC20Staker should not allow unstaking twice", async function () {
+    const { dummy20: token, erc20StakerERC20Rewarder: staker } =
+      await deployAll();
+    const [_owner, user] = await ethers.getSigners();
+
+    await tx(staker.setStakingToken(token.address));
+    await tx(staker.setRewardToken(token.address));
+
+    await tx(token.transfer(user.address, 100));
+    await tx(token.connect(user).approve(staker.address, 100));
+    await tx(staker.connect(user).stake(100));
+
+    await tx(token.approve(staker.address, 12));
+    await tx(staker.addReward(12));
+
+    await tx(staker.connect(user).unstake());
+
+    expect(tx(staker.connect(user).unstake())).to.be.revertedWith(
+      "Cannot unstake 0 tokens"
+    );
+  });
+
+  it("ERC1363Staker should not allow unstaking twice", async function () {
+    const { dummy1363: token, erc1363StakerERC20Rewarder: staker } =
+      await deployAll();
+    const [_owner, user] = await ethers.getSigners();
+
+    await tx(staker.setStakingToken(token.address));
+    await tx(staker.setRewardToken(token.address));
+
+    await tx(token.transfer(user.address, 100));
+    await tx(token.connect(user).transferAndCall(staker.address, 100, 0x0));
+
+    await tx(token.approve(staker.address, 12));
+    await tx(staker.addReward(12));
+
+    await tx(staker.connect(user).unstake());
+
+    expect(tx(staker.connect(user).unstake())).to.be.revertedWith(
+      "Cannot unstake 0 tokens"
+    );
+  });
+
+  it("ERC721Staker should not allow unstaking twice", async function () {
+    const {
+      dummy1155: reward,
+      dummy721: token,
+      erc721StakerERC1155Rewarder: staker,
+    } = await deployAll();
+
+    const [owner, user] = await ethers.getSigners();
+
+    await tx(staker.setStakingToken(token.address));
+    await tx(staker.setRewardToken(reward.address, 0));
+
+    await tx(reward.setApprovalForAll(staker.address, true));
+    await tx(staker.addReward(12));
+
+    await tx(token[TRANSFER721](owner.address, user.address, 0));
+
+    await tx(token.connect(user).approve(staker.address, 0));
+    await tx(staker.connect(user).stake(0));
+
+    expect(tx(staker.connect(user).unstake())).to.be.revertedWith(
+      "Cannot unstake 0 tokens"
+    );
+  });
+
+  it("ERC1155Staker should not allow unstaking twice", async function () {
+    const { dummy1155: token, erc1155StakerERC1155Rewarder: staker } =
+      await deployAll();
+
+    const [owner, user] = await ethers.getSigners();
+
+    await tx(staker.setStakingToken(token.address, 0));
+    await tx(staker.setRewardToken(token.address, 0));
+
+    await tx(token.setApprovalForAll(staker.address, true));
+    await tx(staker.addReward(12));
+
+    await tx(token.safeTransferFrom(owner.address, user.address, 0, 100, 0x0));
+    await tx(token.connect(user).setApprovalForAll(staker.address, true));
+
+    await tx(staker.connect(user).stake(100));
+    await tx(staker.connect(user).unstake());
+
+    expect(tx(staker.connect(user).unstake())).to.be.revertedWith(
+      "Cannot unstake 0 tokens"
+    );
+  });
 });

@@ -41,10 +41,12 @@ abstract contract ERC20Staking is BaseStaking {
         _stake[user] = 0;
         if (block.timestamp < _unlockTime) {
             uint256 penalty = (amount * _penalties[user]) / 100;
-            require(
-                _stakeToken.transfer(_penaltyAddress, penalty),
-                "Transfer failed!"
-            );
+            if (penalty > 0) {
+                require(
+                    _stakeToken.transfer(_penaltyAddress, penalty),
+                    "Transfer failed!"
+                );
+            }
             require(
                 _stakeToken.transfer(user, amount - penalty),
                 "Transfer failed!"
