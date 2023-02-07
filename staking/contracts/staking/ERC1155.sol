@@ -24,6 +24,7 @@ abstract contract ERC1155Staking is BaseStaking, IERC1155Receiver {
 
     function stake(uint256 amount) external {
         require(amount > 0, "Cannot stake 0 tokens");
+        require(block.timestamp <= _stakingWindow, "Cannot stake anymore");
 
         address user = _msgSender();
 

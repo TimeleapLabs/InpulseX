@@ -20,6 +20,7 @@ abstract contract ERC20Staking is BaseStaking {
 
     function stake(uint256 amount) external {
         require(amount > 0, "Cannot stake 0 tokens");
+        require(block.timestamp <= _stakingWindow, "Cannot stake anymore");
         address user = _msgSender();
         _stake[user] += amount;
         _stakePoolSize += amount;

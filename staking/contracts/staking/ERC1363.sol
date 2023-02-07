@@ -62,17 +62,17 @@ abstract contract ERC1363Staking is BaseStaking, IERC1363Receiver {
         uint256 amount,
         bytes memory
     ) external returns (bytes4) {
+        require(block.timestamp <= _stakingWindow, "Cannot stake anymore");
+        require(amount > 0, "Cannot stake 0 tokens");
         require(
             _msgSender() == address(_stakeToken),
             "Message sender is not the stake token"
         );
 
-        require(amount > 0, "Cannot stake 0 tokens");
         _stake[user] += amount;
         _stakePoolSize += amount;
 
         emit Staked(user, amount);
-
         return IERC1363Receiver(this).onTransferReceived.selector;
     }
 

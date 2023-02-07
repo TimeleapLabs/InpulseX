@@ -23,6 +23,7 @@ abstract contract ERC721Staking is BaseStaking, IERC721Receiver {
     }
 
     function stake(uint256 id) external {
+        require(block.timestamp <= _stakingWindow, "Cannot stake anymore");
         address user = _msgSender();
 
         _stakePoolSize += 1;
