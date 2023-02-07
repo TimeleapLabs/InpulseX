@@ -118,4 +118,7 @@ abstract contract ERC1155Staking is BaseStaking, IERC1155Receiver {
 
 contract ERC1155StakerERC20Rewarder is ERC1155Staking, ERC20Rewards {}
 
-contract ERC1155StakerERC1155Rewarder is ERC1155Staking, ERC1155Rewards {}
+contract ERC1155StakerERC1155Rewarder is
+    ERC1155Staking,
+    ERC1155RewardsNonReceiver
+{}

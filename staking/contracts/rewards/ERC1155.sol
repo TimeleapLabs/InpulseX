@@ -3,8 +3,9 @@ pragma solidity ^0.8.17;
 
 import "../Base.sol";
 import "../interfaces/IERC1155.sol";
+import "../interfaces/IERC1155Receiver.sol";
 
-abstract contract ERC1155Rewards is BaseStaking {
+abstract contract ERC1155RewardsNonReceiver is BaseStaking {
     IERC1155 internal _rewardToken;
     uint256 internal _rewardNftId;
 
@@ -53,5 +54,31 @@ abstract contract ERC1155Rewards is BaseStaking {
             amount,
             ""
         );
+    }
+}
+
+abstract contract ERC1155Rewards is
+    BaseStaking,
+    ERC1155RewardsNonReceiver,
+    IERC1155Receiver
+{
+    function onERC1155Received(
+        address,
+        address,
+        uint256,
+        uint256,
+        bytes calldata
+    ) external view returns (bytes4) {
+        return IERC1155Receiver(this).onERC1155Received.selector;
+    }
+
+    function onERC1155BatchReceived(
+        address,
+        address,
+        uint256[] calldata,
+        uint256[] calldata,
+        bytes calldata
+    ) external pure returns (bytes4) {
+        return 0x00000000;
     }
 }
