@@ -111,6 +111,7 @@ describe("Staking", function () {
     await tx(token.transfer(user.address, 100));
     await tx(staker.setStakingToken(token.address));
     await tx(staker.setUnlockTime(later(1)));
+    await tx(staker.setStakingWindow(later(1)));
     await tx(token.connect(user).approve(staker.address, 100));
     await tx(staker.connect(user).stake(100));
 
@@ -127,6 +128,7 @@ describe("Staking", function () {
     await tx(token.transfer(user.address, 100));
     await tx(staker.setStakingToken(token.address));
     await tx(staker.setUnlockTime(later(1)));
+    await tx(staker.setStakingWindow(later(1)));
     await tx(token.connect(user).transferAndCall(staker.address, 100, 0x0));
 
     await expect(staker.connect(user).unstake()).to.be.revertedWith(
@@ -142,6 +144,7 @@ describe("Staking", function () {
     await tx(token[TRANSFER721](owner.address, user.address, 0));
     await tx(staker.setStakingToken(token.address));
     await tx(staker.setUnlockTime(later(1)));
+    await tx(staker.setStakingWindow(later(1)));
     await tx(token.connect(user).approve(staker.address, 0));
     await tx(staker.connect(user).stake(0));
 
@@ -158,11 +161,71 @@ describe("Staking", function () {
     await tx(token.safeTransferFrom(owner.address, user.address, 0, 100, 0x0));
     await tx(staker.setStakingToken(token.address, 0));
     await tx(staker.setUnlockTime(later(1)));
+    await tx(staker.setStakingWindow(later(1)));
     await tx(token.connect(user).setApprovalForAll(staker.address, true));
     await tx(staker.connect(user).stake(100));
 
     await expect(staker.connect(user).unstake()).to.be.revertedWith(
       "Cannot unstake yet"
+    );
+  });
+
+  it("ERC20Staker should not allow staking after staking window", async function () {
+    const { dummy20: token, erc20StakerERC20Rewarder: staker } =
+      await deployAll();
+    const [_owner, user] = await ethers.getSigners();
+
+    await tx(token.transfer(user.address, 100));
+    await tx(staker.setStakingToken(token.address));
+    await tx(staker.setStakingWindow(later(-1)));
+    await tx(token.connect(user).approve(staker.address, 100));
+
+    await expect(staker.connect(user).stake(100)).to.be.revertedWith(
+      "Cannot stake anymore"
+    );
+  });
+
+  it("ERC1363Staker should not allow staking after staking window", async function () {
+    const { dummy1363: token, erc1363StakerERC20Rewarder: staker } =
+      await deployAll();
+    const [_owner, user] = await ethers.getSigners();
+
+    await tx(token.transfer(user.address, 100));
+    await tx(staker.setStakingToken(token.address));
+    await tx(staker.setStakingWindow(later(-1)));
+
+    await expect(
+      tx(token.connect(user).transferAndCall(staker.address, 100, 0x0))
+    ).to.be.revertedWith("Cannot stake anymore");
+  });
+
+  it("ERC721Staker should not allow staking after staking window", async function () {
+    const { dummy721: token, erc721StakerERC20Rewarder: staker } =
+      await deployAll();
+    const [owner, user] = await ethers.getSigners();
+
+    await tx(token[TRANSFER721](owner.address, user.address, 0));
+    await tx(staker.setStakingToken(token.address));
+    await tx(staker.setStakingWindow(later(-1)));
+    await tx(token.connect(user).approve(staker.address, 0));
+
+    await expect(tx(staker.connect(user).stake(0))).to.be.revertedWith(
+      "Cannot stake anymore"
+    );
+  });
+
+  it("ERC1155Staker should not allow staking after staking window", async function () {
+    const { dummy1155: token, erc1155StakerERC20Rewarder: staker } =
+      await deployAll();
+    const [owner, user] = await ethers.getSigners();
+
+    await tx(token.safeTransferFrom(owner.address, user.address, 0, 100, 0x0));
+    await tx(staker.setStakingToken(token.address, 0));
+    await tx(staker.setStakingWindow(later(-1)));
+    await tx(token.connect(user).setApprovalForAll(staker.address, true));
+
+    await expect(tx(staker.connect(user).stake(100))).to.be.revertedWith(
+      "Cannot stake anymore"
     );
   });
 
@@ -173,6 +236,7 @@ describe("Staking", function () {
 
     await tx(staker.setStakingToken(token.address));
     await tx(staker.setRewardToken(token.address));
+    await tx(staker.setStakingWindow(later(1)));
 
     await tx(token.transfer(user1.address, 100));
     await tx(token.transfer(user2.address, 300));
@@ -200,6 +264,7 @@ describe("Staking", function () {
 
     await tx(staker.setStakingToken(token.address));
     await tx(staker.setRewardToken(token.address));
+    await tx(staker.setStakingWindow(later(1)));
 
     await tx(token.transfer(user1.address, 100));
     await tx(token.transfer(user2.address, 300));
@@ -228,6 +293,7 @@ describe("Staking", function () {
 
     await tx(staker.setStakingToken(token.address));
     await tx(staker.setRewardToken(reward.address));
+    await tx(staker.setStakingWindow(later(1)));
 
     await tx(token[TRANSFER721](owner.address, user1.address, 0));
     await tx(token[TRANSFER721](owner.address, user2.address, 1));
@@ -267,6 +333,7 @@ describe("Staking", function () {
 
     await tx(staker.setStakingToken(token.address, 0));
     await tx(staker.setRewardToken(reward.address));
+    await tx(staker.setStakingWindow(later(1)));
 
     await tx(token.safeTransferFrom(owner.address, user1.address, 0, 100, 0x0));
     await tx(token.safeTransferFrom(owner.address, user2.address, 0, 300, 0x0));
@@ -298,6 +365,7 @@ describe("Staking", function () {
 
     await tx(staker.setStakingToken(token.address));
     await tx(staker.setRewardToken(reward.address, 0));
+    await tx(staker.setStakingWindow(later(1)));
 
     await tx(reward.setApprovalForAll(staker.address, true));
     await tx(staker.addReward(12));
@@ -329,6 +397,7 @@ describe("Staking", function () {
 
     await tx(staker.setStakingToken(token.address));
     await tx(staker.setRewardToken(reward.address, 0));
+    await tx(staker.setStakingWindow(later(1)));
 
     await tx(reward.setApprovalForAll(staker.address, true));
     await tx(staker.addReward(12));
@@ -357,6 +426,7 @@ describe("Staking", function () {
 
     await tx(staker.setStakingToken(token.address));
     await tx(staker.setRewardToken(reward.address, 0));
+    await tx(staker.setStakingWindow(later(1)));
 
     await tx(reward.setApprovalForAll(staker.address, true));
     await tx(staker.addReward(12));
@@ -393,6 +463,7 @@ describe("Staking", function () {
 
     await tx(staker.setStakingToken(token.address, 0));
     await tx(staker.setRewardToken(token.address, 0));
+    await tx(staker.setStakingWindow(later(1)));
 
     await tx(token.setApprovalForAll(staker.address, true));
     await tx(staker.addReward(12));
@@ -420,6 +491,7 @@ describe("Staking", function () {
 
     await tx(staker.setStakingToken(token.address));
     await tx(staker.setRewardToken(token.address));
+    await tx(staker.setStakingWindow(later(1)));
 
     await tx(token.transfer(user.address, 100));
     await tx(token.connect(user).approve(staker.address, 100));
@@ -442,6 +514,7 @@ describe("Staking", function () {
 
     await tx(staker.setStakingToken(token.address));
     await tx(staker.setRewardToken(token.address));
+    await tx(staker.setStakingWindow(later(1)));
 
     await tx(token.transfer(user.address, 100));
     await tx(token.connect(user).transferAndCall(staker.address, 100, 0x0));
@@ -467,6 +540,7 @@ describe("Staking", function () {
 
     await tx(staker.setStakingToken(token.address));
     await tx(staker.setRewardToken(reward.address, 0));
+    await tx(staker.setStakingWindow(later(1)));
 
     await tx(reward.setApprovalForAll(staker.address, true));
     await tx(staker.addReward(12));
@@ -489,6 +563,7 @@ describe("Staking", function () {
 
     await tx(staker.setStakingToken(token.address, 0));
     await tx(staker.setRewardToken(token.address, 0));
+    await tx(staker.setStakingWindow(later(1)));
 
     await tx(token.setApprovalForAll(staker.address, true));
     await tx(staker.addReward(12));
@@ -512,6 +587,7 @@ describe("Staking", function () {
     await tx(staker.setStakingToken(token.address));
     await tx(staker.setRewardToken(token.address));
     await tx(staker.setPenaltyAddress(owner.address));
+    await tx(staker.setStakingWindow(later(1)));
 
     await tx(token.transfer(user1.address, 100));
     await tx(token.transfer(user2.address, 300));
@@ -545,6 +621,7 @@ describe("Staking", function () {
     await tx(staker.setStakingToken(token.address));
     await tx(staker.setRewardToken(token.address));
     await tx(staker.setPenaltyAddress(owner.address));
+    await tx(staker.setStakingWindow(later(1)));
 
     const unlockTime = await staker.getUnlockTime();
     await tx(staker.setUnlockTime(later(1)));
@@ -579,6 +656,7 @@ describe("Staking", function () {
     await tx(staker.setStakingToken(token.address));
     await tx(staker.setRewardToken(reward.address));
     await tx(staker.setPenaltyAddress(owner.address));
+    await tx(staker.setStakingWindow(later(1)));
 
     const unlockTime = await staker.getUnlockTime();
     await tx(staker.setUnlockTime(later(1)));
@@ -624,6 +702,7 @@ describe("Staking", function () {
     await tx(staker.setStakingToken(token.address, 0));
     await tx(staker.setRewardToken(reward.address));
     await tx(staker.setPenaltyAddress(owner.address));
+    await tx(staker.setStakingWindow(later(1)));
 
     const unlockTime = await staker.getUnlockTime();
     await tx(staker.setUnlockTime(later(1)));
@@ -658,6 +737,7 @@ describe("Staking", function () {
 
     await tx(staker.setStakingToken(token.address));
     await tx(staker.setRewardToken(token.address));
+    await tx(staker.setStakingWindow(later(1)));
 
     const balance = await token.balanceOf(owner.address);
 
@@ -685,6 +765,7 @@ describe("Staking", function () {
 
     await tx(staker.setStakingToken(token.address, 0));
     await tx(staker.setRewardToken(token.address, 0));
+    await tx(staker.setStakingWindow(later(1)));
 
     const balance = await token.balanceOf(owner.address, 0);
 
