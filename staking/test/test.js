@@ -165,4 +165,125 @@ describe("Staking", function () {
       "Cannot unstake yet"
     );
   });
+
+  it("ERC20Staker ERC20Rewarder should distribute rewards correctly", async function () {
+    const { dummy20: token, erc20StakerERC20Rewarder: staker } =
+      await deployAll();
+    const [_owner, user1, user2] = await ethers.getSigners();
+
+    await tx(staker.setStakingToken(token.address));
+    await tx(staker.setRewardToken(token.address));
+
+    await tx(token.transfer(user1.address, 100));
+    await tx(token.transfer(user2.address, 300));
+
+    await tx(token.connect(user1).approve(staker.address, 100));
+    await tx(staker.connect(user1).stake(100));
+
+    await tx(token.connect(user2).approve(staker.address, 300));
+    await tx(staker.connect(user2).stake(300));
+
+    await tx(token.approve(staker.address, 12));
+    await tx(staker.addReward(12));
+
+    await tx(staker.connect(user1).unstake());
+    await tx(staker.connect(user2).unstake());
+
+    expect(await token.balanceOf(user1.address)).to.be.equal("103");
+    expect(await token.balanceOf(user2.address)).to.be.equal("309");
+  });
+
+  it("ERC1363Staker ERC20Rewarder should distribute rewards correctly", async function () {
+    const { dummy1363: token, erc1363StakerERC20Rewarder: staker } =
+      await deployAll();
+    const [_owner, user1, user2] = await ethers.getSigners();
+
+    await tx(staker.setStakingToken(token.address));
+    await tx(staker.setRewardToken(token.address));
+
+    await tx(token.transfer(user1.address, 100));
+    await tx(token.transfer(user2.address, 300));
+
+    await tx(token.connect(user1).transferAndCall(staker.address, 100, 0x0));
+    await tx(token.connect(user2).transferAndCall(staker.address, 300, 0x0));
+
+    await tx(token.approve(staker.address, 12));
+    await tx(staker.addReward(12));
+
+    await tx(staker.connect(user1).unstake());
+    await tx(staker.connect(user2).unstake());
+
+    expect(await token.balanceOf(user1.address)).to.be.equal("103");
+    expect(await token.balanceOf(user2.address)).to.be.equal("309");
+  });
+
+  it("ERC721Staker ERC20Rewarder should distribute rewards correctly", async function () {
+    const {
+      dummy20: reward,
+      dummy721: token,
+      erc721StakerERC20Rewarder: staker,
+    } = await deployAll();
+
+    const [owner, user1, user2] = await ethers.getSigners();
+
+    await tx(staker.setStakingToken(token.address));
+    await tx(staker.setRewardToken(reward.address));
+
+    await tx(token[TRANSFER721](owner.address, user1.address, 0));
+    await tx(token[TRANSFER721](owner.address, user2.address, 1));
+    await tx(token[TRANSFER721](owner.address, user2.address, 2));
+    await tx(token[TRANSFER721](owner.address, user2.address, 3));
+
+    await tx(token.connect(user1).approve(staker.address, 0));
+    await tx(staker.connect(user1).stake(0));
+
+    await tx(token.connect(user2).approve(staker.address, 1));
+    await tx(staker.connect(user2).stake(1));
+
+    await tx(token.connect(user2).approve(staker.address, 2));
+    await tx(staker.connect(user2).stake(2));
+
+    await tx(token.connect(user2).approve(staker.address, 3));
+    await tx(staker.connect(user2).stake(3));
+
+    await tx(reward.approve(staker.address, 12));
+    await tx(staker.addReward(12));
+
+    await tx(staker.connect(user1).unstake());
+    await tx(staker.connect(user2).unstake());
+
+    expect(await reward.balanceOf(user1.address)).to.be.equal("3");
+    expect(await reward.balanceOf(user2.address)).to.be.equal("9");
+  });
+
+  it("ERC1155Staker ERC20Rewarder should distribute rewards correctly", async function () {
+    const {
+      dummy20: reward,
+      dummy1155: token,
+      erc1155StakerERC20Rewarder: staker,
+    } = await deployAll();
+
+    const [owner, user1, user2] = await ethers.getSigners();
+
+    await tx(staker.setStakingToken(token.address, 0));
+    await tx(staker.setRewardToken(reward.address));
+
+    await tx(token.safeTransferFrom(owner.address, user1.address, 0, 100, 0x0));
+    await tx(token.safeTransferFrom(owner.address, user2.address, 0, 300, 0x0));
+
+    await tx(token.connect(user1).setApprovalForAll(staker.address, true));
+    await tx(staker.connect(user1).stake(100));
+
+    await tx(token.connect(user2).setApprovalForAll(staker.address, true));
+    await tx(staker.connect(user2).stake(300));
+
+    await tx(reward.approve(staker.address, 12));
+    await tx(staker.addReward(12));
+
+    await tx(staker.connect(user1).unstake());
+    await tx(staker.connect(user2).unstake());
+
+    expect(await reward.balanceOf(user1.address)).to.be.equal("3");
+    expect(await reward.balanceOf(user2.address)).to.be.equal("9");
+  });
 });
