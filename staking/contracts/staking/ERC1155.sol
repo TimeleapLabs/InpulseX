@@ -12,16 +12,34 @@ abstract contract ERC1155Staking is BaseStaking, IERC1155Receiver {
     IERC1155 private _stakeToken;
     uint256 private _stakeNftId;
 
+    /**
+     * @dev Set the token used for staking
+     * @param token Address of the token contract
+     * @param nftId Id of the NFT to accept for stake
+     *
+     * Reverts if the token is set to address(0)
+     */
     function setStakingToken(address token, uint256 nftId) external onlyOwner {
         require(token != address(0), "Can't set token to address(0)");
         _stakeToken = IERC1155(token);
         _stakeNftId = nftId;
     }
 
+    /**
+     * @dev Get the address of the token used for staking
+     * @return (address, uint256) Address of the token contract and the NFT ID
+     */
     function getStakingToken() external view returns (address, uint256) {
         return (address(_stakeToken), _stakeNftId);
     }
 
+    /**
+     * @dev Transfers `amount` tokens from the user to this contract
+     * @param amount Amount of tokens being staked
+     *
+     * Reverts if `amount` is not greater than 0
+     * Reverts if staking window is smaller than the block timestamp
+     */
     function stake(uint256 amount) external {
         require(amount > 0, "Cannot stake 0 tokens");
         require(block.timestamp <= _stakingWindow, "Cannot stake anymore");
@@ -41,6 +59,15 @@ abstract contract ERC1155Staking is BaseStaking, IERC1155Receiver {
         );
     }
 
+    /**
+     * @dev Unstake tokens
+     *
+     * Reverts if user stake amount is not greater than 0
+     * Reverts if block timestamp is not bigger than the unlock time
+     * or the user is not allowed to unstake early
+     *
+     * A penalty may be applied if the user removes their stake early
+     */
     function unstake() external {
         address user = _msgSender();
         require(_stake[user] > 0, "Cannot unstake 0 tokens");
@@ -88,6 +115,12 @@ abstract contract ERC1155Staking is BaseStaking, IERC1155Receiver {
         }
     }
 
+    /* ERC1155 methods */
+
+    /**
+     * @dev See {IERC1155-onERC1155Received}.
+     */
+
     function onERC1155Received(
         address,
         address,
@@ -98,6 +131,11 @@ abstract contract ERC1155Staking is BaseStaking, IERC1155Receiver {
         return IERC1155Receiver(this).onERC1155Received.selector;
     }
 
+    /* ERC1155 methods */
+
+    /**
+     * @dev See {IERC1155-onERC1155BatchReceived}.
+     */
     function onERC1155BatchReceived(
         address,
         address,

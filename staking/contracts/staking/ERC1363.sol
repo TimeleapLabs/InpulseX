@@ -11,15 +11,34 @@ import "../rewards/ERC1155.sol";
 abstract contract ERC1363Staking is BaseStaking, IERC1363Receiver {
     IERC1363 private _stakeToken;
 
+    /**
+     * @dev Set the token used for staking
+     * @param token Address of the token contract
+     *
+     * Reverts if the token is set to address(0)
+     */
     function setStakingToken(address token) external onlyOwner {
         require(token != address(0), "Can't set token to address(0)");
         _stakeToken = IERC1363(token);
     }
 
+    /**
+     * @dev Get the address of the token used for staking
+     * @return address Address of the token contract
+     */
     function getStakingToken() external view returns (address) {
         return address(_stakeToken);
     }
 
+    /**
+     * @dev Unstake tokens
+     *
+     * Reverts if user stake amount is not greater than 0
+     * Reverts if block timestamp is not bigger than the unlock time
+     * or the user is not allowed to unstake early
+     *
+     * A penalty may be applied if the user removes their stake early
+     */
     function unstake() external {
         address user = _msgSender();
         require(_stake[user] > 0, "Cannot unstake 0 tokens");
@@ -56,6 +75,16 @@ abstract contract ERC1363Staking is BaseStaking, IERC1363Receiver {
         }
     }
 
+    /**
+     * @dev Handle incoming transfers of staking tokens
+     * @param user Address of the user staking tokens
+     * @param amount Amount of tokens being staked
+     * @return bytes4 Signature of the method in the receiver contract
+     *
+     * Reverts if `amount` is not bigger than 0
+     * Reverts if staking window is smaller than the block timestamp
+     * Reverts if the message sender is not the staking token
+     */
     function onTransferReceived(
         address,
         address user,

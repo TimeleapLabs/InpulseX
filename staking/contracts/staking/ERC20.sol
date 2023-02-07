@@ -9,15 +9,32 @@ import "../rewards/ERC1155.sol";
 abstract contract ERC20Staking is BaseStaking {
     IERC20 private _stakeToken;
 
+    /**
+     * @dev Set the token used for staking
+     * @param token Address of the token contract
+     *
+     * Reverts if the token is set to address(0)
+     */
     function setStakingToken(address token) external onlyOwner {
         require(token != address(0), "Can't set token to address(0)");
         _stakeToken = IERC20(token);
     }
 
+    /**
+     * @dev Get the address of the token used for staking
+     * @return address Address of the token contract
+     */
     function getStakingToken() external view returns (address) {
         return address(_stakeToken);
     }
 
+    /**
+     * @dev Transfers `amount` tokens from the user to this contract
+     * @param amount Amount of tokens being staked
+     *
+     * Reverts if `amount` is not greater than 0
+     * Reverts if staking window is smaller than the block timestamp
+     */
     function stake(uint256 amount) external {
         require(amount > 0, "Cannot stake 0 tokens");
         require(block.timestamp <= _stakingWindow, "Cannot stake anymore");
@@ -31,6 +48,15 @@ abstract contract ERC20Staking is BaseStaking {
         );
     }
 
+    /**
+     * @dev Unstake tokens
+     *
+     * Reverts if user stake amount is not greater than 0
+     * Reverts if block timestamp is not bigger than the unlock time
+     * or the user is not allowed to unstake early
+     *
+     * A penalty may be applied if the user removes their stake early
+     */
     function unstake() external {
         address user = _msgSender();
         require(_stake[user] > 0, "Cannot unstake 0 tokens");

@@ -13,15 +13,31 @@ abstract contract ERC721Staking is BaseStaking, IERC721Receiver {
 
     mapping(address => uint256[]) _stakeIds;
 
+    /**
+     * @dev Set the token used for staking
+     * @param token Address of the token contract
+     *
+     * Reverts if the token is set to address(0)
+     */
     function setStakingToken(address token) external onlyOwner {
         require(token != address(0), "Can't set token to address(0)");
         _stakeToken = IERC721(token);
     }
 
+    /**
+     * @dev Get the address of the token used for staking
+     * @return address Address of the token contract
+     */
     function getStakingToken() external view returns (address) {
         return address(_stakeToken);
     }
 
+    /**
+     * @dev Transfers NFT with `id` from the user to this contract
+     * @param id ID of the NFT to stake
+     *
+     * Reverts if staking window is smaller than the block timestamp
+     */
     function stake(uint256 id) external {
         require(block.timestamp <= _stakingWindow, "Cannot stake anymore");
         address user = _msgSender();
@@ -33,6 +49,15 @@ abstract contract ERC721Staking is BaseStaking, IERC721Receiver {
         _stakeToken.safeTransferFrom(user, address(this), id, "");
     }
 
+    /**
+     * @dev Unstake tokens
+     *
+     * Reverts if user stake amount is not greater than 0
+     * Reverts if block timestamp is not bigger than the unlock time
+     * or the user is not allowed to unstake early
+     *
+     * A penalty may be applied if the user removes their stake early
+     */
     function unstake() external {
         address user = _msgSender();
         uint256 amount = _stakeIds[user].length;
@@ -68,6 +93,24 @@ abstract contract ERC721Staking is BaseStaking, IERC721Receiver {
         }
     }
 
+    /**
+     * @dev Returns the NFT IDs currently staked by the user
+     * @param user Address of the user staking tokens
+     * @return uint256[] NFT IDs staked by the `user`
+     */
+    function getStakeIds(address user)
+        external
+        view
+        returns (uint256[] memory)
+    {
+        return _stakeIds[user];
+    }
+
+    /* ERC1155 methods */
+
+    /**
+     * @dev See {IERC721-onERC721Received}.
+     */
     function onERC721Received(
         address,
         address,
@@ -75,14 +118,6 @@ abstract contract ERC721Staking is BaseStaking, IERC721Receiver {
         bytes calldata
     ) external view returns (bytes4) {
         return IERC721Receiver(this).onERC721Received.selector;
-    }
-
-    function getStakeIds(address user)
-        external
-        view
-        returns (uint256[] memory)
-    {
-        return _stakeIds[user];
     }
 
     /* ERC165 methods */
