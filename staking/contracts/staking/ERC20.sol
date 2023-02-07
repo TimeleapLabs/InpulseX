@@ -23,11 +23,11 @@ abstract contract ERC20Staking is BaseStaking {
         address user = _msgSender();
         _stake[user] += amount;
         _stakePoolSize += amount;
+        emit Staked(user, amount);
         require(
             _stakeToken.transferFrom(user, address(this), amount),
             "Transfer failed!"
         );
-        emit Staked(user, amount);
     }
 
     function unstake() external {
@@ -41,27 +41,29 @@ abstract contract ERC20Staking is BaseStaking {
         _stake[user] = 0;
         if (block.timestamp < _unlockTime) {
             uint256 penalty = (amount * _penalties[user]) / 100;
+            emit UnStaked(user, amount - penalty);
+
+            /**
+             * No reward distributed, decrease the stake pool size
+             */
+            _stakePoolSize -= amount;
+
             if (penalty > 0) {
                 require(
                     _stakeToken.transfer(_penaltyAddress, penalty),
                     "Transfer failed!"
                 );
             }
+
             require(
                 _stakeToken.transfer(user, amount - penalty),
                 "Transfer failed!"
             );
-            emit UnStaked(user, amount - penalty);
-            /**
-             * No reward distributed, decrease the stake pool size
-             */
-            _stakePoolSize -= amount;
         } else {
-            uint256 reward = (((amount * 100) / _stakePoolSize) *
-                _rewardPoolSize) / 100;
+            emit UnStaked(user, amount);
+            uint256 reward = (amount * _rewardPoolSize) / _stakePoolSize;
             require(_stakeToken.transfer(user, amount), "Transfer failed!");
             sendRewards(user, reward);
-            emit UnStaked(user, amount);
         }
     }
 }

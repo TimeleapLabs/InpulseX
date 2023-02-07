@@ -30,6 +30,7 @@ abstract contract ERC1155Staking is BaseStaking, IERC1155Receiver {
         _stake[user] += amount;
         _stakePoolSize += amount;
 
+        emit Staked(user, amount);
         _stakeToken.safeTransferFrom(
             user,
             address(this),
@@ -37,8 +38,6 @@ abstract contract ERC1155Staking is BaseStaking, IERC1155Receiver {
             amount,
             ""
         );
-
-        emit Staked(user, amount);
     }
 
     function unstake() external {
@@ -52,6 +51,12 @@ abstract contract ERC1155Staking is BaseStaking, IERC1155Receiver {
         _stake[user] = 0;
         if (block.timestamp < _unlockTime) {
             uint256 penalty = (amount * _penalties[user]) / 100;
+            emit UnStaked(user, amount - penalty);
+            /**
+             * No reward distributed, decrease the stake pool size
+             */
+            _stakePoolSize -= amount;
+
             if (penalty > 0) {
                 _stakeToken.safeTransferFrom(
                     address(this),
@@ -68,12 +73,8 @@ abstract contract ERC1155Staking is BaseStaking, IERC1155Receiver {
                 amount - penalty,
                 ""
             );
-            emit UnStaked(user, amount - penalty);
-            /**
-             * No reward distributed, decrease the stake pool size
-             */
-            _stakePoolSize -= amount;
         } else {
+            emit UnStaked(user, amount);
             _stakeToken.safeTransferFrom(
                 address(this),
                 user,
@@ -81,10 +82,8 @@ abstract contract ERC1155Staking is BaseStaking, IERC1155Receiver {
                 amount,
                 ""
             );
-            uint256 reward = (((amount * 100) / _stakePoolSize) *
-                _rewardPoolSize) / 100;
+            uint256 reward = (amount * _rewardPoolSize) / _stakePoolSize;
             sendRewards(user, reward);
-            emit UnStaked(user, amount);
         }
     }
 

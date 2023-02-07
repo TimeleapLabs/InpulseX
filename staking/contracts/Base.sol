@@ -18,7 +18,9 @@ abstract contract BaseStaking is Context, Ownable {
     event Staked(address user, uint256 amount);
     event UnStaked(address user, uint256 amount);
 
-    constructor() {}
+    constructor() {
+        _stake[msg.sender] = 0;
+    }
 
     function setUnlockTime(uint256 timestamp) external onlyOwner {
         _unlockTime = timestamp;
@@ -37,6 +39,10 @@ abstract contract BaseStaking is Context, Ownable {
     }
 
     function setPenaltyAddress(address penalty) external onlyOwner {
+        require(
+            penalty != address(0),
+            "Cannot set penalty collection address to 0x0"
+        );
         _penaltyAddress = penalty;
     }
 

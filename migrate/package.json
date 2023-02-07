@@ -7,7 +7,7 @@
     "test": "NODE_NO_WARNINGS=1 hardhat test",
     "coverage": "NODE_NO_WARNINGS=1 hardhat coverage",
     "compile": "NODE_NO_WARNINGS=1 hardhat compile",
-    "size": "npm run clean && NODE_NO_WARNINGS=1 hardhat compile",
+    "size": "npm run clean && NODE_NO_WARNINGS=1 hardhat size-contracts",
     "scan:myth": "myth analyze ./contracts/Migrate.sol --execution-timeout 90",
     "prescan:myth": "npm run compile",
     "scan:slither": "NODE_NO_WARNINGS=1 slither .",

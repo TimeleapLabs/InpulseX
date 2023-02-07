@@ -28,9 +28,8 @@ abstract contract ERC721Staking is BaseStaking, IERC721Receiver {
         _stakePoolSize += 1;
         _stakeIds[user].push(id);
 
-        _stakeToken.safeTransferFrom(user, address(this), id, "");
-
         emit Staked(user, 1);
+        _stakeToken.safeTransferFrom(user, address(this), id, "");
     }
 
     function unstake() external {
@@ -43,17 +42,10 @@ abstract contract ERC721Staking is BaseStaking, IERC721Receiver {
             "Cannot unstake yet"
         );
 
-        for (uint256 index = 0; index < amount; index++) {
-            _stakeToken.safeTransferFrom(
-                address(this),
-                user,
-                _stakeIds[user][index],
-                ""
-            );
-        }
+        uint256[] memory nftIds = _stakeIds[user];
 
-        emit UnStaked(user, amount);
         delete _stakeIds[user];
+        emit UnStaked(user, amount);
 
         if (_exceptions[user]) {
             /**
@@ -61,9 +53,17 @@ abstract contract ERC721Staking is BaseStaking, IERC721Receiver {
              */
             _stakePoolSize -= amount;
         } else {
-            uint256 reward = (((amount * 100) / _stakePoolSize) *
-                _rewardPoolSize) / 100;
+            uint256 reward = (amount * _rewardPoolSize) / _stakePoolSize;
             sendRewards(user, reward);
+        }
+
+        for (uint256 index = 0; index < amount; index++) {
+            _stakeToken.safeTransferFrom(
+                address(this),
+                user,
+                nftIds[index],
+                ""
+            );
         }
     }
 
