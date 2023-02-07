@@ -3,6 +3,8 @@ const { ethers } = require("hardhat");
 
 const tx = async (tx) => await (await tx).wait();
 
+const TRANSFER721 = "safeTransferFrom(address,address,uint256)";
+
 const deployAll = async () => {
   const Dummy20 = await ethers.getContractFactory("Dummy20");
   const dummy20 = await Dummy20.deploy();
@@ -46,7 +48,7 @@ const deployAll = async () => {
   await erc721StakerERC1155Rewarder.deployed();
 
   const ERC1155StakerERC20Rewarder = await ethers.getContractFactory(
-    "ERC1363StakerERC20Rewarder"
+    "ERC1155StakerERC20Rewarder"
   );
   const erc1155StakerERC20Rewarder = await ERC1155StakerERC20Rewarder.deploy();
   await erc1155StakerERC20Rewarder.deployed();
@@ -96,5 +98,64 @@ describe("Staking", function () {
         .map((address) => address.match(/0x[a-f0-9]{40}/i))
         .every(Boolean)
     ).to.be.true;
+  });
+
+  it("ERC20Staker should not allow unstaking before unlock", async function () {
+    const { dummy20: token, erc20StakerERC20Rewarder: staker } =
+      await deployAll();
+    const [_owner, user] = await ethers.getSigners();
+
+    await tx(token.transfer(user.address, 100));
+    await tx(staker.setStakingToken(token.address));
+    await tx(token.connect(user).approve(staker.address, 100));
+    await tx(staker.connect(user).stake(100));
+
+    expect(staker.connect(user).unstake()).to.be.revertedWith(
+      "Cannot unstake yet"
+    );
+  });
+
+  it("ERC1363Staker should not allow unstaking before unlock", async function () {
+    const { dummy1363: token, erc1363StakerERC20Rewarder: staker } =
+      await deployAll();
+    const [_owner, user] = await ethers.getSigners();
+
+    await tx(token.transfer(user.address, 100));
+    await tx(staker.setStakingToken(token.address));
+    await tx(token.connect(user).transferAndCall(staker.address, 100, 0x0));
+
+    expect(staker.connect(user).unstake()).to.be.revertedWith(
+      "Cannot unstake yet"
+    );
+  });
+
+  it("ERC721Staker should not allow unstaking before unlock", async function () {
+    const { dummy721: token, erc721StakerERC20Rewarder: staker } =
+      await deployAll();
+    const [owner, user] = await ethers.getSigners();
+
+    await tx(token[TRANSFER721](owner.address, user.address, 0));
+    await tx(staker.setStakingToken(token.address));
+    await tx(token.connect(user).approve(staker.address, 0));
+    await tx(staker.connect(user).stake(0));
+
+    expect(staker.connect(user).unstake()).to.be.revertedWith(
+      "Cannot unstake yet"
+    );
+  });
+
+  it("ERC1155Staker should not allow unstaking before unlock", async function () {
+    const { dummy1155: token, erc1155StakerERC20Rewarder: staker } =
+      await deployAll();
+    const [owner, user] = await ethers.getSigners();
+
+    await tx(token.safeTransferFrom(owner.address, user.address, 0, 100, 0x0));
+    await tx(staker.setStakingToken(token.address, 0));
+    await tx(token.connect(user).setApprovalForAll(staker.address, true));
+    await tx(staker.connect(user).stake(100));
+
+    expect(staker.connect(user).unstake()).to.be.revertedWith(
+      "Cannot unstake yet"
+    );
   });
 });

@@ -76,6 +76,14 @@ abstract contract ERC721Staking is BaseStaking, IERC721Receiver {
         return IERC721Receiver(this).onERC721Received.selector;
     }
 
+    function getStakeIds(address user)
+        external
+        view
+        returns (uint256[] memory)
+    {
+        return _stakeIds[user];
+    }
+
     /* ERC165 methods */
 
     /**
