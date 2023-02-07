@@ -650,4 +650,56 @@ describe("Staking", function () {
     expect(await token.balanceOf(user1.address, 0)).to.be.equal("95");
     expect(await token.balanceOf(user2.address, 0)).to.be.equal("300");
   });
+
+  it("ERC20Rewarder should allow reward removals by admin only", async function () {
+    const { dummy20: token, erc20StakerERC20Rewarder: staker } =
+      await deployAll();
+    const [owner, user] = await ethers.getSigners();
+
+    await tx(staker.setStakingToken(token.address));
+    await tx(staker.setRewardToken(token.address));
+
+    const balance = await token.balanceOf(owner.address);
+
+    await tx(token.approve(staker.address, 24));
+
+    await tx(staker.addReward(12));
+    expect(await token.balanceOf(owner.address)).to.be.equal(
+      ethers.BigNumber.from(balance).sub(12)
+    );
+
+    await tx(staker.recoverRewards(12));
+    expect(await token.balanceOf(owner.address)).to.be.equal(balance);
+
+    await tx(staker.addReward(12));
+    await expect(
+      tx(staker.connect(user).recoverRewards(12))
+    ).to.be.revertedWith("Ownable: caller is not the owner");
+  });
+
+  it("ERC1155Rewarder should allow reward removals by admin only", async function () {
+    const { dummy1155: token, erc1155StakerERC1155Rewarder: staker } =
+      await deployAll();
+
+    const [owner, user] = await ethers.getSigners();
+
+    await tx(staker.setStakingToken(token.address, 0));
+    await tx(staker.setRewardToken(token.address, 0));
+
+    const balance = await token.balanceOf(owner.address, 0);
+
+    await tx(token.setApprovalForAll(staker.address, true));
+    await tx(staker.addReward(12));
+    expect(await token.balanceOf(owner.address, 0)).to.be.equal(
+      ethers.BigNumber.from(balance).sub(12)
+    );
+
+    await tx(staker.recoverRewards(12));
+    expect(await token.balanceOf(owner.address, 0)).to.be.equal(balance);
+
+    await tx(staker.addReward(12));
+    await expect(
+      tx(staker.connect(user).recoverRewards(12))
+    ).to.be.revertedWith("Ownable: caller is not the owner");
+  });
 });
