@@ -120,7 +120,6 @@ abstract contract ERC1155Staking is BaseStaking, IERC1155Receiver {
     /**
      * @dev See {IERC1155-onERC1155Received}.
      */
-
     function onERC1155Received(
         address,
         address,

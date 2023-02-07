@@ -58,6 +58,10 @@ contract Swap is Context, Ownable, Operatable, IERC165, IERC1363Receiver {
         );
     }
 
+    /**
+     * @dev Returns the chain ID of the network the contract is currently deployed to.
+     * @return uint256 The chain ID of the network.
+     */
     function getChainId() public view returns (uint256) {
         uint256 id;
         assembly {
@@ -66,6 +70,11 @@ contract Swap is Context, Ownable, Operatable, IERC165, IERC1363Receiver {
         return id;
     }
 
+    /**
+     * @dev Returns the hash of an EIP712 domain.
+     * @param eip712Domain An EIP712 domain.
+     * @return bytes32 The hash of the EIP712 domain.
+     */
     function hash(EIP712Domain memory eip712Domain)
         internal
         pure
@@ -83,6 +92,11 @@ contract Swap is Context, Ownable, Operatable, IERC165, IERC1363Receiver {
             );
     }
 
+    /**
+     * @dev Returns the hash of a swap request.
+     * @param swapRequest A swap request.
+     * @return bytes32 The hash of the swap request.
+     */
     function hash(SwapRequest memory swapRequest)
         internal
         pure
@@ -102,6 +116,14 @@ contract Swap is Context, Ownable, Operatable, IERC165, IERC1363Receiver {
             );
     }
 
+    /**
+     * @dev Verifies a signature for a swap request.
+     * @param swapRequest A swap request.
+     * @param v The recovery parameter of the signature.
+     * @param r The first half of the signature.
+     * @param s The second half of the signature.
+     * @return bool `true` if the signature is valid, `false` otherwise.
+     */
     function verify(
         SwapRequest memory swapRequest,
         uint8 v,
@@ -115,6 +137,14 @@ contract Swap is Context, Ownable, Operatable, IERC165, IERC1363Receiver {
         return ECDSA.recover(digest, v, r, s) == swapRequest.operator;
     }
 
+    /**
+     * @dev Emitted when a swap request has been successfully claimed.
+     * @param fromChain The chain the token is being swapped from.
+     * @param toChain The chain the token is being swapped to.
+     * @param operator The address of the operator.
+     * @param recipient The address of the recipient.
+     * @param amount The amount of tokens being swapped.
+     */
     event Claimed(
         uint256 fromChain,
         uint256 toChain,
@@ -123,6 +153,19 @@ contract Swap is Context, Ownable, Operatable, IERC165, IERC1363Receiver {
         uint256 amount
     );
 
+    /**
+     * @dev Claims a swap request.
+     * Requirements:
+     * - The signature must be valid.
+     * - The operator must be valid.
+     * - The nonce must not have already been claimed.
+     * @param swapRequest A swap request.
+     * @param v The recovery parameter of the signature.
+     * @param r The first half of the signature.
+     * @param s The second half of the signature.
+     *
+     * Emits `Clamed` If the swap request is successfully claimed.
+     */
     function claim(
         SwapRequest memory swapRequest,
         uint8 v,
@@ -156,6 +199,13 @@ contract Swap is Context, Ownable, Operatable, IERC165, IERC1363Receiver {
         require(success, "PegSwap: TransferFrom failed");
     }
 
+    /**
+     * @dev Returns whether a swap request with the given nonce from the given
+     * chain has already been claimed.
+     * @param fromChain The chain the token is being swapped from.
+     * @param nonce The nonce of the swap request.
+     * @return bool `true` if the swap request has been claimed, `false`
+     */
     function isClaimed(uint256 fromChain, uint256 nonce)
         external
         view
@@ -185,6 +235,18 @@ contract Swap is Context, Ownable, Operatable, IERC165, IERC1363Receiver {
         uint256 nonce
     );
 
+    /**
+     * @dev Called when a transfer is received by the contract.
+     * @param requestedFrom The address that requested the transfer.
+     * @param from The address that sent the transfer.
+     * @param value The amount of tokens transferred.
+     * @param data The data associated with the transfer.
+     * @return bytes4 The selector for the onTransferReceived function from the
+     * IERC1363Receiver interface.
+     *
+     * Reverts if the message sender is not the InpulseX token.
+     * Emits `SwapRequested` with information about the swap request.
+     */
     function onTransferReceived(
         address requestedFrom,
         address from,
