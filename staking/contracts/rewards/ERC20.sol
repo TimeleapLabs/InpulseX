@@ -43,6 +43,10 @@ abstract contract ERC20Rewards is BaseStaking {
      */
     function recoverRewards(uint256 amount) external onlyOwner {
         require(amount > 0, "Cannot remove 0 tokens");
+        require(
+            _rewardPoolSize >= amount,
+            "Cannot remove more than originally added"
+        );
         _rewardPoolSize -= amount;
         require(
             _rewardToken.transfer(_msgSender(), amount),
@@ -59,6 +63,8 @@ abstract contract ERC20Rewards is BaseStaking {
         internal
         override(BaseStaking)
     {
-        require(_rewardToken.transfer(user, amount), "Transfer failed!");
+        if (amount > 0 && address(_rewardToken) != address(0)) {
+            require(_rewardToken.transfer(user, amount), "Transfer failed!");
+        }
     }
 }

@@ -229,6 +229,79 @@ describe("Staking", function () {
     );
   });
 
+  it("ERC20Staker return full amount to user on unstake", async function () {
+    const { dummy20: token, erc20StakerERC20Rewarder: staker } =
+      await deployAll();
+    const [_owner, user] = await ethers.getSigners();
+
+    await tx(token.transfer(user.address, 100));
+    await tx(staker.setStakingToken(token.address));
+    await tx(staker.setStakingWindow(later(1)));
+    await tx(token.connect(user).approve(staker.address, 100));
+
+    await tx(staker.connect(user).stake(100));
+    expect(await token.balanceOf(user.address)).to.be.equal("0");
+    expect(await token.balanceOf(staker.address)).to.be.equal("100");
+
+    await tx(staker.connect(user).unstake());
+    expect(await token.balanceOf(user.address)).to.be.equal("100");
+    expect(await token.balanceOf(staker.address)).to.be.equal("0");
+  });
+
+  it("ERC1363Staker return full amount to user on unstake", async function () {
+    const { dummy1363: token, erc1363StakerERC20Rewarder: staker } =
+      await deployAll();
+    const [_owner, user] = await ethers.getSigners();
+
+    await tx(token.transfer(user.address, 100));
+    await tx(staker.setStakingToken(token.address));
+    await tx(staker.setStakingWindow(later(1)));
+
+    await tx(token.connect(user).transferAndCall(staker.address, 100, 0x0));
+    expect(await token.balanceOf(user.address)).to.be.equal("0");
+    expect(await token.balanceOf(staker.address)).to.be.equal("100");
+
+    await tx(staker.connect(user).unstake());
+    expect(await token.balanceOf(user.address)).to.be.equal("100");
+    expect(await token.balanceOf(staker.address)).to.be.equal("0");
+  });
+
+  it("ERC721Staker return full amount to user on unstake", async function () {
+    const { dummy721: token, erc721StakerERC20Rewarder: staker } =
+      await deployAll();
+    const [owner, user] = await ethers.getSigners();
+
+    await tx(token[TRANSFER721](owner.address, user.address, 0));
+    await tx(staker.setStakingToken(token.address));
+    await tx(staker.setStakingWindow(later(1)));
+    await tx(token.connect(user).approve(staker.address, 0));
+
+    await tx(staker.connect(user).stake(0));
+    expect(await token.ownerOf(0)).to.be.equal(staker.address);
+
+    await tx(staker.connect(user).unstake());
+    expect(await token.ownerOf(0)).to.be.equal(user.address);
+  });
+
+  it("ERC1155Staker return full amount to user on unstake", async function () {
+    const { dummy1155: token, erc1155StakerERC20Rewarder: staker } =
+      await deployAll();
+    const [owner, user] = await ethers.getSigners();
+
+    await tx(token.safeTransferFrom(owner.address, user.address, 0, 100, 0x0));
+    await tx(staker.setStakingToken(token.address, 0));
+    await tx(staker.setStakingWindow(later(1)));
+    await tx(token.connect(user).setApprovalForAll(staker.address, true));
+
+    await tx(staker.connect(user).stake(100));
+    expect(await token.balanceOf(user.address, 0)).to.be.equal("0");
+    expect(await token.balanceOf(staker.address, 0)).to.be.equal("100");
+
+    await tx(staker.connect(user).unstake());
+    expect(await token.balanceOf(user.address, 0)).to.be.equal("100");
+    expect(await token.balanceOf(staker.address, 0)).to.be.equal("0");
+  });
+
   it("ERC20Staker ERC20Rewarder should distribute rewards correctly", async function () {
     const { dummy20: token, erc20StakerERC20Rewarder: staker } =
       await deployAll();

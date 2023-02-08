@@ -50,6 +50,10 @@ abstract contract ERC1155RewardsNonReceiver is BaseStaking {
      */
     function recoverRewards(uint256 amount) external onlyOwner {
         require(amount > 0, "Cannot remove 0 tokens");
+        require(
+            _rewardPoolSize >= amount,
+            "Cannot remove more than originally added"
+        );
         _rewardPoolSize -= amount;
         _rewardToken.safeTransferFrom(
             address(this),
@@ -69,13 +73,15 @@ abstract contract ERC1155RewardsNonReceiver is BaseStaking {
         internal
         override(BaseStaking)
     {
-        _rewardToken.safeTransferFrom(
-            address(this),
-            user,
-            _rewardNftId,
-            amount,
-            ""
-        );
+        if (amount > 0 && address(_rewardToken) != address(0)) {
+            _rewardToken.safeTransferFrom(
+                address(this),
+                user,
+                _rewardNftId,
+                amount,
+                ""
+            );
+        }
     }
 }
 
