@@ -6,6 +6,6 @@ abi:
 	mkdir -p ./lib/abi && \
 	rm -rf ./lib/abi && \
 	mkdir -p ./lib/abi && \
-	cp -r ../pegswap/abi ./lib/abi/pegswap && \
-	cp -r ../token/abi ./lib/abi/token && \
-	cp -r ../staking/abi ./lib/abi/staking
+	cp -r ../pegswap/abi ./src/lib/abi/pegswap && \
+	cp -r ../token/abi ./src/lib/abi/token && \
+	cp -r ../staking/abi ./src/lib/abi/staking
