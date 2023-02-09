@@ -1,4 +1,4 @@
-FROM public.ecr.aws/lambda/nodejs:14
+FROM public.ecr.aws/lambda/nodejs:18
 
 COPY package.json package-lock.json index.js /var/task/
 COPY lib/ /var/task/lib/
