@@ -1,4 +1,6 @@
 .DS_Store
-.vs_code
+.vscode
 bscScanExport.json
 balances.json
+abi/
+!UI/lib/abi/
