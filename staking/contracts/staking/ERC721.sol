@@ -63,10 +63,7 @@ abstract contract ERC721Staking is BaseStaking, IERC721Receiver {
         uint256 amount = _stakeIds[user].length;
 
         require(amount > 0, "Cannot unstake 0 tokens");
-        require(
-            block.timestamp >= _unlockTime || _exceptions[user],
-            "Cannot unstake yet"
-        );
+        require(canUnstake(user), "Cannot unstake yet");
 
         uint256[] memory nftIds = _stakeIds[user];
 
@@ -91,6 +88,15 @@ abstract contract ERC721Staking is BaseStaking, IERC721Receiver {
                 ""
             );
         }
+    }
+
+    /**
+     * @dev Get the current reward size for `user`
+     * @param user Address of the user
+     */
+    function getRewardSize(address user) external view returns (uint256) {
+        uint256 amount = _stakeIds[user].length;
+        return (amount * _rewardPoolSize) / _stakePoolSize;
     }
 
     /**

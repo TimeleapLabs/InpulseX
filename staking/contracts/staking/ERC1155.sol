@@ -71,12 +71,11 @@ abstract contract ERC1155Staking is BaseStaking, IERC1155Receiver {
     function unstake() external {
         address user = _msgSender();
         require(_stake[user] > 0, "Cannot unstake 0 tokens");
-        require(
-            block.timestamp >= _unlockTime || _exceptions[user],
-            "Cannot unstake yet"
-        );
+        require(canUnstake(user), "Cannot unstake yet");
+
         uint256 amount = _stake[user];
         _stake[user] = 0;
+
         if (block.timestamp < _unlockTime) {
             uint256 penalty = (amount * _penalties[user]) / 100;
             emit UnStaked(user, amount - penalty);
@@ -113,6 +112,15 @@ abstract contract ERC1155Staking is BaseStaking, IERC1155Receiver {
             uint256 reward = (amount * _rewardPoolSize) / _stakePoolSize;
             sendRewards(user, reward);
         }
+    }
+
+    /**
+     * @dev Get the current reward size for `user`
+     * @param user Address of the user
+     */
+    function getRewardSize(address user) external view returns (uint256) {
+        uint256 amount = _stake[user];
+        return (amount * _rewardPoolSize) / _stakePoolSize;
     }
 
     /* ERC1155 methods */

@@ -1,12 +1,12 @@
 <script>
-	export let value;
+	export let value = 0;
 	export let placeholder;
 	export let label = '';
 </script>
 
 <label>
 	{label}
-	<input type="text" bind:value {placeholder} />
+	<input type="number" min="0" bind:value {placeholder} />
 </label>
 
 <style>

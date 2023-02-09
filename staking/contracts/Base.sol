@@ -80,6 +80,15 @@ abstract contract BaseStaking is Context, Ownable {
     }
 
     /**
+     * @dev Returns true or false depending on if the user can unstake
+     * @param user Address of the user
+     * @return bool true if the user can unstake
+     */
+    function canUnstake(address user) public view returns (bool) {
+        return block.timestamp >= _unlockTime || _exceptions[user];
+    }
+
+    /**
      * @dev Allow `user` to unstake early with an optional penalty
      * @param user Address of the user to add to exceptions
      * @param penalty The penalty percentage (e.g. 5 means 5% penalty)

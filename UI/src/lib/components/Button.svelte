@@ -3,14 +3,14 @@
 <style>
 	button {
 		font-size: 1.2rem;
-		padding: 10px 30px;
-		margin: 0 10px;
+		padding: 0.5em 1.5em;
 		background: radial-gradient(#257ee4 30%, #104e95);
 		border-color: #257ee4;
 		border-style: inset;
-		border-radius: 8px;
+		border-radius: 0.5em;
 		font-weight: 600;
 		text-transform: uppercase;
+		width: 100%;
 	}
 	button:hover {
 		background: radial-gradient(#f307ae 30%, #730351);

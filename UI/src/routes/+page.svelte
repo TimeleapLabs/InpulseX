@@ -2,14 +2,34 @@
 	import Card from '../lib/components/Card.svelte';
 	import Button from '../lib/components/Button.svelte';
 	import TextInput from '../lib/components/TextInput.svelte';
+	import NumberInput from '../lib/components/NumberInput.svelte';
+	import Table from '../lib/components/Table.svelte';
+	import ButtonGroup from '../lib/components/ButtonGroup.svelte';
+	import Select from '../lib/components/Select.svelte';
+
+	const data = [
+		{ title: 'Your stake', value: '123456 IPX' },
+		{ title: 'Reward', value: '123 BUSD' }
+	];
+
+	const options = [
+		{ title: 'BSC', value: 'bsc' },
+		{ title: 'Ethereum', value: 'ethereum' }
+	];
 </script>
 
 <div class="container">
 	<Card>
 		<div class="inner">
 			<h4>This is a test</h4>
-			<TextInput placeholder="Test input" />
-			<Button>Press here</Button>
+			<NumberInput placeholder="Tokens" label="Amount" />
+			<TextInput placeholder="Test input" label="Label" />
+			<Select {options} label="From Chain" />
+			<ButtonGroup>
+				<Button>Stake</Button>
+				<Button>UnStake</Button>
+			</ButtonGroup>
+			<Table {data} />
 		</div>
 	</Card>
 </div>
