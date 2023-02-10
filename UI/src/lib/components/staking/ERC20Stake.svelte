@@ -6,6 +6,7 @@
 
 	import { wallet } from '../../../stores/wallet';
 	import { ethers } from 'ethers';
+	import toast from 'svelte-french-toast';
 
 	import abi from '../../abi/staking/contracts/staking/ERC20.sol/ERC20StakerERC20Rewarder.json';
 	import tokenAbi from '../../abi/staking/contracts/interfaces/IERC20.sol/IERC20.json';
@@ -19,6 +20,7 @@
 	let amount = 0;
 	let unlockTime;
 	let stakingWindow;
+	let busy = false;
 
 	let data = [
 		{ title: 'Your stake', value: `0 ${stakeSymbol}` },
@@ -60,6 +62,33 @@
 		await contract.unstake();
 	};
 
+	const onStake = async () => {
+		if (amount.toString() === '0') {
+			return toast.error('Must stake more than 0 tokens!');
+		}
+		busy = true;
+		await toast
+			.promise(stake(), {
+				loading: 'Staking...',
+				success: 'Staking successful!',
+				error: 'There was an issue staking your tokens!'
+			})
+			.catch(() => null);
+		busy = false;
+	};
+
+	const onUnstake = async () => {
+		busy = true;
+		await toast
+			.promise(unstake(), {
+				loading: 'Unstaking...',
+				success: 'Unstaking successful!',
+				error: 'There was an issue unstaking your tokens!'
+			})
+			.catch(() => null);
+		busy = false;
+	};
+
 	$: if (address && $wallet?.provider) onProvider();
 </script>
 
@@ -73,10 +102,11 @@
 				</div>
 				<Button on:click={getMax}>Max</Button>
 			</div>
+			<Button fullWidth on:click={onStake} disabled={busy}>Stake</Button>
 			{#if stakingWindow > new Date().valueOf()}
-				<Button fullWidth on:click={stake}>Stake</Button>
+				<Button fullWidth on:click={onStake}>Stake</Button>
 			{:else if unlockTime < new Date().valueOf()}
-				<Button fullWidth on:click={unstake}>UnStake</Button>
+				<Button fullWidth on:click={onUnstake}>Unstake</Button>
 			{/if}
 			{#if data}
 				<Table {data} />

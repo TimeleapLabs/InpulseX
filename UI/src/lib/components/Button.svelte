@@ -1,8 +1,9 @@
 <script>
 	export let fullWidth;
+	export let disabled;
 </script>
 
-<button class:full-width={fullWidth} on:click><slot /></button>
+<button class:full-width={fullWidth} on:click {disabled}><slot /></button>
 
 <style>
 	button {
