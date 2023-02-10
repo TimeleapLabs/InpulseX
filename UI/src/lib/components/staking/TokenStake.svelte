@@ -12,32 +12,22 @@
 	import tokenAbi from '../../abi/staking/contracts/interfaces/IERC20.sol/IERC20.json';
 
 	export let title;
-	export let stakeToken;
 	export let address;
 
 	let contract, token, provider, user, signer;
 	let amount = 0;
-	let currentStake = 0;
-
-	const onProvider = async () => {
-		provider = new ethers.providers.Web3Provider($wallet.provider);
-		user = $wallet.accounts[0].address;
-		signer = provider.getSigner(user);
-		contract = new ethers.Contract(address, abi, signer);
-		token = new ethers.Contract(stakeToken, tokenAbi, signer);
-	};
-
-	$: if (stakeToken && address && $wallet?.provider) onProvider();
-
-	const getMax = async () => {
-		const balance = await contract.balanceOf(user);
-		amount = ethers.utils.formatUnits(balance);
-	};
+	let unlockTime;
+	let stakingWindow;
 
 	let data = [
 		{ title: 'Your stake', value: '0 IPX' },
 		{ title: 'Reward', value: '0 BUSD' }
 	];
+
+	const getMax = async () => {
+		const balance = await token.balanceOf(user);
+		amount = ethers.utils.formatUnits(balance);
+	};
 
 	const getStakeStats = async () => {
 		const stake = await contract.getStake(user);
@@ -48,7 +38,24 @@
 		];
 	};
 
-	$: if (user && contract) getStakeStats();
+	const onProvider = async () => {
+		provider = new ethers.providers.Web3Provider($wallet.provider);
+		user = $wallet.accounts[0].address;
+		signer = provider.getSigner(user);
+		contract = new ethers.Contract(address, abi, signer);
+		const stakeToken = await contract.getStakingToken();
+		token = new ethers.Contract(stakeToken, tokenAbi, signer);
+		unlockTime = await contract.getUnlockTime();
+		stakingWindow = await contract.getStakingWindow();
+		getStakeStats();
+	};
+
+	const stake = async () => {
+		await token.approve(address, ethers.utils.parseUnits(amount));
+		await contract.stake(ethers.utils.parseUnits(amount));
+	};
+
+	$: if (address && $wallet?.provider) onProvider();
 </script>
 
 <div class="container">
@@ -62,7 +69,7 @@
 				<Button on:click={getMax}>Max</Button>
 			</div>
 			<ButtonGroup>
-				<Button fullWidth>Stake</Button>
+				<Button fullWidth on:click={stake}>Stake</Button>
 			</ButtonGroup>
 			{#if data}
 				<Table {data} />
