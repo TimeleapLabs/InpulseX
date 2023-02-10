@@ -6,6 +6,8 @@
 	import Table from '../lib/components/Table.svelte';
 	import ButtonGroup from '../lib/components/ButtonGroup.svelte';
 	import Select from '../lib/components/Select.svelte';
+	import ConnectButton from '../lib/components/ConnectButton.svelte';
+	import TokenStake from '../lib/components/staking/TokenStake.svelte';
 
 	const data = [
 		{ title: 'Your stake', value: '123456 IPX' },
@@ -28,20 +30,24 @@
 			<ButtonGroup>
 				<Button>Stake</Button>
 				<Button>UnStake</Button>
+				<ConnectButton fullWidth />
 			</ButtonGroup>
 			<Table {data} />
 		</div>
 	</Card>
+	<TokenStake title="Stake IPX" />
 </div>
 
 <style>
 	.container {
 		max-width: 440px;
 		margin: 5em auto;
+		display: flex;
+		flex-direction: column;
+		gap: 2em;
 	}
 	.inner {
-		padding: 2em 2em;
-		text-align: center;
+		padding: 1em;
 		display: flex;
 		gap: 1em;
 		flex-direction: column;
@@ -54,9 +60,5 @@
 	}
 	h4 {
 		margin: 0;
-		margin-bottom: 0.5em;
-		font-weight: 400;
-		font-size: 1.45em;
-		text-transform: uppercase;
 	}
 </style>
