@@ -12,6 +12,8 @@
 
 	export let title;
 	export let address;
+	export let stakeSymbol = 'IPX';
+	export let rewardSymbol = 'BUSD';
 
 	let contract, token, provider, user, signer;
 	let amount = 0;
@@ -19,8 +21,8 @@
 	let stakingWindow;
 
 	let data = [
-		{ title: 'Your stake', value: '0 IPX' },
-		{ title: 'Reward', value: '0 BUSD' }
+		{ title: 'Your stake', value: `0 ${stakeSymbol}` },
+		{ title: 'Reward', value: `0 ${rewardSymbol}` }
 	];
 
 	const getMax = async () => {
@@ -32,8 +34,8 @@
 		const stake = await contract.getStake(user);
 		const reward = await contract.getRewardSize(user);
 		data = [
-			{ title: 'Your stake', value: `${ethers.utils.formatUnits(stake)} IPX` },
-			{ title: 'Reward', value: `${ethers.utils.formatUnits(reward)} BUSD` }
+			{ title: 'Your stake', value: `${ethers.utils.formatUnits(stake)} ${stakeSymbol}` },
+			{ title: 'Reward', value: `${ethers.utils.formatUnits(reward)} ${rewardSymbol}` }
 		];
 	};
 
