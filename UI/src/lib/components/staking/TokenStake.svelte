@@ -15,7 +15,9 @@
 	export let stakeToken;
 	export let address;
 
-	let contract, token, provider, user, signer, data;
+	let contract, token, provider, user, signer;
+	let amount = 0;
+	let currentStake = 0;
 
 	const onProvider = async () => {
 		provider = new ethers.providers.Web3Provider($wallet.provider);
@@ -26,6 +28,27 @@
 	};
 
 	$: if (stakeToken && address && $wallet?.provider) onProvider();
+
+	const getMax = async () => {
+		const balance = await contract.balanceOf(user);
+		amount = ethers.utils.formatUnits(balance);
+	};
+
+	let data = [
+		{ title: 'Your stake', value: '0 IPX' },
+		{ title: 'Reward', value: '0 BUSD' }
+	];
+
+	const getStakeStats = async () => {
+		const stake = await contract.getStake(user);
+		const reward = await contract.getRewardSize(user);
+		data = [
+			{ title: 'Your stake', value: `${ethers.utils.formatUnits(stake)} IPX` },
+			{ title: 'Reward', value: `${ethers.utils.formatUnits(reward)} BUSD` }
+		];
+	};
+
+	$: if (user && contract) getStakeStats();
 </script>
 
 <div class="container">
@@ -34,9 +57,9 @@
 			<h4>{title}</h4>
 			<div class="amount">
 				<div class="field-wrap">
-					<NumberInput placeholder="Tokens to stake" label="Amount" />
+					<NumberInput bind:value={amount} placeholder="Tokens to stake" label="Amount" />
 				</div>
-				<Button>Max</Button>
+				<Button on:click={getMax}>Max</Button>
 			</div>
 			<ButtonGroup>
 				<Button fullWidth>Stake</Button>
