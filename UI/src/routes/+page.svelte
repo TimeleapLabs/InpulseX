@@ -7,7 +7,9 @@
 	import ButtonGroup from '../lib/components/ButtonGroup.svelte';
 	import Select from '../lib/components/Select.svelte';
 	import ConnectButton from '../lib/components/ConnectButton.svelte';
-	import TokenStake from '../lib/components/staking/TokenStake.svelte';
+	import ERC20Stake from '../lib/components/staking/ERC20Stake.svelte';
+
+	import { Toaster } from 'svelte-french-toast';
 
 	const data = [
 		{ title: 'Your stake', value: '123456 IPX' },
@@ -35,7 +37,8 @@
 			<Table {data} />
 		</div>
 	</Card>
-	<TokenStake title="Stake IPX" />
+	<ERC20Stake title="Stake IPX" />
+	<Toaster />
 </div>
 
 <style>

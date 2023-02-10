@@ -1,7 +1,6 @@
 <script>
 	import Card from '../Card.svelte';
 	import Button from '../Button.svelte';
-	import ButtonGroup from '../ButtonGroup.svelte';
 	import NumberInput from '../NumberInput.svelte';
 	import Table from '../Table.svelte';
 
@@ -45,14 +44,18 @@
 		contract = new ethers.Contract(address, abi, signer);
 		const stakeToken = await contract.getStakingToken();
 		token = new ethers.Contract(stakeToken, tokenAbi, signer);
-		unlockTime = await contract.getUnlockTime();
-		stakingWindow = await contract.getStakingWindow();
+		unlockTime = (await contract.getUnlockTime()) * 1000;
+		stakingWindow = (await contract.getStakingWindow()) * 1000;
 		getStakeStats();
 	};
 
 	const stake = async () => {
 		await token.approve(address, ethers.utils.parseUnits(amount));
 		await contract.stake(ethers.utils.parseUnits(amount));
+	};
+
+	const unstake = async () => {
+		await contract.unstake();
 	};
 
 	$: if (address && $wallet?.provider) onProvider();
@@ -68,9 +71,11 @@
 				</div>
 				<Button on:click={getMax}>Max</Button>
 			</div>
-			<ButtonGroup>
+			{#if stakingWindow > new Date().valueOf()}
 				<Button fullWidth on:click={stake}>Stake</Button>
-			</ButtonGroup>
+			{:else if unlockTime < new Date().valueOf()}
+				<Button fullWidth on:click={unstake}>UnStake</Button>
+			{/if}
 			{#if data}
 				<Table {data} />
 			{/if}
