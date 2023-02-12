@@ -38,9 +38,6 @@
 			<Table {data} />
 		</div>
 	</Card>
-	<Card>
-		<Choice address="0xa9a6A3626993D487d2Dbda3173cf58cA1a9D9e9f" maxMinted={1000} />
-	</Card>
 	<ERC20Stake title="Stake IPX" />
 	<Toaster />
 </div>

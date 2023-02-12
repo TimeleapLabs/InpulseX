@@ -24,8 +24,12 @@ contract NFTSweep {
         uint256 id = start;
         uint256 i = 0;
         for (id; id < end && i <= 100; id++) {
-            if (nftContract.ownerOf(id) == user) {
-                NFTs[i++] = id;
+            try nftContract.ownerOf(id) returns (address owner) {
+                if (owner == user) {
+                    NFTs[i++] = id;
+                }
+            } catch {
+                // Do nothing
             }
         }
         return (NFTs, id);
