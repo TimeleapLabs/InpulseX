@@ -23,7 +23,7 @@
 		background: radial-gradient(#f307ae 30%, #730351);
 		border-color: #f307ae;
 		color: #fe0;
-		transition: color 0.8s ease 0.1s, background 0.8s ease 0.1s;
+		transition: color 0.8s ease 0.1s;
 	}
 	button:active {
 		transform: scale(0.99) translateY(2px);
