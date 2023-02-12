@@ -31,14 +31,14 @@
 		if (!sweepedNfts.length) {
 			let start = 0;
 			while (start < maxMinted) {
-				const found = await contract.performNftSweep(
+				const [found, paginate] = await contract.performNftSweep(
 					address,
 					user,
 					start,
 					Math.min(maxMinted, start + bucketSize)
 				);
 				if (found.length) sweepedNfts.push(...found);
-				start += bucketSize;
+				start = paginate;
 			}
 		}
 
