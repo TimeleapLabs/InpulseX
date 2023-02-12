@@ -8,6 +8,7 @@
 	import Select from '../lib/components/Select.svelte';
 	import ConnectButton from '../lib/components/ConnectButton.svelte';
 	import ERC20Stake from '../lib/components/staking/ERC20Stake.svelte';
+	import Choice from '../lib/components/nft/Choice.svelte';
 
 	import { Toaster } from 'svelte-french-toast';
 
@@ -36,6 +37,9 @@
 			</ButtonGroup>
 			<Table {data} />
 		</div>
+	</Card>
+	<Card>
+		<Choice address="0xa9a6A3626993D487d2Dbda3173cf58cA1a9D9e9f" maxMinted={1000} />
 	</Card>
 	<ERC20Stake title="Stake IPX" />
 	<Toaster />

@@ -8,10 +8,11 @@
 	export let address;
 	export let maxMinted;
 	export let bucketSize = 250;
+	export let selected = {};
 
 	let userNfts = [];
 
-	const sweeperAddress = '';
+	const sweeperAddress = '0x039976F40a15Bbaaf055144d59F0a47341AF2dcb';
 
 	const fetchEnumerable = async (contract, address, user) => {
 		try {
@@ -29,15 +30,19 @@
 		const sweepedNfts = await fetchEnumerable(contract, address, user);
 
 		if (!sweepedNfts.length) {
-			let start = 0;
+			let start = ethers.BigNumber.from(0);
 			while (start < maxMinted) {
 				const [found, paginate] = await contract.performNftSweep(
 					address,
 					user,
 					start,
-					Math.min(maxMinted, start + bucketSize)
+					ethers.BigNumber.from(maxMinted).gt(start.add(bucketSize))
+						? start.add(bucketSize)
+						: ethers.BigNumber.from(maxMinted)
 				);
-				if (found.length) sweepedNfts.push(...found);
+				if (found.length) {
+					sweepedNfts.push(...found.map((id) => id.toString()).filter((id) => id !== '0'));
+				}
 				start = paginate;
 			}
 		}
@@ -45,9 +50,26 @@
 		userNfts = sweepedNfts;
 	};
 
-	if ($wallet?.provider) fetchUserNFTs();
+	$: if ($wallet?.provider) fetchUserNFTs();
 </script>
 
 {#each userNfts as nftId}
-	<View {address} {nftId} />
+	<label class="nft-select" class:selected={selected[nftId]}>
+		<View {address} {nftId} />
+		<input type="checkbox" bind:checked={selected[nftId]} />
+	</label>
 {/each}
+
+<style>
+	.nft-select {
+		border-radius: 0.5em;
+		border: 1px solid rgba(255, 255, 255, 0.1);
+		padding: 0.5em;
+	}
+	.nft-select.selected {
+		border-color: #257ee4;
+	}
+	input {
+		display: none;
+	}
+</style>

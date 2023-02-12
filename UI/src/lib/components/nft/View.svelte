@@ -18,7 +18,7 @@
 		imageUrl = metadata.properties.image;
 	};
 
-	if ($wallet?.provider) getImageUrl();
+	$: if ($wallet?.provider) getImageUrl();
 </script>
 
 <div class="wrap">
