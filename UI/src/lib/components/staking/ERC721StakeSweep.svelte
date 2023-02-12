@@ -3,22 +3,24 @@
 	import Button from '../Button.svelte';
 	import NumberInput from '../NumberInput.svelte';
 	import Table from '../Table.svelte';
+	import Choice from '../nft/Choice.svelte';
 
 	import { wallet } from '../../../stores/wallet';
 	import { ethers } from 'ethers';
 	import toast from 'svelte-french-toast';
 
-	import abi from '../../abi/staking/contracts/staking/ERC1155.sol/ERC1155StakerERC20Rewarder.json';
-	import tokenAbi from '../../abi/staking/contracts/interfaces/IERC1155.sol/IERC1155.json';
+	import abi from '../../abi/staking/contracts/staking/ERC721.sol/ERC721StakerERC20Rewarder.json';
+	import tokenAbi from '../../abi/staking/contracts/interfaces/IERC721.sol/IERC721.json';
 
 	export let title;
 	export let address;
+	export let maxMinted = '1000';
+	export let bucketSize = '250';
 	export let stakeSymbol = 'IPX';
 	export let rewardSymbol = 'BUSD';
-	export let nftId = 0;
 
 	let contract, token, provider, user, signer;
-	let amount = 0;
+	let selected = {};
 	let unlockTime;
 	let stakingWindow;
 	let busy = false;
@@ -27,11 +29,6 @@
 		{ title: 'Your stake', value: `0 ${stakeSymbol}` },
 		{ title: 'Reward', value: `0 ${rewardSymbol}` }
 	];
-
-	const getMax = async () => {
-		const balance = await token.balanceOf(user, nftId);
-		amount = ethers.utils.formatUnits(balance);
-	};
 
 	const getStakeStats = async () => {
 		const stake = await contract.getStake(user);
@@ -56,7 +53,11 @@
 
 	const stake = async () => {
 		await token.setApprovalForAll(address, true);
-		await contract.stake(ethers.utils.parseUnits(amount));
+		await contract.stakeMany(
+			Object.entries(selected)
+				.filter(([_id, selected]) => selected)
+				.map(([id]) => id)
+		);
 	};
 
 	const unstake = async () => {
@@ -97,12 +98,11 @@
 	<Card>
 		<div class="inner">
 			<h4>{title}</h4>
-			<div class="amount">
-				<div class="field-wrap">
-					<NumberInput bind:value={amount} placeholder="Tokens to stake" label="Amount" />
+			{#if token}
+				<div class="select">
+					<Choice bind:selected {maxMinted} {bucketSize} address={token.address} />
 				</div>
-				<Button on:click={getMax}>Max</Button>
-			</div>
+			{/if}
 			<Button fullWidth on:click={onStake} disabled={busy}>Stake</Button>
 			{#if stakingWindow > new Date().valueOf()}
 				<Button fullWidth on:click={onStake}>Stake</Button>
@@ -117,14 +117,6 @@
 </div>
 
 <style>
-	.amount {
-		display: flex;
-		gap: 1em;
-		flex-wrap: wrap;
-	}
-	.field-wrap {
-		flex: 1;
-	}
 	.inner {
 		padding: 1em;
 		display: flex;

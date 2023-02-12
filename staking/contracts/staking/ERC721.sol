@@ -38,7 +38,7 @@ abstract contract ERC721Staking is BaseStaking, IERC721Receiver {
      *
      * Reverts if staking window is smaller than the block timestamp
      */
-    function stake(uint256 id) external {
+    function stake(uint256 id) public {
         require(block.timestamp <= _stakingWindow, "Cannot stake anymore");
         address user = _msgSender();
 
@@ -47,6 +47,19 @@ abstract contract ERC721Staking is BaseStaking, IERC721Receiver {
 
         emit Staked(user, 1);
         _stakeToken.safeTransferFrom(user, address(this), id, "");
+    }
+
+    /**
+     * @dev Transfers NFT with `id` from the user to this contract
+     * @param ids IDs of the NFTs to stake
+     * @param length Number of NFTs to stake
+     *
+     * Reverts if staking window is smaller than the block timestamp
+     */
+    function stakeMany(uint256[] calldata ids, uint256 length) external {
+        for (uint256 index = 0; index < length; index++) {
+            stake(ids[index]);
+        }
     }
 
     /**

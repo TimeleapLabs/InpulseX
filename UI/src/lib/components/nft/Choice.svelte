@@ -53,14 +53,23 @@
 	$: if ($wallet?.provider) fetchUserNFTs();
 </script>
 
-{#each userNfts as nftId}
-	<label class="nft-select" class:selected={selected[nftId]}>
-		<View {address} {nftId} />
-		<input type="checkbox" bind:checked={selected[nftId]} />
-	</label>
-{/each}
+<div class="nfts">
+	{#each userNfts as nftId}
+		<label class="nft-select" class:selected={selected[nftId]}>
+			<View {address} {nftId} />
+			<input type="checkbox" bind:checked={selected[nftId]} />
+		</label>
+	{/each}
+</div>
 
 <style>
+	.nfts {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 0.5em;
+		flex-wrap: wrap;
+	}
 	.nft-select {
 		border-radius: 0.5em;
 		border: 1px solid rgba(255, 255, 255, 0.1);
