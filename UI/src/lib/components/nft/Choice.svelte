@@ -7,7 +7,7 @@
 
 	export let address;
 	export let maxMinted;
-	export let bucketSize = 100;
+	export let bucketSize = 250;
 
 	let userNfts = [];
 
