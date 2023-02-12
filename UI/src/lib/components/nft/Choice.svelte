@@ -13,22 +13,35 @@
 
 	const sweeperAddress = '';
 
+	const fetchEnumerable = async (contract, address, user) => {
+		try {
+			const NFTs = await contract.performEnumerableNftSweep(address, user);
+			return NFTs;
+		} catch (error) {
+			return [];
+		}
+	};
+
 	const fetchUserNFTs = async () => {
 		const provider = new ethers.providers.Web3Provider($wallet.provider);
 		const contract = new ethers.Contract(sweeperAddress, abi, provider);
 		const user = $wallet.accounts[0].address;
-		const sweepedNfts = [];
-		let start = 0;
-		while (start < maxMinted) {
-			const found = await contract.performNftSweep(
-				address,
-				user,
-				start,
-				Math.min(maxMinted, start + bucketSize)
-			);
-			if (found.length) sweepedNfts.push(...found);
-			start += bucketSize;
+		const sweepedNfts = await fetchEnumerable(contract, address, user);
+
+		if (!sweepedNfts.length) {
+			let start = 0;
+			while (start < maxMinted) {
+				const found = await contract.performNftSweep(
+					address,
+					user,
+					start,
+					Math.min(maxMinted, start + bucketSize)
+				);
+				if (found.length) sweepedNfts.push(...found);
+				start += bucketSize;
+			}
 		}
+
 		userNfts = sweepedNfts;
 	};
 
