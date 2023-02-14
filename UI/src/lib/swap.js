@@ -247,7 +247,7 @@ export const requestSwap = async ($wallet, sourceChain, destChain, amount) => {
 		const logs = receipt.logs.map(parseLog(kenshi, pegswap));
 		const { nonce } = logs.filter((log) => log?.name === 'SwapRequested').pop().args;
 
-		toast('Waiting for the oracle', { icon: '⏳' });
+		toast('Waiting for the oracle', { icon: '⌛️' });
 
 		await waitForNonceAndClaim(operatorAddresses[destChain], chains[destChain], nonce);
 	} catch (error) {

@@ -3,9 +3,10 @@
 	export let placeholder = 'Select one';
 	export let label = '';
 	export let options = [];
+	export let column = false;
 </script>
 
-<label>
+<label class:column>
 	{label}
 	<select bind:value>
 		<option value="">{placeholder}</option>
@@ -24,6 +25,12 @@
 		white-space: nowrap;
 		position: relative;
 	}
+	label.column {
+		flex-direction: column;
+		gap: 0.5em;
+		align-items: flex-start;
+		font-size: 0.78em;
+	}
 	label::after {
 		content: '▼';
 		font-size: 1rem;
@@ -35,6 +42,7 @@
 	select {
 		font-size: 1.2rem;
 		padding: 0.5em 1em;
+		box-sizing: border-box;
 		margin: 0 0.5em;
 		margin-right: 0;
 		background: transparent;
@@ -54,5 +62,13 @@
 	select:focus {
 		border-color: #f307ae;
 		color: #fe0;
+	}
+
+	label.column select {
+		flex: 1;
+		margin: 0;
+	}
+	label.column::after {
+		top: 2.5em;
 	}
 </style>

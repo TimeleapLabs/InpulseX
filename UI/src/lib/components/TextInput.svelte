@@ -2,9 +2,10 @@
 	export let value;
 	export let placeholder;
 	export let label = '';
+	export let column = false;
 </script>
 
-<label>
+<label class:column>
 	{label}
 	<input type="text" bind:value {placeholder} />
 </label>
@@ -17,7 +18,14 @@
 		gap: 1em;
 		white-space: nowrap;
 	}
+	label.column {
+		flex-direction: column;
+		gap: 0.5em;
+		align-items: flex-start;
+		font-size: 0.78em;
+	}
 	input {
+		box-sizing: border-box;
 		font-size: 1.2rem;
 		padding: 0.5em 1em;
 		margin: 0 0.5em;

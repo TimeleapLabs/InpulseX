@@ -8,6 +8,7 @@
 	import Select from '../lib/components/Select.svelte';
 	import ConnectButton from '../lib/components/ConnectButton.svelte';
 	import ERC20Stake from '../lib/components/staking/ERC20Stake.svelte';
+	import RequestSwap from '../lib/components/swap/RequestSwap.svelte';
 
 	import { Toaster } from 'svelte-french-toast';
 
@@ -38,6 +39,7 @@
 		</div>
 	</Card>
 	<ERC20Stake title="Stake IPX" />
+	<RequestSwap />
 	<Toaster />
 </div>
 
