@@ -3,6 +3,7 @@ import { ethers } from 'ethers';
 
 import toast from 'svelte-french-toast';
 import pegswapAbi from '../lib/abi/pegswap/contracts/Swap.sol/Swap.json';
+import ipxAbi from '../lib/abi/token/contracts/InpulseX.sol/InpulseX.json';
 
 const pegswapEndpoint = '';
 
@@ -99,7 +100,7 @@ export const waitForNonceAndClaim = async (operator, toChain, nonce) => {
 		await sleep(2500);
 	}
 
-	toast.promise(
+	await toast.promise(
 		onboard.setChain({
 			chainId: entry.request.toChain.replace(/^0x0+/, '0x')
 		}),
@@ -110,7 +111,7 @@ export const waitForNonceAndClaim = async (operator, toChain, nonce) => {
 		}
 	);
 
-	toast.promise(claim(entry, true), {
+	await toast.promise(claim(entry, true), {
 		loading: 'Claiming from the destination chain',
 		success: 'Successfully claimed!',
 		error: 'Failed to claim your swap request!'
@@ -139,6 +140,13 @@ const claim = async ($wallet, { request, signature }) => {
 	} catch (error) {
 		toast.error(getErrorMessage(error));
 	}
+};
+
+export const claimPastRequest = async ($wallet, { request, signature }) => {
+	await onboard.setChain({
+		chainId: request.toChain.replace(/^0x0+/, '0x')
+	});
+	await claim($wallet, { request, signature });
 };
 
 export const pegswapRecipientQuery = (recipient) => `{
@@ -191,5 +199,58 @@ export const getUserRequests = async ($wallet) => {
 		}));
 
 		return pendingRequests;
+	}
+};
+
+const parseLog = (ipx, pegswap) => (log) => {
+	try {
+		return ipx.interface.parseLog(log);
+	} catch (error) {
+		// Do nothing
+	}
+	try {
+		return pegswap.interface.parseLog(log);
+	} catch (error) {
+		// Do nothing
+	}
+};
+
+export const requestSwap = async ($wallet, sourceChain, destChain, amount) => {
+	await toast.promise(onboard.setChain({ chainId: chains[sourceChain] }), {
+		loading: 'Switching to the destination chain',
+		success: 'Switched to the destination chain',
+		error: 'Unable to switch network!'
+	});
+
+	toast('Sending your swap request', { icon: '⏳' });
+
+	const provider = new ethers.providers.Web3Provider($wallet.provider);
+	const ipxAddr = ipxAddresses[sourceChain];
+	const pegswapAddr = pegswapAddresses[sourceChain];
+	const kenshi = new ethers.Contract(ipxAddr, ipxAbi, provider);
+	const pegswap = new ethers.Contract(pegswapAddr, pegswapAbi, provider);
+	try {
+		const signer = provider.getSigner();
+		const parsedAmount = ethers.utils.parseUnits(amount);
+		const data = ethers.utils.defaultAbiCoder.encode(
+			['uint256', 'address'],
+			[chains[destChain], operatorAddresses[destChain]]
+		);
+
+		const tx = await kenshi
+			.connect(signer)
+			['transferAndCall(address,uint256,bytes)'](pegswapAddr, parsedAmount, data);
+
+		toast('Waiting for the transaction', { icon: '⏳' });
+
+		const receipt = await tx.wait(1);
+		const logs = receipt.logs.map(parseLog(kenshi, pegswap));
+		const { nonce } = logs.filter((log) => log?.name === 'SwapRequested').pop().args;
+
+		toast('Waiting for the oracle', { icon: '⏳' });
+
+		await waitForNonceAndClaim(operatorAddresses[destChain], chains[destChain], nonce);
+	} catch (error) {
+		toast.error(getErrorMessage(error));
 	}
 };
