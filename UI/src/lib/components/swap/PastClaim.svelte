@@ -21,3 +21,12 @@
 		<Button>Claim</Button>
 	</div>
 </Card>
+
+<style>
+	.past-claim {
+		display: flex;
+		flex-direction: column;
+		gap: 1em;
+		padding: 1em;
+	}
+</style>
