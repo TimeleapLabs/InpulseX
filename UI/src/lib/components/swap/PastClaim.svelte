@@ -2,8 +2,8 @@
 	import Button from '../Button.svelte';
 	import Table from '../Table.svelte';
 	import Card from '../Card.svelte';
-	import { chainIds } from '../../swap';
 
+	import { chainIds } from '../../swap';
 	import { ethers } from 'ethers';
 
 	export let swap;
