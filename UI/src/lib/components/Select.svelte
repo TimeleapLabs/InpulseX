@@ -69,6 +69,6 @@
 		margin: 0;
 	}
 	label.column::after {
-		top: 2.5em;
+		top: 2.25em;
 	}
 </style>
