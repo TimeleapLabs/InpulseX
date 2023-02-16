@@ -290,7 +290,7 @@ contract Swap is Context, Ownable, Operatable, IERC165, IERC1363Receiver {
     /**
      * @dev Sends `amount` of `token` from contract address to `recipient`
      *
-     * Useful if someone sent bep20 tokens to the contract address by mistake.
+     * Useful if someone sent erc20 tokens to the contract address by mistake.
      */
     function recoverTokens(
         address token,

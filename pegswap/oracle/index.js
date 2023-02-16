@@ -2,7 +2,8 @@ import { sign } from "./lib/blockchain/eip712.js";
 import { writeSignature } from "./lib/db/index.js";
 import { chainIds } from "./lib/blockchain/list.js";
 
-export const handler = async (request) => {
+export const handler = async ({ body }) => {
+  const request = JSON.parse(body);
   if (!request.entry) {
     return {
       statusCode: 400,
