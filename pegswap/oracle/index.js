@@ -26,6 +26,6 @@ export const handler = async ({ body }) => {
   await writeSignature(data);
   return {
     statusCode: 200,
-    body: "OK",
+    body: JSON.stringify({ abort: true }),
   };
 };

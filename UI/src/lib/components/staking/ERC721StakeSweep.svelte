@@ -1,12 +1,13 @@
 <script>
 	import Card from '../Card.svelte';
 	import Button from '../Button.svelte';
-	import NumberInput from '../NumberInput.svelte';
 	import Table from '../Table.svelte';
 	import Choice from '../nft/Choice.svelte';
 
 	import { wallet } from '../../../stores/wallet';
 	import { ethers } from 'ethers';
+	import { onMount } from 'svelte';
+
 	import toast from 'svelte-french-toast';
 
 	import abi from '../../abi/staking/contracts/staking/ERC721.sol/ERC721StakerERC20Rewarder.json';
@@ -32,7 +33,7 @@
 
 	const getStakeStats = async () => {
 		const stake = await contract.getStake(user);
-		const reward = await contract.getRewardSize(user);
+		const reward = await contract.getRewardSize(user).catch(() => 0);
 		data = [
 			{ title: 'Your stake', value: `${ethers.utils.formatUnits(stake)} ${stakeSymbol}` },
 			{ title: 'Reward', value: `${ethers.utils.formatUnits(reward)} ${rewardSymbol}` }
@@ -77,6 +78,7 @@
 			})
 			.catch(() => null);
 		busy = false;
+		getStakeStats();
 	};
 
 	const onUnstake = async () => {
@@ -89,9 +91,17 @@
 			})
 			.catch(() => null);
 		busy = false;
+		getStakeStats();
 	};
 
 	$: if (address && $wallet?.provider) onProvider();
+
+	onMount(() => {
+		const interval = setInterval(getStakeStats, 20000);
+		return () => {
+			clearInterval(interval);
+		};
+	});
 </script>
 
 <div class="container">
@@ -103,11 +113,10 @@
 					<Choice bind:selected {maxMinted} {bucketSize} address={token.address} />
 				</div>
 			{/if}
-			<Button fullWidth on:click={onStake} disabled={busy}>Stake</Button>
 			{#if stakingWindow > new Date().valueOf()}
-				<Button fullWidth on:click={onStake}>Stake</Button>
+				<Button fullWidth disabled={busy} on:click={onStake}>Stake</Button>
 			{:else if unlockTime < new Date().valueOf()}
-				<Button fullWidth on:click={onUnstake}>Unstake</Button>
+				<Button fullWidth disabled={busy} on:click={onUnstake}>Unstake</Button>
 			{/if}
 			{#if data}
 				<Table {data} />

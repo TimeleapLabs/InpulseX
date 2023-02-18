@@ -23,6 +23,12 @@ const options = {
 	},
 	chains: [
 		{
+			id: '0x61',
+			token: 'BNB',
+			label: 'BNB Smart Chain Testnet',
+			rpcUrl: 'https://data-seed-prebsc-1-s1.binance.org:8545'
+		},
+		{
 			id: '0x1',
 			token: 'Ethereum',
 			label: 'Ethereum',
@@ -39,6 +45,12 @@ const options = {
 			token: 'MATIC',
 			label: 'Polygon',
 			rpcUrl: 'https://polygon-rpc.com'
+		},
+		{
+			id: '0xa869',
+			token: 'AVAX',
+			label: 'Avalanche Fuji C-Chain',
+			rpcUrl: 'https://api.avax-test.network/ext/bc/C/rpc'
 		},
 		{
 			id: '0xa86a',

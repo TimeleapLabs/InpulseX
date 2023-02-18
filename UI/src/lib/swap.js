@@ -5,38 +5,41 @@ import toast from 'svelte-french-toast';
 import pegswapAbi from '../lib/abi/pegswap/contracts/Swap.sol/Swap.json';
 import ipxAbi from '../lib/abi/token/contracts/InpulseX.sol/InpulseX.json';
 
-const pegswapEndpoint = '';
+const pegswapEndpoint = 'https://29q4wlts70.execute-api.us-east-1.amazonaws.com/v1/pegswap';
 
 export const chains = {
 	polygon: '0x89',
-	bsc: '0x38',
+	//bsc: '0x38',
+	bsc: '0x61',
 	ethereum: '0x01',
-	avax: '0xa86a'
+	//avax: '0xa86a'
+	avax: '0xa869'
 };
 
 export const ipxAddresses = {
-	bsc: '0x42f9c5a27a2647a64f7D3d58d8f896C60a727b0f',
-	polygon: '0x164caf66c45e483F7eE647CcaD275B35B4C75719',
-	ethereum: '0x164caf66c45e483F7eE647CcaD275B35B4C75719',
-	avax: '0x164caf66c45e483F7eE647CcaD275B35B4C75719'
+	bsc: '0xB5649E0558890EAbd70e018Aaf015cC8242f4C0A',
+	polygon: '',
+	ethereum: '',
+	avax: '0x48afe04958d195C076fBE44b5861aaDA8445673B'
 };
 
 export const operatorAddresses = {
-	polygon: '0x855C83A8d3C5BDE6A505cdFEB8272b8F47Bd3213',
-	bsc: '0x855C83A8d3C5BDE6A505cdFEB8272b8F47Bd3213',
-	ethereum: '0x855C83A8d3C5BDE6A505cdFEB8272b8F47Bd3213',
-	avax: '0x855C83A8d3C5BDE6A505cdFEB8272b8F47Bd3213'
+	polygon: '0xde81FE66A1A23b9E23e9581361596e66a4b2Ce53',
+	bsc: '0xde81FE66A1A23b9E23e9581361596e66a4b2Ce53',
+	ethereum: '0xde81FE66A1A23b9E23e9581361596e66a4b2Ce53',
+	avax: '0xde81FE66A1A23b9E23e9581361596e66a4b2Ce53'
 };
 
 export const pegswapAddresses = {
-	bsc: '0x3CcAa188Dd35E9125D7ade476da123C020aeC84d',
-	polygon: '0x8AdA51404F297bF2603912d1606340223c0a7784',
-	ethereum: '0x8AdA51404F297bF2603912d1606340223c0a7784',
-	avax: '0x8AdA51404F297bF2603912d1606340223c0a7784'
+	bsc: '0xd735FBACD92adf8c1cF20201C6a17F37149301BC',
+	polygon: '',
+	ethereum: '',
+	avax: '0x97E07b516Ef405aE7B3639eae2c034CE855Ffbec'
 };
 
 export const chainIds = {
-	'0x38': {
+	//'0x38': {
+	'0x61': {
 		key: 'bsc',
 		icon: 'binance',
 		title: 'BNB Smart Chain',
@@ -48,7 +51,8 @@ export const chainIds = {
 		title: 'Polygon',
 		shortTitle: 'MATIC'
 	},
-	'0xa86a': {
+	//'0xa86a': {
+	'0xa869': {
 		key: 'avax',
 		icon: 'avalanche',
 		title: 'Avalanche',
@@ -59,9 +63,11 @@ export const chainIds = {
 
 export const rpcList = {
 	'0x38': 'https://bsc-dataseed.binance.org',
+	'0x61': 'https://data-seed-prebsc-1-s1.binance.org:8545',
 	'0x89': 'https://polygon-rpc.com',
 	'0x01': 'https://eth.llamarpc.com',
-	'0xa86a': 'https://api.avax.network/ext/bc/C/rpc'
+	'0xa86a': 'https://api.avax.network/ext/bc/C/rpc',
+	'0xa869': 'https://api.avax-test.network/ext/bc/C/rpc'
 };
 
 export const pegswapNonceQuery = (operator, toChain, nonce) => `{
@@ -81,24 +87,48 @@ export const pegswapNonceQuery = (operator, toChain, nonce) => `{
 const hexZeroPad = (hex) => (hex.length % 2 ? hex.replace(/^0x/, '0x0') : hex);
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
-export const waitForNonceAndClaim = async (operator, toChain, nonce) => {
+class Deferred {
+	constructor() {
+		this.promise = new Promise((resolve, reject) => {
+			this.reject = reject;
+			this.resolve = resolve;
+		});
+	}
+}
+
+export const waitForNonceAndClaim = async ($wallet, operator, toChain, nonce) => {
 	const paddedChain = hexZeroPad(toChain);
 	const paddedNonce = hexZeroPad(nonce.toHexString());
 	const query = pegswapNonceQuery(operator, paddedChain, paddedNonce);
 	let entry;
 
-	while (!entry) {
-		const response = await fetch(pegswapEndpoint, {
-			method: 'POST',
-			body: JSON.stringify({ query })
-		});
-		const { data: { getEntries } = {} } = (await response.json()) || {};
-		if (getEntries && getEntries.length) {
-			entry = getEntries[0];
-			break;
+	const oracleJob = new Deferred();
+
+	toast.promise(oracleJob.promise, {
+		loading: 'Waiting for the oracle',
+		success: 'Swap request accepted',
+		error: 'Something went wrong!'
+	});
+
+	try {
+		while (!entry) {
+			const response = await fetch(pegswapEndpoint, {
+				method: 'POST',
+				body: JSON.stringify({ query })
+			});
+			const { data: { getEntries } = {} } = (await response.json()) || {};
+			if (getEntries && getEntries.length) {
+				entry = getEntries[0];
+				break;
+			}
+			await sleep(2500);
 		}
-		await sleep(2500);
+	} catch (error) {
+		oracleJob.reject(error);
+		throw error;
 	}
+
+	oracleJob.resolve();
 
 	await toast.promise(
 		onboard.setChain({
@@ -111,7 +141,7 @@ export const waitForNonceAndClaim = async (operator, toChain, nonce) => {
 		}
 	);
 
-	await toast.promise(claim(entry, true), {
+	await toast.promise(claim($wallet, entry), {
 		loading: 'Claiming from the destination chain',
 		success: 'Successfully claimed!',
 		error: 'Failed to claim your swap request!'
@@ -119,6 +149,7 @@ export const waitForNonceAndClaim = async (operator, toChain, nonce) => {
 };
 
 const getErrorMessage = (error) => {
+	console.trace(error);
 	return (
 		error.data?.message?.match(/PegSwap: (.*)/)?.pop() ||
 		error.data?.message?.replace(/execution reverted: /, '') ||
@@ -189,16 +220,7 @@ export const getUserRequests = async ($wallet) => {
 			if (!claimed) pending.push(entry);
 		}
 
-		const pendingRequests = pending.map((req, id) => ({
-			...req.request,
-			actions: {
-				signature: req.signature,
-				request: req.request
-			},
-			id
-		}));
-
-		return pendingRequests;
+		return pending;
 	}
 };
 
@@ -217,12 +239,10 @@ const parseLog = (ipx, pegswap) => (log) => {
 
 export const requestSwap = async ($wallet, sourceChain, destChain, amount) => {
 	await toast.promise(onboard.setChain({ chainId: chains[sourceChain] }), {
-		loading: 'Switching to the destination chain',
-		success: 'Switched to the destination chain',
+		loading: 'Switching to the source chain',
+		success: 'Switched to the source chain',
 		error: 'Unable to switch network!'
 	});
-
-	toast('Sending your swap request', { icon: '⏳' });
 
 	const provider = new ethers.providers.Web3Provider($wallet.provider);
 	const ipxAddr = ipxAddresses[sourceChain];
@@ -231,26 +251,34 @@ export const requestSwap = async ($wallet, sourceChain, destChain, amount) => {
 	const pegswap = new ethers.Contract(pegswapAddr, pegswapAbi, provider);
 	try {
 		const signer = provider.getSigner();
-		const parsedAmount = ethers.utils.parseUnits(amount);
+		const parsedAmount = ethers.utils.parseUnits(amount.toString());
 		const data = ethers.utils.defaultAbiCoder.encode(
 			['uint256', 'address'],
 			[chains[destChain], operatorAddresses[destChain]]
 		);
 
-		const tx = await kenshi
-			.connect(signer)
-			['transferAndCall(address,uint256,bytes)'](pegswapAddr, parsedAmount, data);
+		const tx = await toast.promise(
+			kenshi
+				.connect(signer)
+				['transferAndCall(address,uint256,bytes)'](pegswapAddr, parsedAmount, data),
+			{
+				loading: 'Sending your swap request',
+				success: 'Swap request sent',
+				error: 'Something went wrong!'
+			}
+		);
 
-		toast('Waiting for the transaction', { icon: '⏳' });
+		const receipt = await toast.promise(tx.wait(1), {
+			loading: 'Waiting for the transaction',
+			success: 'Transaction confirmed',
+			error: 'Something went wrong!'
+		});
 
-		const receipt = await tx.wait(1);
 		const logs = receipt.logs.map(parseLog(kenshi, pegswap));
 		const { nonce } = logs.filter((log) => log?.name === 'SwapRequested').pop().args;
 
-		toast('Waiting for the oracle', { icon: '⌛️' });
-
-		await waitForNonceAndClaim(operatorAddresses[destChain], chains[destChain], nonce);
+		await waitForNonceAndClaim($wallet, operatorAddresses[destChain], chains[destChain], nonce);
 	} catch (error) {
-		toast.error(getErrorMessage(error));
+		// Do nothing
 	}
 };

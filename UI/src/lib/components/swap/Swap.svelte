@@ -32,3 +32,11 @@
 		<PastClaim {swap} />
 	{/each}
 </div>
+
+<style>
+	.past-swaps {
+		display: flex;
+		gap: 1em;
+		flex-wrap: wrap;
+	}
+</style>
