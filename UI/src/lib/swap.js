@@ -167,9 +167,9 @@ const claim = async ($wallet, { request, signature }) => {
 		const { v, r, s } = ethers.utils.splitSignature(signature);
 		const tx = await pegswap.connect(signer).claim(request, v, r, s);
 		await tx.wait(1);
-		toast.success('Claimed successfully.');
 	} catch (error) {
 		toast.error(getErrorMessage(error));
+		throw error;
 	}
 };
 

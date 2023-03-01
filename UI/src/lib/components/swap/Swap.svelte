@@ -25,18 +25,26 @@
 	});
 </script>
 
-<RequestSwap />
-
-<div class="past-swaps">
-	{#each userRequests as swap}
-		<PastClaim {swap} />
-	{/each}
+<div class="swap">
+	<RequestSwap />
 </div>
+
+{#if userRequests.length}
+	<h2>Pending Swaps</h2>
+	<div class="past-swaps">
+		{#each userRequests as swap}
+			<PastClaim {swap} />
+		{/each}
+	</div>
+{/if}
 
 <style>
 	.past-swaps {
 		display: flex;
 		gap: 1em;
 		flex-wrap: wrap;
+	}
+	.swap {
+		display: flex;
 	}
 </style>
