@@ -1,5 +1,5 @@
 //SPDX-License-Identifier: UNLICENSED
-pragma solidity ^0.8.17;
+pragma solidity 0.8.17;
 
 import "./interfaces/IERC20.sol";
 import "./interfaces/IERC165.sol";
@@ -22,12 +22,12 @@ contract InpulseX is Context, IERC20, IERC165, IERC1363, Ownable {
     string private constant _NAME = "InpulseX";
 
     /**
-     * Define a total supply of 10,000,000,000 tokens
+     * Define a total supply of 6,000,000,000 tokens
      * with a decimal accuracy of 18 places
      */
 
     uint8 private constant _DECIMALS = 18;
-    uint256 private constant _TOTAL_SUPPLY = 10e9 * 1e18;
+    uint256 private constant _TOTAL_SUPPLY = 6e9 * 1e18;
 
     constructor() {
         _balances[msg.sender] = _TOTAL_SUPPLY;

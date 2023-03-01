@@ -1,5 +1,5 @@
 //SPDX-License-Identifier: UNLICENSED
-pragma solidity ^0.8.17;
+pragma solidity 0.8.17;
 
 /// @dev Note: the ERC-165 identifier for this interface is 0x150b7a02.
 interface IERC721Receiver {

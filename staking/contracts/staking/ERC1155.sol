@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: UNLICENSED
-pragma solidity ^0.8.17;
+pragma solidity 0.8.17;
 
 import "../Base.sol";
 import "../interfaces/IERC20.sol";
@@ -12,6 +12,8 @@ abstract contract ERC1155Staking is BaseStaking, IERC1155Receiver {
     IERC1155 private _stakeToken;
     uint256 private _stakeNftId;
 
+    event StakingNftTokenChanged(address token, uint256 nftId);
+
     /**
      * @dev Set the token used for staking
      * @param token Address of the token contract
@@ -21,8 +23,13 @@ abstract contract ERC1155Staking is BaseStaking, IERC1155Receiver {
      */
     function setStakingToken(address token, uint256 nftId) external onlyOwner {
         require(token != address(0), "Can't set token to address(0)");
+        require(
+            address(_stakeToken) == address(0),
+            "Staking token is already set"
+        );
         _stakeToken = IERC1155(token);
         _stakeNftId = nftId;
+        emit StakingNftTokenChanged(token, nftId);
     }
 
     /**
@@ -42,12 +49,12 @@ abstract contract ERC1155Staking is BaseStaking, IERC1155Receiver {
      */
     function stake(uint256 amount) external {
         require(amount > 0, "Cannot stake 0 tokens");
-        require(block.timestamp <= _stakingWindow, "Cannot stake anymore");
+        require(_unlockTime > 0, "Cannot stake yet");
+        require(block.timestamp <= _unlockTime, "Cannot stake anymore");
 
         address user = _msgSender();
-
+        recordStakeWeight(user, amount);
         _stake[user] += amount;
-        _stakePoolSize += amount;
 
         emit Staked(user, amount);
         _stakeToken.safeTransferFrom(
@@ -82,7 +89,8 @@ abstract contract ERC1155Staking is BaseStaking, IERC1155Receiver {
             /**
              * No reward distributed, decrease the stake pool size
              */
-            _stakePoolSize -= amount;
+            _stakePoolWeight -= _stakeWeight[user];
+            _stakeWeight[user] = 0;
 
             if (penalty > 0) {
                 _stakeToken.safeTransferFrom(
@@ -109,18 +117,10 @@ abstract contract ERC1155Staking is BaseStaking, IERC1155Receiver {
                 amount,
                 ""
             );
-            uint256 reward = (amount * _rewardPoolSize) / _stakePoolSize;
+            uint256 reward = getRewardSize(user);
+            _stakeWeight[user] = 0;
             sendRewards(user, reward);
         }
-    }
-
-    /**
-     * @dev Get the current reward size for `user`
-     * @param user Address of the user
-     */
-    function getRewardSize(address user) external view returns (uint256) {
-        uint256 amount = _stake[user];
-        return (amount * _rewardPoolSize) / _stakePoolSize;
     }
 
     /* ERC1155 methods */

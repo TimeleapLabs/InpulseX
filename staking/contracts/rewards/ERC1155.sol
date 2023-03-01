@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: UNLICENSED
-pragma solidity ^0.8.17;
+pragma solidity 0.8.17;
 
 import "../Base.sol";
 import "../interfaces/IERC1155.sol";
@@ -8,6 +8,8 @@ import "../interfaces/IERC1155Receiver.sol";
 abstract contract ERC1155RewardsNonReceiver is BaseStaking {
     IERC1155 internal _rewardToken;
     uint256 internal _rewardNftId;
+
+    event RewardNftTokenChanged(address token, uint256 nftId);
 
     /**
      * @dev Allows setting the reward token.
@@ -18,6 +20,7 @@ abstract contract ERC1155RewardsNonReceiver is BaseStaking {
         require(token != address(0), "Can't set token to address(0)");
         _rewardToken = IERC1155(token);
         _rewardNftId = id;
+        emit RewardNftTokenChanged(token, id);
     }
 
     /**
@@ -42,6 +45,7 @@ abstract contract ERC1155RewardsNonReceiver is BaseStaking {
             amount,
             ""
         );
+        emit RewardsAdded(amount);
     }
 
     /**
@@ -62,6 +66,7 @@ abstract contract ERC1155RewardsNonReceiver is BaseStaking {
             amount,
             ""
         );
+        emit RewardsRecovered(amount);
     }
 
     /**

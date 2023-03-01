@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: UNLICENSED
-pragma solidity ^0.8.17;
+pragma solidity 0.8.17;
 
 import "../Base.sol";
 import "../interfaces/IERC20.sol";
@@ -17,7 +17,12 @@ abstract contract ERC20Staking is BaseStaking {
      */
     function setStakingToken(address token) external onlyOwner {
         require(token != address(0), "Can't set token to address(0)");
+        require(
+            address(_stakeToken) == address(0),
+            "Staking token is already set"
+        );
         _stakeToken = IERC20(token);
+        emit StakingTokenChanged(token);
     }
 
     /**
@@ -37,10 +42,13 @@ abstract contract ERC20Staking is BaseStaking {
      */
     function stake(uint256 amount) external {
         require(amount > 0, "Cannot stake 0 tokens");
-        require(block.timestamp <= _stakingWindow, "Cannot stake anymore");
+        require(_unlockTime > 0, "Cannot stake yet");
+        require(block.timestamp <= _unlockTime, "Cannot stake anymore");
+
         address user = _msgSender();
+        recordStakeWeight(user, amount);
         _stake[user] += amount;
-        _stakePoolSize += amount;
+
         emit Staked(user, amount);
         require(
             _stakeToken.transferFrom(user, address(this), amount),
@@ -72,7 +80,8 @@ abstract contract ERC20Staking is BaseStaking {
             /**
              * No reward distributed, decrease the stake pool size
              */
-            _stakePoolSize -= amount;
+            _stakePoolWeight -= _stakeWeight[user];
+            _stakeWeight[user] = 0;
 
             if (penalty > 0) {
                 require(
@@ -87,19 +96,11 @@ abstract contract ERC20Staking is BaseStaking {
             );
         } else {
             emit UnStaked(user, amount);
-            uint256 reward = (amount * _rewardPoolSize) / _stakePoolSize;
+            uint256 reward = getRewardSize(user);
+            _stakeWeight[user] = 0;
             require(_stakeToken.transfer(user, amount), "Transfer failed!");
             sendRewards(user, reward);
         }
-    }
-
-    /**
-     * @dev Get the current reward size for `user`
-     * @param user Address of the user
-     */
-    function getRewardSize(address user) external view returns (uint256) {
-        uint256 amount = _stake[user];
-        return (amount * _rewardPoolSize) / _stakePoolSize;
     }
 }
 

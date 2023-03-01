@@ -1,12 +1,12 @@
 const { expect } = require("chai");
 const { ethers } = require("hardhat");
+const { time } = require("@nomicfoundation/hardhat-network-helpers");
 
 const tx = async (tx) => await (await tx).wait();
 
 const TRANSFER721 = "safeTransferFrom(address,address,uint256)";
 
-const later = (days) =>
-  Math.floor(new Date().valueOf() / 1000) + days * 60 * 60 * 24 * 1000;
+const later = async (days) => (await time.latest()) + days * 60 * 60 * 24;
 
 const deployAll = async () => {
   const Dummy20 = await ethers.getContractFactory("Dummy20");
@@ -110,8 +110,7 @@ describe("Staking", function () {
 
     await tx(token.transfer(user.address, 100));
     await tx(staker.setStakingToken(token.address));
-    await tx(staker.setUnlockTime(later(1)));
-    await tx(staker.setStakingWindow(later(1)));
+    await tx(staker.setUnlockTime(await later(1)));
     await tx(token.connect(user).approve(staker.address, 100));
     await tx(staker.connect(user).stake(100));
 
@@ -127,8 +126,7 @@ describe("Staking", function () {
 
     await tx(token.transfer(user.address, 100));
     await tx(staker.setStakingToken(token.address));
-    await tx(staker.setUnlockTime(later(1)));
-    await tx(staker.setStakingWindow(later(1)));
+    await tx(staker.setUnlockTime(await later(1)));
     await tx(token.connect(user).transferAndCall(staker.address, 100, 0x0));
 
     await expect(staker.connect(user).unstake()).to.be.revertedWith(
@@ -143,8 +141,7 @@ describe("Staking", function () {
 
     await tx(token[TRANSFER721](owner.address, user.address, 0));
     await tx(staker.setStakingToken(token.address));
-    await tx(staker.setUnlockTime(later(1)));
-    await tx(staker.setStakingWindow(later(1)));
+    await tx(staker.setUnlockTime(await later(1)));
     await tx(token.connect(user).approve(staker.address, 0));
     await tx(staker.connect(user).stake(0));
 
@@ -160,8 +157,7 @@ describe("Staking", function () {
 
     await tx(token.safeTransferFrom(owner.address, user.address, 0, 100, 0x0));
     await tx(staker.setStakingToken(token.address, 0));
-    await tx(staker.setUnlockTime(later(1)));
-    await tx(staker.setStakingWindow(later(1)));
+    await tx(staker.setUnlockTime(await later(1)));
     await tx(token.connect(user).setApprovalForAll(staker.address, true));
     await tx(staker.connect(user).stake(100));
 
@@ -175,9 +171,9 @@ describe("Staking", function () {
       await deployAll();
     const [_owner, user] = await ethers.getSigners();
 
+    await tx(staker.setUnlockTime(await later(-1)));
     await tx(token.transfer(user.address, 100));
     await tx(staker.setStakingToken(token.address));
-    await tx(staker.setStakingWindow(later(-1)));
     await tx(token.connect(user).approve(staker.address, 100));
 
     await expect(staker.connect(user).stake(100)).to.be.revertedWith(
@@ -190,9 +186,9 @@ describe("Staking", function () {
       await deployAll();
     const [_owner, user] = await ethers.getSigners();
 
+    await tx(staker.setUnlockTime(await later(-1)));
     await tx(token.transfer(user.address, 100));
     await tx(staker.setStakingToken(token.address));
-    await tx(staker.setStakingWindow(later(-1)));
 
     await expect(
       tx(token.connect(user).transferAndCall(staker.address, 100, 0x0))
@@ -204,9 +200,9 @@ describe("Staking", function () {
       await deployAll();
     const [owner, user] = await ethers.getSigners();
 
+    await tx(staker.setUnlockTime(await later(-1)));
     await tx(token[TRANSFER721](owner.address, user.address, 0));
     await tx(staker.setStakingToken(token.address));
-    await tx(staker.setStakingWindow(later(-1)));
     await tx(token.connect(user).approve(staker.address, 0));
 
     await expect(tx(staker.connect(user).stake(0))).to.be.revertedWith(
@@ -219,9 +215,9 @@ describe("Staking", function () {
       await deployAll();
     const [owner, user] = await ethers.getSigners();
 
+    await tx(staker.setUnlockTime(await later(-1)));
     await tx(token.safeTransferFrom(owner.address, user.address, 0, 100, 0x0));
     await tx(staker.setStakingToken(token.address, 0));
-    await tx(staker.setStakingWindow(later(-1)));
     await tx(token.connect(user).setApprovalForAll(staker.address, true));
 
     await expect(tx(staker.connect(user).stake(100))).to.be.revertedWith(
@@ -234,16 +230,18 @@ describe("Staking", function () {
       await deployAll();
     const [_owner, user] = await ethers.getSigners();
 
+    await tx(staker.setUnlockTime(await later(1)));
     await tx(token.transfer(user.address, 100));
     await tx(staker.setStakingToken(token.address));
-    await tx(staker.setStakingWindow(later(1)));
     await tx(token.connect(user).approve(staker.address, 100));
 
     await tx(staker.connect(user).stake(100));
     expect(await token.balanceOf(user.address)).to.be.equal("0");
     expect(await token.balanceOf(staker.address)).to.be.equal("100");
 
+    await time.increaseTo(await later(1));
     await tx(staker.connect(user).unstake());
+
     expect(await token.balanceOf(user.address)).to.be.equal("100");
     expect(await token.balanceOf(staker.address)).to.be.equal("0");
   });
@@ -255,13 +253,16 @@ describe("Staking", function () {
 
     await tx(token.transfer(user.address, 100));
     await tx(staker.setStakingToken(token.address));
-    await tx(staker.setStakingWindow(later(1)));
 
+    await tx(staker.setUnlockTime(await later(5)));
     await tx(token.connect(user).transferAndCall(staker.address, 100, 0x0));
+
     expect(await token.balanceOf(user.address)).to.be.equal("0");
     expect(await token.balanceOf(staker.address)).to.be.equal("100");
 
+    await time.increaseTo(await later(5));
     await tx(staker.connect(user).unstake());
+
     expect(await token.balanceOf(user.address)).to.be.equal("100");
     expect(await token.balanceOf(staker.address)).to.be.equal("0");
   });
@@ -273,12 +274,13 @@ describe("Staking", function () {
 
     await tx(token[TRANSFER721](owner.address, user.address, 0));
     await tx(staker.setStakingToken(token.address));
-    await tx(staker.setStakingWindow(later(1)));
     await tx(token.connect(user).approve(staker.address, 0));
 
+    await tx(staker.setUnlockTime(await later(10)));
     await tx(staker.connect(user).stake(0));
     expect(await token.ownerOf(0)).to.be.equal(staker.address);
 
+    await time.increaseTo(await later(10));
     await tx(staker.connect(user).unstake());
     expect(await token.ownerOf(0)).to.be.equal(user.address);
   });
@@ -290,13 +292,14 @@ describe("Staking", function () {
 
     await tx(token.safeTransferFrom(owner.address, user.address, 0, 100, 0x0));
     await tx(staker.setStakingToken(token.address, 0));
-    await tx(staker.setStakingWindow(later(1)));
     await tx(token.connect(user).setApprovalForAll(staker.address, true));
 
+    await tx(staker.setUnlockTime(await later(15)));
     await tx(staker.connect(user).stake(100));
     expect(await token.balanceOf(user.address, 0)).to.be.equal("0");
     expect(await token.balanceOf(staker.address, 0)).to.be.equal("100");
 
+    await time.increaseTo(await later(15));
     await tx(staker.connect(user).unstake());
     expect(await token.balanceOf(user.address, 0)).to.be.equal("100");
     expect(await token.balanceOf(staker.address, 0)).to.be.equal("0");
@@ -307,9 +310,10 @@ describe("Staking", function () {
       await deployAll();
     const [_owner, user1, user2] = await ethers.getSigners();
 
+    await tx(staker.setUnlockTime(await later(20)));
+
     await tx(staker.setStakingToken(token.address));
     await tx(staker.setRewardToken(token.address));
-    await tx(staker.setStakingWindow(later(1)));
 
     await tx(token.transfer(user1.address, 100));
     await tx(token.transfer(user2.address, 300));
@@ -323,11 +327,13 @@ describe("Staking", function () {
     await tx(token.approve(staker.address, 12));
     await tx(staker.addReward(12));
 
+    await time.increaseTo(await later(20));
+
     await tx(staker.connect(user1).unstake());
     await tx(staker.connect(user2).unstake());
 
     expect(await token.balanceOf(user1.address)).to.be.equal("103");
-    expect(await token.balanceOf(user2.address)).to.be.equal("309");
+    expect(await token.balanceOf(user2.address)).to.be.equal("308");
   });
 
   it("ERC1363Staker ERC20Rewarder should distribute rewards correctly", async function () {
@@ -335,9 +341,10 @@ describe("Staking", function () {
       await deployAll();
     const [_owner, user1, user2] = await ethers.getSigners();
 
+    await tx(staker.setUnlockTime(await later(25)));
+
     await tx(staker.setStakingToken(token.address));
     await tx(staker.setRewardToken(token.address));
-    await tx(staker.setStakingWindow(later(1)));
 
     await tx(token.transfer(user1.address, 100));
     await tx(token.transfer(user2.address, 300));
@@ -348,11 +355,13 @@ describe("Staking", function () {
     await tx(token.approve(staker.address, 12));
     await tx(staker.addReward(12));
 
+    await time.increaseTo(await later(25));
+
     await tx(staker.connect(user1).unstake());
     await tx(staker.connect(user2).unstake());
 
     expect(await token.balanceOf(user1.address)).to.be.equal("103");
-    expect(await token.balanceOf(user2.address)).to.be.equal("309");
+    expect(await token.balanceOf(user2.address)).to.be.equal("308");
   });
 
   it("ERC721Staker ERC20Rewarder should distribute rewards correctly", async function () {
@@ -364,9 +373,10 @@ describe("Staking", function () {
 
     const [owner, user1, user2] = await ethers.getSigners();
 
+    await tx(staker.setUnlockTime(await later(5)));
+
     await tx(staker.setStakingToken(token.address));
     await tx(staker.setRewardToken(reward.address));
-    await tx(staker.setStakingWindow(later(1)));
 
     await tx(token[TRANSFER721](owner.address, user1.address, 0));
     await tx(token[TRANSFER721](owner.address, user2.address, 1));
@@ -388,11 +398,13 @@ describe("Staking", function () {
     await tx(reward.approve(staker.address, 12));
     await tx(staker.addReward(12));
 
+    await time.increaseTo(await later(5));
+
     await tx(staker.connect(user1).unstake());
     await tx(staker.connect(user2).unstake());
 
     expect(await reward.balanceOf(user1.address)).to.be.equal("3");
-    expect(await reward.balanceOf(user2.address)).to.be.equal("9");
+    expect(await reward.balanceOf(user2.address)).to.be.equal("8");
   });
 
   it("ERC1155Staker ERC20Rewarder should distribute rewards correctly", async function () {
@@ -404,9 +416,10 @@ describe("Staking", function () {
 
     const [owner, user1, user2] = await ethers.getSigners();
 
+    await tx(staker.setUnlockTime(await later(5)));
+
     await tx(staker.setStakingToken(token.address, 0));
     await tx(staker.setRewardToken(reward.address));
-    await tx(staker.setStakingWindow(later(1)));
 
     await tx(token.safeTransferFrom(owner.address, user1.address, 0, 100, 0x0));
     await tx(token.safeTransferFrom(owner.address, user2.address, 0, 300, 0x0));
@@ -420,11 +433,13 @@ describe("Staking", function () {
     await tx(reward.approve(staker.address, 12));
     await tx(staker.addReward(12));
 
+    await time.increaseTo(await later(5));
+
     await tx(staker.connect(user1).unstake());
     await tx(staker.connect(user2).unstake());
 
     expect(await reward.balanceOf(user1.address)).to.be.equal("3");
-    expect(await reward.balanceOf(user2.address)).to.be.equal("9");
+    expect(await reward.balanceOf(user2.address)).to.be.equal("8");
   });
 
   it("ERC20Staker ERC1155Rewarder should distribute rewards correctly", async function () {
@@ -436,9 +451,10 @@ describe("Staking", function () {
 
     const [_owner, user1, user2] = await ethers.getSigners();
 
+    await tx(staker.setUnlockTime(await later(5)));
+
     await tx(staker.setStakingToken(token.address));
     await tx(staker.setRewardToken(reward.address, 0));
-    await tx(staker.setStakingWindow(later(1)));
 
     await tx(reward.setApprovalForAll(staker.address, true));
     await tx(staker.addReward(12));
@@ -452,11 +468,13 @@ describe("Staking", function () {
     await tx(token.connect(user2).approve(staker.address, 300));
     await tx(staker.connect(user2).stake(300));
 
+    await time.increaseTo(await later(5));
+
     await tx(staker.connect(user1).unstake());
     await tx(staker.connect(user2).unstake());
 
     expect(await reward.balanceOf(user1.address, 0)).to.be.equal("3");
-    expect(await reward.balanceOf(user2.address, 0)).to.be.equal("9");
+    expect(await reward.balanceOf(user2.address, 0)).to.be.equal("8");
   });
 
   it("ERC1363Staker ERC1155Rewarder should distribute rewards correctly", async function () {
@@ -468,9 +486,10 @@ describe("Staking", function () {
 
     const [_owner, user1, user2] = await ethers.getSigners();
 
+    await tx(staker.setUnlockTime(await later(5)));
+
     await tx(staker.setStakingToken(token.address));
     await tx(staker.setRewardToken(reward.address, 0));
-    await tx(staker.setStakingWindow(later(1)));
 
     await tx(reward.setApprovalForAll(staker.address, true));
     await tx(staker.addReward(12));
@@ -481,11 +500,13 @@ describe("Staking", function () {
     await tx(token.connect(user1).transferAndCall(staker.address, 100, 0x0));
     await tx(token.connect(user2).transferAndCall(staker.address, 300, 0x0));
 
+    await time.increaseTo(await later(5));
+
     await tx(staker.connect(user1).unstake());
     await tx(staker.connect(user2).unstake());
 
     expect(await reward.balanceOf(user1.address, 0)).to.be.equal("3");
-    expect(await reward.balanceOf(user2.address, 0)).to.be.equal("9");
+    expect(await reward.balanceOf(user2.address, 0)).to.be.equal("8");
   });
 
   it("ER721Staker ERC1155Rewarder should distribute rewards correctly", async function () {
@@ -497,9 +518,10 @@ describe("Staking", function () {
 
     const [owner, user1, user2] = await ethers.getSigners();
 
+    await tx(staker.setUnlockTime(await later(5)));
+
     await tx(staker.setStakingToken(token.address));
     await tx(staker.setRewardToken(reward.address, 0));
-    await tx(staker.setStakingWindow(later(1)));
 
     await tx(reward.setApprovalForAll(staker.address, true));
     await tx(staker.addReward(12));
@@ -521,11 +543,13 @@ describe("Staking", function () {
     await tx(token.connect(user2).approve(staker.address, 3));
     await tx(staker.connect(user2).stake(3));
 
+    await time.increaseTo(await later(5));
+
     await tx(staker.connect(user1).unstake());
     await tx(staker.connect(user2).unstake());
 
     expect(await reward.balanceOf(user1.address, 0)).to.be.equal("3");
-    expect(await reward.balanceOf(user2.address, 0)).to.be.equal("9");
+    expect(await reward.balanceOf(user2.address, 0)).to.be.equal("8");
   });
 
   it("ER1155Staker ERC1155Rewarder should distribute rewards correctly", async function () {
@@ -534,9 +558,10 @@ describe("Staking", function () {
 
     const [owner, user1, user2] = await ethers.getSigners();
 
+    await tx(staker.setUnlockTime(await later(5)));
+
     await tx(staker.setStakingToken(token.address, 0));
     await tx(staker.setRewardToken(token.address, 0));
-    await tx(staker.setStakingWindow(later(1)));
 
     await tx(token.setApprovalForAll(staker.address, true));
     await tx(staker.addReward(12));
@@ -550,11 +575,13 @@ describe("Staking", function () {
     await tx(token.connect(user2).setApprovalForAll(staker.address, true));
     await tx(staker.connect(user2).stake(300));
 
+    await time.increaseTo(await later(5));
+
     await tx(staker.connect(user1).unstake());
     await tx(staker.connect(user2).unstake());
 
     expect(await token.balanceOf(user1.address, 0)).to.be.equal("103");
-    expect(await token.balanceOf(user2.address, 0)).to.be.equal("309");
+    expect(await token.balanceOf(user2.address, 0)).to.be.equal("308");
   });
 
   it("ERC20Staker should not allow unstaking twice", async function () {
@@ -562,9 +589,10 @@ describe("Staking", function () {
       await deployAll();
     const [_owner, user] = await ethers.getSigners();
 
+    await tx(staker.setUnlockTime(await later(5)));
+
     await tx(staker.setStakingToken(token.address));
     await tx(staker.setRewardToken(token.address));
-    await tx(staker.setStakingWindow(later(1)));
 
     await tx(token.transfer(user.address, 100));
     await tx(token.connect(user).approve(staker.address, 100));
@@ -572,6 +600,8 @@ describe("Staking", function () {
 
     await tx(token.approve(staker.address, 12));
     await tx(staker.addReward(12));
+
+    await time.increaseTo(await later(5));
 
     await tx(staker.connect(user).unstake());
 
@@ -585,15 +615,18 @@ describe("Staking", function () {
       await deployAll();
     const [_owner, user] = await ethers.getSigners();
 
+    await tx(staker.setUnlockTime(await later(5)));
+
     await tx(staker.setStakingToken(token.address));
     await tx(staker.setRewardToken(token.address));
-    await tx(staker.setStakingWindow(later(1)));
 
     await tx(token.transfer(user.address, 100));
     await tx(token.connect(user).transferAndCall(staker.address, 100, 0x0));
 
     await tx(token.approve(staker.address, 12));
     await tx(staker.addReward(12));
+
+    await time.increaseTo(await later(5));
 
     await tx(staker.connect(user).unstake());
 
@@ -611,9 +644,10 @@ describe("Staking", function () {
 
     const [owner, user] = await ethers.getSigners();
 
+    await tx(staker.setUnlockTime(await later(5)));
+
     await tx(staker.setStakingToken(token.address));
     await tx(staker.setRewardToken(reward.address, 0));
-    await tx(staker.setStakingWindow(later(1)));
 
     await tx(reward.setApprovalForAll(staker.address, true));
     await tx(staker.addReward(12));
@@ -622,6 +656,8 @@ describe("Staking", function () {
 
     await tx(token.connect(user).approve(staker.address, 0));
     await tx(staker.connect(user).stake(0));
+
+    await time.increaseTo(await later(5));
 
     expect(tx(staker.connect(user).unstake())).to.be.revertedWith(
       "Cannot unstake 0 tokens"
@@ -634,9 +670,10 @@ describe("Staking", function () {
 
     const [owner, user] = await ethers.getSigners();
 
+    await tx(staker.setUnlockTime(await later(5)));
+
     await tx(staker.setStakingToken(token.address, 0));
     await tx(staker.setRewardToken(token.address, 0));
-    await tx(staker.setStakingWindow(later(1)));
 
     await tx(token.setApprovalForAll(staker.address, true));
     await tx(staker.addReward(12));
@@ -645,6 +682,7 @@ describe("Staking", function () {
     await tx(token.connect(user).setApprovalForAll(staker.address, true));
 
     await tx(staker.connect(user).stake(100));
+    await time.increaseTo(await later(5));
     await tx(staker.connect(user).unstake());
 
     expect(tx(staker.connect(user).unstake())).to.be.revertedWith(
@@ -660,13 +698,11 @@ describe("Staking", function () {
     await tx(staker.setStakingToken(token.address));
     await tx(staker.setRewardToken(token.address));
     await tx(staker.setPenaltyAddress(owner.address));
-    await tx(staker.setStakingWindow(later(1)));
 
     await tx(token.transfer(user1.address, 100));
     await tx(token.transfer(user2.address, 300));
 
-    const unlockTime = await staker.getUnlockTime();
-    await tx(staker.setUnlockTime(later(1)));
+    await tx(staker.setUnlockTime(await later(5)));
 
     await tx(token.connect(user1).approve(staker.address, 100));
     await tx(staker.connect(user1).stake(100));
@@ -679,7 +715,7 @@ describe("Staking", function () {
 
     await tx(staker.allowUnstakeWithPenalty(user1.address, 5));
     await tx(staker.connect(user1).unstake());
-    await tx(staker.setUnlockTime(unlockTime));
+    await time.increaseTo(await later(5));
     await tx(staker.connect(user2).unstake());
 
     expect(await token.balanceOf(user1.address)).to.be.equal("95");
@@ -694,10 +730,8 @@ describe("Staking", function () {
     await tx(staker.setStakingToken(token.address));
     await tx(staker.setRewardToken(token.address));
     await tx(staker.setPenaltyAddress(owner.address));
-    await tx(staker.setStakingWindow(later(1)));
 
-    const unlockTime = await staker.getUnlockTime();
-    await tx(staker.setUnlockTime(later(1)));
+    await tx(staker.setUnlockTime(await later(5)));
 
     await tx(token.transfer(user1.address, 100));
     await tx(token.transfer(user2.address, 300));
@@ -710,7 +744,7 @@ describe("Staking", function () {
 
     await tx(staker.allowUnstakeWithPenalty(user1.address, 5));
     await tx(staker.connect(user1).unstake());
-    await tx(staker.setUnlockTime(unlockTime));
+    await time.increaseTo(await later(5));
     await tx(staker.connect(user2).unstake());
 
     expect(await token.balanceOf(user1.address)).to.be.equal("95");
@@ -729,10 +763,8 @@ describe("Staking", function () {
     await tx(staker.setStakingToken(token.address));
     await tx(staker.setRewardToken(reward.address));
     await tx(staker.setPenaltyAddress(owner.address));
-    await tx(staker.setStakingWindow(later(1)));
 
-    const unlockTime = await staker.getUnlockTime();
-    await tx(staker.setUnlockTime(later(1)));
+    await tx(staker.setUnlockTime(await later(5)));
 
     await tx(token[TRANSFER721](owner.address, user1.address, 0));
     await tx(token[TRANSFER721](owner.address, user2.address, 1));
@@ -756,7 +788,7 @@ describe("Staking", function () {
 
     await tx(staker.allowUnstakeWithPenalty(user1.address, 0));
     await tx(staker.connect(user1).unstake());
-    await tx(staker.setUnlockTime(unlockTime));
+    await time.increaseTo(await later(5));
     await tx(staker.connect(user2).unstake());
 
     expect(await reward.balanceOf(user1.address)).to.be.equal("0");
@@ -775,10 +807,8 @@ describe("Staking", function () {
     await tx(staker.setStakingToken(token.address, 0));
     await tx(staker.setRewardToken(reward.address));
     await tx(staker.setPenaltyAddress(owner.address));
-    await tx(staker.setStakingWindow(later(1)));
 
-    const unlockTime = await staker.getUnlockTime();
-    await tx(staker.setUnlockTime(later(1)));
+    await tx(staker.setUnlockTime(await later(5)));
 
     await tx(token.safeTransferFrom(owner.address, user1.address, 0, 100, 0x0));
     await tx(token.safeTransferFrom(owner.address, user2.address, 0, 300, 0x0));
@@ -794,7 +824,7 @@ describe("Staking", function () {
 
     await tx(staker.allowUnstakeWithPenalty(user1.address, 5));
     await tx(staker.connect(user1).unstake());
-    await tx(staker.setUnlockTime(unlockTime));
+    await time.increaseTo(await later(5));
     await tx(staker.connect(user2).unstake());
 
     expect(await reward.balanceOf(user1.address)).to.be.equal("0");
@@ -810,7 +840,7 @@ describe("Staking", function () {
 
     await tx(staker.setStakingToken(token.address));
     await tx(staker.setRewardToken(token.address));
-    await tx(staker.setStakingWindow(later(1)));
+    await tx(staker.setUnlockTime(await later(1)));
 
     const balance = await token.balanceOf(owner.address);
 
@@ -838,7 +868,7 @@ describe("Staking", function () {
 
     await tx(staker.setStakingToken(token.address, 0));
     await tx(staker.setRewardToken(token.address, 0));
-    await tx(staker.setStakingWindow(later(1)));
+    await tx(staker.setUnlockTime(await later(1)));
 
     const balance = await token.balanceOf(owner.address, 0);
 
