@@ -97,6 +97,7 @@ abstract contract ERC721Staking is BaseStaking, IERC721Receiver {
             _stakeWeight[user] = 0;
         } else {
             uint256 reward = getRewardSize(user);
+            _stakeWeight[user] = 0;
             sendRewards(user, reward);
         }
 

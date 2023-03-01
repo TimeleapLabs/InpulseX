@@ -97,6 +97,7 @@ abstract contract ERC20Staking is BaseStaking {
         } else {
             emit UnStaked(user, amount);
             uint256 reward = getRewardSize(user);
+            _stakeWeight[user] = 0;
             require(_stakeToken.transfer(user, amount), "Transfer failed!");
             sendRewards(user, reward);
         }

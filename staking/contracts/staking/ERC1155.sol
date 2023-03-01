@@ -118,6 +118,7 @@ abstract contract ERC1155Staking is BaseStaking, IERC1155Receiver {
                 ""
             );
             uint256 reward = getRewardSize(user);
+            _stakeWeight[user] = 0;
             sendRewards(user, reward);
         }
     }

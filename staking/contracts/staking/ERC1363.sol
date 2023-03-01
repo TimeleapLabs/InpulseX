@@ -75,6 +75,7 @@ abstract contract ERC1363Staking is BaseStaking, IERC1363Receiver {
         } else {
             emit UnStaked(user, amount);
             uint256 reward = getRewardSize(user);
+            _stakeWeight[user] = 0;
             require(_stakeToken.transfer(user, amount), "Transfer failed!");
             sendRewards(user, reward);
         }
