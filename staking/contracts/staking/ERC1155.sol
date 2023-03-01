@@ -54,9 +54,7 @@ abstract contract ERC1155Staking is BaseStaking, IERC1155Receiver {
 
         address user = _msgSender();
         recordStakeWeight(user, amount);
-
         _stake[user] += amount;
-        _stakePoolSize += amount;
 
         emit Staked(user, amount);
         _stakeToken.safeTransferFrom(
@@ -91,7 +89,6 @@ abstract contract ERC1155Staking is BaseStaking, IERC1155Receiver {
             /**
              * No reward distributed, decrease the stake pool size
              */
-            _stakePoolSize -= amount;
             _stakePoolWeight -= _stakeWeight[user];
             _stakeWeight[user] = 0;
 

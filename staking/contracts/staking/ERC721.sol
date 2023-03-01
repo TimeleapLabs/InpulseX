@@ -49,7 +49,6 @@ abstract contract ERC721Staking is BaseStaking, IERC721Receiver {
         address user = _msgSender();
 
         recordStakeWeight(user, 1);
-        _stakePoolSize += 1;
         _stakeIds[user].push(id);
 
         emit Staked(user, 1);
@@ -94,7 +93,6 @@ abstract contract ERC721Staking is BaseStaking, IERC721Receiver {
             /**
              * No reward distributed, decrease the stake pool size
              */
-            _stakePoolSize -= amount;
             _stakePoolWeight -= _stakeWeight[user];
             _stakeWeight[user] = 0;
         } else {

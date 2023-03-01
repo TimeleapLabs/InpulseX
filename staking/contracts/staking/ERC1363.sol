@@ -58,7 +58,6 @@ abstract contract ERC1363Staking is BaseStaking, IERC1363Receiver {
             /**
              * No reward distributed, decrease the stake pool size
              */
-            _stakePoolSize -= amount;
             _stakePoolWeight -= _stakeWeight[user];
             _stakeWeight[user] = 0;
 
@@ -106,9 +105,7 @@ abstract contract ERC1363Staking is BaseStaking, IERC1363Receiver {
         );
 
         recordStakeWeight(user, amount);
-
         _stake[user] += amount;
-        _stakePoolSize += amount;
 
         emit Staked(user, amount);
         return IERC1363Receiver(this).onTransferReceived.selector;

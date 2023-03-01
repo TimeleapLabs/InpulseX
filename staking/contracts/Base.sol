@@ -5,7 +5,6 @@ import "./libraries/Context.sol";
 import "./libraries/Ownable.sol";
 
 abstract contract BaseStaking is Context, Ownable {
-    uint256 internal _stakePoolSize;
     uint256 internal _stakePoolWeight;
     uint256 internal _rewardPoolSize;
     uint256 internal _unlockTime;

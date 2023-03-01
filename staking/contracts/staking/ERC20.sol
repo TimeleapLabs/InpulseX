@@ -47,9 +47,7 @@ abstract contract ERC20Staking is BaseStaking {
 
         address user = _msgSender();
         recordStakeWeight(user, amount);
-
         _stake[user] += amount;
-        _stakePoolSize += amount;
 
         emit Staked(user, amount);
         require(
@@ -82,7 +80,6 @@ abstract contract ERC20Staking is BaseStaking {
             /**
              * No reward distributed, decrease the stake pool size
              */
-            _stakePoolSize -= amount;
             _stakePoolWeight -= _stakeWeight[user];
             _stakeWeight[user] = 0;
 
