@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: UNLICENSED
-pragma solidity ^0.8.17;
+pragma solidity 0.8.17;
 
 import "../Base.sol";
 import "../interfaces/IERC20.sol";
@@ -19,7 +19,12 @@ abstract contract ERC1363Staking is BaseStaking, IERC1363Receiver {
      */
     function setStakingToken(address token) external onlyOwner {
         require(token != address(0), "Can't set token to address(0)");
+        require(
+            address(_stakeToken) == address(0),
+            "Staking token is already set"
+        );
         _stakeToken = IERC1363(token);
+        emit StakingTokenChanged(token);
     }
 
     /**
@@ -54,6 +59,8 @@ abstract contract ERC1363Staking is BaseStaking, IERC1363Receiver {
              * No reward distributed, decrease the stake pool size
              */
             _stakePoolSize -= amount;
+            _stakePoolWeight -= _stakeWeight[user];
+            _stakeWeight[user] = 0;
 
             if (penalty > 0) {
                 require(
@@ -68,19 +75,10 @@ abstract contract ERC1363Staking is BaseStaking, IERC1363Receiver {
             );
         } else {
             emit UnStaked(user, amount);
-            uint256 reward = (amount * _rewardPoolSize) / _stakePoolSize;
+            uint256 reward = getRewardSize(user);
             require(_stakeToken.transfer(user, amount), "Transfer failed!");
             sendRewards(user, reward);
         }
-    }
-
-    /**
-     * @dev Get the current reward size for `user`
-     * @param user Address of the user
-     */
-    function getRewardSize(address user) external view returns (uint256) {
-        uint256 amount = _stake[user];
-        return (amount * _rewardPoolSize) / _stakePoolSize;
     }
 
     /**
@@ -99,12 +97,15 @@ abstract contract ERC1363Staking is BaseStaking, IERC1363Receiver {
         uint256 amount,
         bytes memory
     ) external returns (bytes4) {
-        require(block.timestamp <= _stakingWindow, "Cannot stake anymore");
+        require(block.timestamp <= _unlockTime, "Cannot stake anymore");
+        require(_unlockTime > 0, "Cannot stake yet");
         require(amount > 0, "Cannot stake 0 tokens");
         require(
             _msgSender() == address(_stakeToken),
             "Message sender is not the stake token"
         );
+
+        recordStakeWeight(user, amount);
 
         _stake[user] += amount;
         _stakePoolSize += amount;

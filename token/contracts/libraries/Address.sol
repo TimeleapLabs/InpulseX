@@ -1,7 +1,7 @@
 //SPDX-License-Identifier: MIT
 // OpenZeppelin Contracts v4.4.1 (utils/Address.sol)
 // Note: Stripped the library from unused functions
-pragma solidity ^0.8.17;
+pragma solidity 0.8.17;
 
 /**
  * @dev Collection of functions related to the address type

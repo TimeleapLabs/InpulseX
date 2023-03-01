@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: UNLICENSED
-pragma solidity ^0.8.17;
+pragma solidity 0.8.17;
 
 import "../Base.sol";
 import "../interfaces/IERC20.sol";
@@ -14,6 +14,7 @@ abstract contract ERC20Rewards is BaseStaking {
     function setRewardToken(address token) external onlyOwner {
         require(token != address(0), "Can't set token to address(0)");
         _rewardToken = IERC20(token);
+        emit RewardTokenChanged(token);
     }
 
     /**
@@ -35,6 +36,7 @@ abstract contract ERC20Rewards is BaseStaking {
             _rewardToken.transferFrom(_msgSender(), address(this), amount),
             "Transfer failed!"
         );
+        emit RewardsAdded(amount);
     }
 
     /**
@@ -52,6 +54,7 @@ abstract contract ERC20Rewards is BaseStaking {
             _rewardToken.transfer(_msgSender(), amount),
             "Transfer failed!"
         );
+        emit RewardsRecovered(amount);
     }
 
     /**
