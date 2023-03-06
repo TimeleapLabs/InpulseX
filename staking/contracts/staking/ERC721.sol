@@ -2,13 +2,15 @@
 pragma solidity 0.8.17;
 
 import "../Base.sol";
-import "../interfaces/IERC20.sol";
-import "../interfaces/IERC721.sol";
-import "../interfaces/IERC721Receiver.sol";
 import "../rewards/ERC20.sol";
 import "../rewards/ERC1155.sol";
 
-abstract contract ERC721Staking is BaseStaking, IERC721Receiver {
+import "@openzeppelin/contracts/interfaces/IERC20.sol";
+import "@openzeppelin/contracts/interfaces/IERC165.sol";
+import "@openzeppelin/contracts/interfaces/IERC721.sol";
+import "@openzeppelin/contracts/interfaces/IERC721Receiver.sol";
+
+abstract contract ERC721Staking is BaseStaking, IERC165, IERC721Receiver {
     IERC721 private _stakeToken;
 
     mapping(address => uint256[]) _stakeIds;
@@ -143,11 +145,31 @@ abstract contract ERC721Staking is BaseStaking, IERC721Receiver {
     /**
      * @dev See {IERC165-supportsInterface}.
      */
-    function supportsInterface(bytes4 interfaceId) public pure returns (bool) {
+    function supportsInterface(bytes4 interfaceId)
+        public
+        pure
+        virtual
+        override(IERC165)
+        returns (bool)
+    {
         return interfaceId == type(IERC721Receiver).interfaceId;
     }
 }
 
 contract ERC721StakerERC20Rewarder is ERC721Staking, ERC20Rewards {}
 
-contract ERC721StakerERC1155Rewarder is ERC721Staking, ERC1155Rewards {}
+contract ERC721StakerERC1155Rewarder is ERC721Staking, ERC1155Rewards {
+    /**
+     * @dev See {IERC165-supportsInterface}.
+     */
+    function supportsInterface(bytes4 interfaceId)
+        public
+        pure
+        override(ERC721Staking, ERC1155Rewards)
+        returns (bool)
+    {
+        return
+            ERC721Staking.supportsInterface(interfaceId) ||
+            ERC1155Rewards.supportsInterface(interfaceId);
+    }
+}

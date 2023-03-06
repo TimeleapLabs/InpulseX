@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity 0.8.17;
 
-import "../interfaces/IERC721.sol";
-import "../interfaces/IERC721Enumerable.sol";
+import "@openzeppelin/contracts/interfaces/IERC721.sol";
+import "@openzeppelin/contracts/interfaces/IERC721Enumerable.sol";
 
 contract NFTSweep {
     /**

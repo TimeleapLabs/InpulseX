@@ -2,7 +2,6 @@ const { expect } = require("chai");
 const { ethers } = require("hardhat");
 
 const tx = async (tx) => await (await tx).wait();
-const initialBalance = 1000;
 
 describe("Migrate", function () {
   it("Migration should work", async function () {
@@ -23,8 +22,7 @@ describe("Migrate", function () {
     await tx(
       migrate.bulkAirdrop(
         [addr1.address, addr2.address, addr3.address, addr4.address],
-        [100, 100, 100, 100],
-        4
+        [100, 100, 100, 100]
       )
     );
 
@@ -50,10 +48,10 @@ describe("Migrate", function () {
     migrate.setSender(_owner.address);
     migrate.setIsAdmin(_owner.address, true);
 
-    await tx(migrate.bulkAirdrop([addr1.address], [100], 1));
+    await tx(migrate.bulkAirdrop([addr1.address], [100]));
     expect(await dummy.balanceOf(addr1.address)).to.equal(100);
 
-    await tx(migrate.bulkAirdrop([addr1.address], [100], 1));
+    await tx(migrate.bulkAirdrop([addr1.address], [100]));
     expect(await dummy.balanceOf(addr1.address)).to.equal(100);
   });
 
@@ -73,7 +71,7 @@ describe("Migrate", function () {
     migrate.setIsAdmin(_owner.address, true);
 
     await expect(
-      tx(migrate.connect(addr1.address).bulkAirdrop([addr1.address], [100], 1))
+      tx(migrate.connect(addr1.address).bulkAirdrop([addr1.address], [100]))
     ).to.be.reverted;
   });
 });

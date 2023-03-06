@@ -2,13 +2,15 @@
 pragma solidity 0.8.17;
 
 import "../Base.sol";
-import "../interfaces/IERC20.sol";
-import "../interfaces/IERC1363.sol";
-import "../interfaces/IERC1363Receiver.sol";
 import "../rewards/ERC20.sol";
 import "../rewards/ERC1155.sol";
 
-abstract contract ERC1363Staking is BaseStaking, IERC1363Receiver {
+import "@openzeppelin/contracts/interfaces/IERC20.sol";
+import "@openzeppelin/contracts/interfaces/IERC165.sol";
+import "@openzeppelin/contracts/interfaces/IERC1363.sol";
+import "@openzeppelin/contracts/interfaces/IERC1363Receiver.sol";
+
+abstract contract ERC1363Staking is BaseStaking, IERC165, IERC1363Receiver {
     IERC1363 private _stakeToken;
 
     /**
@@ -117,11 +119,31 @@ abstract contract ERC1363Staking is BaseStaking, IERC1363Receiver {
     /**
      * @dev See {IERC165-supportsInterface}.
      */
-    function supportsInterface(bytes4 interfaceId) public pure returns (bool) {
+    function supportsInterface(bytes4 interfaceId)
+        public
+        pure
+        virtual
+        override(IERC165)
+        returns (bool)
+    {
         return interfaceId == type(IERC1363Receiver).interfaceId;
     }
 }
 
 contract ERC1363StakerERC20Rewarder is ERC1363Staking, ERC20Rewards {}
 
-contract ERC1363StakerERC1155Rewarder is ERC1363Staking, ERC1155Rewards {}
+contract ERC1363StakerERC1155Rewarder is ERC1363Staking, ERC1155Rewards {
+    /**
+     * @dev See {IERC165-supportsInterface}.
+     */
+    function supportsInterface(bytes4 interfaceId)
+        public
+        pure
+        override(ERC1363Staking, ERC1155Rewards)
+        returns (bool)
+    {
+        return
+            ERC1363Staking.supportsInterface(interfaceId) ||
+            ERC1155Rewards.supportsInterface(interfaceId);
+    }
+}

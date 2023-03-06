@@ -2,7 +2,7 @@
 pragma solidity 0.8.17;
 
 import "../Base.sol";
-import "../interfaces/IERC20.sol";
+import "@openzeppelin/contracts/interfaces/IERC20.sol";
 
 abstract contract ERC20Rewards is BaseStaking {
     IERC20 internal _rewardToken;

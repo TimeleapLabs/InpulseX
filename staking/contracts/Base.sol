@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity 0.8.17;
 
-import "./libraries/Context.sol";
-import "./libraries/Ownable.sol";
+import "@openzeppelin/contracts/utils/Context.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
 
 abstract contract BaseStaking is Context, Ownable {
     uint256 internal _stakePoolWeight;
