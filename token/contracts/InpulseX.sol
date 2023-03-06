@@ -1,17 +1,17 @@
 //SPDX-License-Identifier: UNLICENSED
 pragma solidity 0.8.17;
 
-import "./interfaces/IERC20.sol";
-import "./interfaces/IERC165.sol";
-import "./interfaces/IERC1363.sol";
-import "./interfaces/IERC1363Receiver.sol";
-import "./interfaces/IERC1363Spender.sol";
+import "@openzeppelin/contracts/interfaces/IERC20.sol";
+import "@openzeppelin/contracts/interfaces/IERC165.sol";
+import "@openzeppelin/contracts/interfaces/IERC1363.sol";
+import "@openzeppelin/contracts/interfaces/IERC1363Receiver.sol";
+import "@openzeppelin/contracts/interfaces/IERC1363Spender.sol";
 
-import "./libraries/Address.sol";
-import "./libraries/Context.sol";
-import "./libraries/Ownable.sol";
+import "@openzeppelin/contracts/utils/Address.sol";
+import "@openzeppelin/contracts/utils/Context.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
 
-contract InpulseX is Context, IERC20, IERC165, IERC1363, Ownable {
+contract InpulseX is Context, IERC165, IERC1363, Ownable {
     using Address for address;
     /* ERC20 related */
 

@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity 0.8.17;
 
-import "./interfaces/IERC20.sol";
+import "@openzeppelin/contracts/interfaces/IERC20.sol";
 
-import "./libraries/Context.sol";
-import "./libraries/Ownable.sol";
+import "@openzeppelin/contracts/utils/Context.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
 
 // Uncomment this line to use console.log
 // import "hardhat/console.sol";
@@ -68,12 +68,15 @@ contract Migrate is Context, Ownable {
      * @dev Airdrop `amounts` to `recipients`. Can be called by
      * admins only.
      */
-    function bulkAirdrop(
-        address[] memory recipients,
-        uint256[] memory amounts,
-        uint256 length
-    ) external onlyAdmins {
-        for (uint256 index = 0; index < length; index++) {
+    function bulkAirdrop(address[] memory recipients, uint256[] memory amounts)
+        external
+        onlyAdmins
+    {
+        require(
+            recipients.length == amounts.length,
+            "Recipients and amounts arrays don't have the same size"
+        );
+        for (uint256 index = 0; index < recipients.length; index++) {
             airdrop(recipients[index], amounts[index]);
         }
     }

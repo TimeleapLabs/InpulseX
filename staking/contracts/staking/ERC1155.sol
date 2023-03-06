@@ -2,13 +2,15 @@
 pragma solidity 0.8.17;
 
 import "../Base.sol";
-import "../interfaces/IERC20.sol";
-import "../interfaces/IERC1155.sol";
-import "../interfaces/IERC1155Receiver.sol";
 import "../rewards/ERC20.sol";
 import "../rewards/ERC1155.sol";
 
-abstract contract ERC1155Staking is BaseStaking, IERC1155Receiver {
+import "@openzeppelin/contracts/interfaces/IERC20.sol";
+import "@openzeppelin/contracts/interfaces/IERC165.sol";
+import "@openzeppelin/contracts/interfaces/IERC1155.sol";
+import "@openzeppelin/contracts/interfaces/IERC1155Receiver.sol";
+
+abstract contract ERC1155Staking is BaseStaking, IERC165, IERC1155Receiver {
     IERC1155 private _stakeToken;
     uint256 private _stakeNftId;
 
@@ -158,7 +160,13 @@ abstract contract ERC1155Staking is BaseStaking, IERC1155Receiver {
     /**
      * @dev See {IERC165-supportsInterface}.
      */
-    function supportsInterface(bytes4 interfaceId) public pure returns (bool) {
+    function supportsInterface(bytes4 interfaceId)
+        public
+        pure
+        virtual
+        override(IERC165)
+        returns (bool)
+    {
         return interfaceId == type(IERC1155Receiver).interfaceId;
     }
 }

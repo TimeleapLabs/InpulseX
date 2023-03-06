@@ -1,14 +1,14 @@
 //SPDX-License-Identifier: Unlicense
 pragma solidity 0.8.17;
 
-import "./libraries/ECDSA.sol";
-import "./libraries/Context.sol";
-import "./libraries/Ownable.sol";
+import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
+import "@openzeppelin/contracts/utils/Context.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
 import "./libraries/Operatable.sol";
 
-import "./interfaces/IERC20.sol";
-import "./interfaces/IERC165.sol";
-import "./interfaces/IERC1363Receiver.sol";
+import "@openzeppelin/contracts/interfaces/IERC20.sol";
+import "@openzeppelin/contracts/interfaces/IERC165.sol";
+import "@openzeppelin/contracts/interfaces/IERC1363Receiver.sol";
 
 /**
  * This contract implements EIP-712 for verifying signed messages

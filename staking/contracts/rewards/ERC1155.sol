@@ -2,8 +2,9 @@
 pragma solidity 0.8.17;
 
 import "../Base.sol";
-import "../interfaces/IERC1155.sol";
-import "../interfaces/IERC1155Receiver.sol";
+import "@openzeppelin/contracts/interfaces/IERC165.sol";
+import "@openzeppelin/contracts/interfaces/IERC1155.sol";
+import "@openzeppelin/contracts/interfaces/IERC1155Receiver.sol";
 
 abstract contract ERC1155RewardsNonReceiver is BaseStaking {
     IERC1155 internal _rewardToken;
@@ -92,6 +93,7 @@ abstract contract ERC1155RewardsNonReceiver is BaseStaking {
 
 abstract contract ERC1155Rewards is
     BaseStaking,
+    IERC165,
     ERC1155RewardsNonReceiver,
     IERC1155Receiver
 {
@@ -119,5 +121,20 @@ abstract contract ERC1155Rewards is
         bytes calldata
     ) external pure returns (bytes4) {
         return 0x00000000;
+    }
+
+    /* ERC165 methods */
+
+    /**
+     * @dev See {IERC165-supportsInterface}.
+     */
+    function supportsInterface(bytes4 interfaceId)
+        public
+        pure
+        virtual
+        override(IERC165)
+        returns (bool)
+    {
+        return interfaceId == type(IERC1155Receiver).interfaceId;
     }
 }

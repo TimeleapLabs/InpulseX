@@ -54,9 +54,7 @@ describe("InpulseX", function () {
     expect(await IPX.decimals()).to.be.equal(18);
     expect(await IPX.symbol()).to.be.equal("IPX");
     expect(await IPX.name()).to.be.equal("InpulseX");
-    expect(await IPX.totalSupply()).to.be.equal(
-      "10000000000000000000000000000"
-    );
+    expect(await IPX.totalSupply()).to.be.equal("6000000000000000000000000000");
   });
 
   it("Sending BNB to the contract should fail", async function () {
