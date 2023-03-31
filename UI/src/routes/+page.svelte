@@ -4,16 +4,6 @@
 	import Swap from '../lib/components/swap/Swap.svelte';
 
 	import { Toaster } from 'svelte-french-toast';
-
-	const data = [
-		{ title: 'Your stake', value: '123456 IPX' },
-		{ title: 'Reward', value: '123 BUSD' }
-	];
-
-	const options = [
-		{ title: 'BSC', value: 'bsc' },
-		{ title: 'Ethereum', value: 'ethereum' }
-	];
 </script>
 
 <div class="connect">
@@ -23,8 +13,11 @@
 <div class="stake">
 	<ERC1363Stake
 		title="Stake IPX"
-		address="0xf24426Ba23571a046E15Ae49A6088Db5f60E7ac3"
-		rewardSymbol="IPX"
+		start={new Date('2023-03-31T18:22:07.831Z')}
+		address="0xb7D3C2825866D8523bE8B8aa4ad0eAbADc34B580"
+		rewardSymbol="GC"
+		rewardLogo="https://pools.outerringmmo.com/assets/images/gq.png"
+		stakeLogo="https://pools.outerringmmo.com/assets/images/IPX.png"
 	/>
 </div>
 <div class="swap">

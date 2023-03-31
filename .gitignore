@@ -4,3 +4,4 @@ bscScanExport.json
 balances.json
 abi/
 !UI/src/lib/abi/
+.deps

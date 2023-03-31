@@ -11,33 +11,61 @@
 	import toast from 'svelte-french-toast';
 
 	import abi from '../../abi/staking/contracts/staking/ERC721.sol/ERC721StakerERC20Rewarder.json';
-	import tokenAbi from '../../abi/staking/contracts/interfaces/IERC721.sol/IERC721.json';
+	import tokenAbi from '@openzeppelin/contracts/build/contracts/IERC721.json';
+	import rewardTokenAbi from '@openzeppelin/contracts/build/contracts/IERC20.json';
+
+	import Calculator from '../../icons/calculator.svelte';
+	import Coins from '../../icons/coins.svelte';
 
 	export let title;
 	export let address;
 	export let maxMinted = '1000';
 	export let bucketSize = '250';
 	export let stakeSymbol = 'IPX';
+	export let stakeLogo = '';
 	export let rewardSymbol = 'BUSD';
+	export let rewardLogo = '';
+	export let start;
 
-	let contract, token, provider, user, signer;
+	let contract, token, rewardToken, provider, user, signer;
 	let selected = {};
 	let unlockTime;
-	let stakingWindow;
 	let busy = false;
+	let showStake = true;
 
 	let data = [
-		{ title: 'Your stake', value: `0 ${stakeSymbol}` },
-		{ title: 'Reward', value: `0 ${rewardSymbol}` }
+		{ title: 'Your stake', value: `0 ${stakeSymbol}`, icon: stakeLogo },
+		{ title: 'Reward', value: `0 ${rewardSymbol}`, icon: rewardLogo }
 	];
+
+	let apyData;
+
+	const number = (k) => Number(ethers.utils.formatUnits(k));
 
 	const getStakeStats = async () => {
 		const stake = await contract.getStake(user);
 		const reward = await contract.getRewardSize(user).catch(() => 0);
 		data = [
-			{ title: 'Your stake', value: `${ethers.utils.formatUnits(stake)} ${stakeSymbol}` },
-			{ title: 'Reward', value: `${ethers.utils.formatUnits(reward)} ${rewardSymbol}` }
+			{
+				title: 'Your stake',
+				value: `${ethers.utils.formatUnits(stake)} ${stakeSymbol}`,
+				icon: stakeLogo
+			},
+			{
+				title: 'Reward',
+				value: `${ethers.utils.formatUnits(reward)} ${rewardSymbol}`,
+				icon: rewardLogo
+			}
 		];
+		const daysTotal = (unlockTime - start.valueOf()) / 86400000;
+		if (stake.gt(0)) {
+			const daily = number(reward) / daysTotal;
+			apyData = [
+				{ title: 'Daily', value: `${daily.toFixed(4)} ${rewardSymbol}`, icon: rewardLogo },
+				{ title: 'Weekly', value: `${(daily * 7).toFixed(4)} ${rewardSymbol}`, icon: rewardLogo },
+				{ title: 'Monthly', value: `${(daily * 30).toFixed(4)} ${rewardSymbol}`, icon: rewardLogo }
+			];
+		}
 	};
 
 	const onProvider = async () => {
@@ -45,12 +73,15 @@
 		user = $wallet.accounts[0].address;
 		signer = provider.getSigner(user);
 		contract = new ethers.Contract(address, abi, signer);
-		const stakeToken = await contract.getStakingToken();
-		token = new ethers.Contract(stakeToken, tokenAbi, signer);
+		const stakeTokenAddress = await contract.getStakingToken();
+		const rewardTokenAddress = await contract.getRewardToken();
+		token = new ethers.Contract(stakeTokenAddress, tokenAbi.abi, signer);
+		rewardToken = new ethers.Contract(rewardTokenAddress, tokenAbi.abi, signer);
 		unlockTime = (await contract.getUnlockTime()) * 1000;
-		stakingWindow = (await contract.getStakingWindow()) * 1000;
 		getStakeStats();
 	};
+
+	const toggleStake = () => (showStake = !showStake);
 
 	const stake = async () => {
 		await token.setApprovalForAll(address, true);
@@ -113,13 +144,27 @@
 					<Choice bind:selected {maxMinted} {bucketSize} address={token.address} />
 				</div>
 			{/if}
-			{#if stakingWindow > new Date().valueOf()}
-				<Button fullWidth disabled={busy} on:click={onStake}>Stake</Button>
-			{:else if unlockTime < new Date().valueOf()}
-				<Button fullWidth disabled={busy} on:click={onUnstake}>Unstake</Button>
-			{/if}
-			{#if data}
+			<div class="buttons">
+				<Button fullWidth disabled={busy} on:click={toggleStake}>
+					<span class="info-button">
+						{#if showStake}
+							<Calculator /> APY
+						{:else}
+							<Coins /> Show stake
+						{/if}
+					</span>
+				</Button>
+				{#if unlockTime > new Date().valueOf()}
+					<Button fullWidth disabled={busy} on:click={onStake}>Stake</Button>
+				{:else}
+					<Button fullWidth disabled={busy} on:click={onUnstake}>Unstake</Button>
+				{/if}
+			</div>
+			{#if data && showStake}
 				<Table {data} />
+			{/if}
+			{#if apyData && !showStake}
+				<Table data={apyData} />
 			{/if}
 		</div>
 	</Card>
@@ -134,5 +179,19 @@
 	}
 	h4 {
 		margin: 0;
+	}
+	.buttons {
+		display: flex;
+		gap: 1em;
+	}
+	.info-button {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 0.5em;
+	}
+	.info-button :global(svg) {
+		height: 1em;
+		fill: currentColor;
 	}
 </style>
