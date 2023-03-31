@@ -156,7 +156,7 @@
 				</Button>
 				{#if unlockTime > new Date().valueOf()}
 					<Button fullWidth disabled={busy} on:click={onStake}>Stake</Button>
-				{:else}
+				{:else if unlockTime}
 					<Button fullWidth disabled={busy} on:click={onUnstake}>Unstake</Button>
 				{/if}
 			</div>
