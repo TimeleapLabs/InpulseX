@@ -6,7 +6,7 @@ This mono-repo contains the following InpulseX projects:
 - [Migrate](./migrate/): Migration scripts and smart contracts
 - [Staking](./staking/): Staking smart contracts
 - [PegSwap](./pegswap/): PegSwap (multichain) smart contracts
-- [UI](./ui/): UI/UX for the staking and pegswap oracles
+- [UI](./UI/): UI/UX for the staking and pegswap oracles
 
 ## Tech stack
 
