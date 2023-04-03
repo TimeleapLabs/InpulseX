@@ -3,6 +3,7 @@ require("solidity-coverage");
 require("hardhat-contract-sizer");
 require("hardhat-abi-exporter");
 require("hardhat-gas-reporter");
+require("solidity-docgen");
 
 /** @type import('hardhat/config').HardhatUserConfig */
 module.exports = {

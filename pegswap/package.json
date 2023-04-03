@@ -26,7 +26,8 @@
     "@poanet/solidity-flattener": "^3.0.8",
     "hardhat": "^2.12.6",
     "hardhat-contract-sizer": "^2.8.0",
-    "solidity-coverage": "^0.8.2"
+    "solidity-coverage": "^0.8.2",
+    "solidity-docgen": "^0.6.0-beta.35"
   },
   "dependencies": {
     "hardhat-abi-exporter": "^2.10.1"

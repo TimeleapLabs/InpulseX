@@ -27,6 +27,12 @@ their wallets to the InpulseX dApp.
 The connect button uses the "Onboard" library to display a dialog for selecting and
 connecting wallets.
 
+#### Example usage
+
+```svelte
+<ConnectButton />
+```
+
 ### Swap
 
 Consists of three subcomponents:
@@ -34,6 +40,12 @@ Consists of three subcomponents:
 1. `PastClaim` component, displaying one unclaimed user bridge request
 2. `RequestSwap` component, to allow users to request a bridge from one chain to another
 3. `Swap` component, which combines the two above components into one package
+
+#### Example usage
+
+```svelte
+<Swap />
+```
 
 ### Staking
 
@@ -56,3 +68,16 @@ These components accept the following options:
 - `rewardSymbol`: The symbol of the reward token/NFT
 - `rewardLogo`: The logo of the reward token/NFT
 - `start`: The start date of staking
+
+#### Example usage
+
+```svelte
+<ERC1363Stake
+	title="Stake IPX"
+	start={new Date('2023-03-31T18:22:07.831Z')}
+	address="0xb7D3C2825866D8523bE8B8aa4ad0eAbADc34B580"
+	rewardSymbol="GC"
+	rewardLogo="https://pools.outerringmmo.com/assets/images/gq.png"
+	stakeLogo="https://pools.outerringmmo.com/assets/images/IPX.png"
+/>
+```
