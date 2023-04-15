@@ -1,10 +1,17 @@
 <script>
+	import Hero from '../lib/components/home/Hero.svelte';
+	import About from '../lib/components/home/About.svelte';
+	import Navbar from '../lib/components/Navbar.svelte';
 	import ConnectButton from '../lib/components/ConnectButton.svelte';
 	import ERC1363Stake from '../lib/components/staking/ERC1363Stake.svelte';
 	import Swap from '../lib/components/swap/Swap.svelte';
 
 	import { Toaster } from 'svelte-french-toast';
 </script>
+
+<Navbar />
+<Hero />
+<About />
 
 <div class="connect">
 	<ConnectButton />
