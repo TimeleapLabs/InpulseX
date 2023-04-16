@@ -5,6 +5,7 @@
 	import ConnectButton from '../lib/components/ConnectButton.svelte';
 	import ERC1363Stake from '../lib/components/staking/ERC1363Stake.svelte';
 	import Swap from '../lib/components/swap/Swap.svelte';
+	import Utilities from '../lib/components/home/Utilities.svelte';
 
 	import { Toaster } from 'svelte-french-toast';
 </script>
@@ -12,8 +13,9 @@
 <Navbar />
 <Hero />
 <About />
+<Utilities />
 
-<div class="connect">
+<!-- <div class="connect">
 	<ConnectButton />
 </div>
 
@@ -29,7 +31,7 @@
 </div>
 <div class="swap">
 	<Swap />
-</div>
+</div> -->
 <Toaster />
 
 <style>

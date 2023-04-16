@@ -13,9 +13,15 @@
 	>
 		<ParallaxLayer rate={0.5} offset={0.4}>
 			<h2>About InpulseX</h2>
-		</ParallaxLayer>
-		<ParallaxLayer rate={0.5} offset={0.5}>
 			<h3>A token linked to the interplanetary journey</h3>
+			<p>
+				From the total suppply of $IPX tokens, 28% will be allocated to the greatest mission of
+				humankind - The Mars Mission.
+			</p>
+			<p>
+				ImpulseX shall offer financial support to SpaceX based on a progressive schedule triggered
+				by the miilestones associated with its market cap.
+			</p>
 		</ParallaxLayer>
 	</Parallax>
 </div>
@@ -44,5 +50,13 @@
 	}
 	h3 {
 		font-size: 2em;
+	}
+	p {
+		font-family: 'Groningen';
+		font-size: 18px;
+		margin-top: 0;
+		max-width: 30%;
+		margin: 0 auto;
+		margin-bottom: 1em;
 	}
 </style>
