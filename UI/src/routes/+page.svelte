@@ -2,10 +2,11 @@
 	import Hero from '../lib/components/home/Hero.svelte';
 	import About from '../lib/components/home/About.svelte';
 	import Navbar from '../lib/components/Navbar.svelte';
-	import ConnectButton from '../lib/components/ConnectButton.svelte';
-	import ERC1363Stake from '../lib/components/staking/ERC1363Stake.svelte';
-	import Swap from '../lib/components/swap/Swap.svelte';
+	// import ConnectButton from '../lib/components/ConnectButton.svelte';
+	// import ERC1363Stake from '../lib/components/staking/ERC1363Stake.svelte';
+	// import Swap from '../lib/components/swap/Swap.svelte';
 	import Utilities from '../lib/components/home/Utilities.svelte';
+	import Game from '../lib/components/home/Game.svelte';
 	import Transactions from '../lib/components/home/Transactions.svelte';
 	import Team from '../lib/components/home/Team.svelte';
 
@@ -16,6 +17,7 @@
 <Hero />
 <About />
 <Utilities />
+<Game />
 <Transactions />
 <Team />
 

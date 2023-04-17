@@ -1,11 +1,12 @@
 <script>
+	import Highlight from '../Highlight.svelte';
 	import Paragraph from '../Paragraph.svelte';
 	import Title from '../Title.svelte';
 </script>
 
 <div class="utilities">
 	<div class="title">
-		<Title as="h2" centered>Utilities for <br /><span class="highlight">$IPX Tokens</span></Title>
+		<Title as="h2" centered>Utilities for <br /><Highlight>$IPX Tokens</Highlight></Title>
 	</div>
 
 	<div class="grid">
@@ -73,10 +74,6 @@
 		width: 100%;
 		height: 100%;
 		background: radial-gradient(circle, rgba(220, 21, 164, 0.65) 0%, rgba(0, 0, 0, 0) 50%);
-	}
-
-	.highlight {
-		color: #dc15a4;
 	}
 
 	.grid {

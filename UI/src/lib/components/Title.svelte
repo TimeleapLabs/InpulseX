@@ -3,7 +3,7 @@
 	export let centered = false;
 </script>
 
-<svelte:element this={as} class:centered><slot /></svelte:element>
+<svelte:element this={as} class={$$props.class} class:centered><slot /></svelte:element>
 
 <style>
 	h1,
