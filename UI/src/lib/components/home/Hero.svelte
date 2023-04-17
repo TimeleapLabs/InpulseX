@@ -1,5 +1,6 @@
 <script>
 	import Button from '../Button.svelte';
+	import ArrowDown from '../icons/ArrowDown.svelte';
 </script>
 
 <div class="hero">
@@ -13,6 +14,11 @@
 			<source src="/videos/hero.webm" type="video/webm" />
 			<img src="/images/hero.png" alt="Your browser does not support the video tag" />
 		</video>
+	</div>
+	<div class="arrow">
+		<a href="#">
+			<ArrowDown width="36px" height="36px" />
+		</a>
 	</div>
 </div>
 
@@ -36,7 +42,8 @@
 		display: flex;
 		justify-content: center;
 		align-items: flex-start;
-		height: 100%;
+		height: calc(100% - 96px);
+		box-sizing: border-box;
 		flex-direction: column;
 		gap: 2em;
 	}
@@ -59,5 +66,20 @@
 		-webkit-text-fill-color: transparent;
 		-moz-background-clip: text;
 		-moz-text-fill-color: transparent;
+	}
+	.arrow {
+		text-align: center;
+	}
+	a {
+		height: 32px;
+		display: inline;
+		text-align: center;
+		position: relative;
+		z-index: 1;
+		opacity: 0.7;
+		transition: 0.4s all cubic-bezier(0.47, 0, 0.745, 0.715);
+	}
+	a:hover {
+		opacity: 1;
 	}
 </style>

@@ -85,6 +85,10 @@
 
 <!-- inset 0px 0px 12px 1px rgba(255, 255, 255, 0.4), -->
 <style>
+	svg {
+		opacity: 0;
+		position: absolute;
+	}
 	.background {
 		background: url(/images/grid.pink.png) no-repeat center center;
 		background-size: contain;

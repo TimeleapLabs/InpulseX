@@ -7,6 +7,7 @@
 	import Swap from '../lib/components/swap/Swap.svelte';
 	import Utilities from '../lib/components/home/Utilities.svelte';
 	import Transactions from '../lib/components/home/Transactions.svelte';
+	import Team from '../lib/components/home/Team.svelte';
 
 	import { Toaster } from 'svelte-french-toast';
 </script>
@@ -16,6 +17,7 @@
 <About />
 <Utilities />
 <Transactions />
+<Team />
 
 <!-- <div class="connect">
 	<ConnectButton />
