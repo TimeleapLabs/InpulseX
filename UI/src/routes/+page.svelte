@@ -6,6 +6,7 @@
 	import ERC1363Stake from '../lib/components/staking/ERC1363Stake.svelte';
 	import Swap from '../lib/components/swap/Swap.svelte';
 	import Utilities from '../lib/components/home/Utilities.svelte';
+	import Transactions from '../lib/components/home/Transactions.svelte';
 
 	import { Toaster } from 'svelte-french-toast';
 </script>
@@ -14,6 +15,7 @@
 <Hero />
 <About />
 <Utilities />
+<Transactions />
 
 <!-- <div class="connect">
 	<ConnectButton />
