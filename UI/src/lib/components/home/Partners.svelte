@@ -1,5 +1,6 @@
 <script>
 	import Carousel from '../Carousel.svelte';
+	import Title from '../Title.svelte';
 
 	const items = [
 		{ image: '/images/partners/thenftx.png' },
@@ -19,4 +20,43 @@
 	];
 </script>
 
-<Carousel {items} particlesToShow={7} pauseOnFocus={true} autoplay={true} height={96} />
+<div class="partners">
+	<div class="ripple blue" />
+	<div class="ripple pink" />
+	<Title as="h2" class="title">Strategic<br />Partnerships</Title>
+	<Carousel {items} particlesToShow={5} pauseOnFocus={true} autoplay={true} height={96} />
+</div>
+
+<style>
+	.partners {
+		position: relative;
+		padding: 12em;
+		background-color: #140f29;
+		overflow: hidden;
+	}
+	.partners :global(.title) {
+		position: relative;
+		z-index: 1;
+		margin-bottom: 1em;
+	}
+	.ripple.blue {
+		background: url(/images/ripple.blue.png) no-repeat center;
+		background-size: contain;
+		position: absolute;
+		top: -80px;
+		left: -400px;
+		width: 800px;
+		height: 800px;
+		opacity: 0.6;
+	}
+	.ripple.pink {
+		background: url(/images/ripple.pink.png) no-repeat center;
+		background-size: contain;
+		position: absolute;
+		bottom: -280px;
+		right: -400px;
+		width: 800px;
+		height: 800px;
+		opacity: 0.6;
+	}
+</style>
