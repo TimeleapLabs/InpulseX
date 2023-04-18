@@ -1,11 +1,12 @@
 <script>
 	import Button from '../Button.svelte';
 	import ArrowDown from '../icons/ArrowDown.svelte';
+	import Title from '../Title.svelte';
 </script>
 
 <div class="hero">
 	<div class="content">
-		<h1>The journey to become a multiplanetary species</h1>
+		<Title class="title">The journey to become a multiplanetary species</Title>
 		<Button href="#content">Let's go!</Button>
 	</div>
 	<div class="background">
@@ -53,19 +54,11 @@
 		height: 100%;
 		object-fit: cover;
 	}
-	h1 {
-		font-size: 6em;
-		color: var(--primary-blue);
-		font-family: 'Bebas';
+	.hero :global(.title) {
+		font-size: 4.5rem;
 		margin: 0;
-		max-width: 760px;
+		max-width: 460px;
 		opacity: 0.9;
-		background-image: linear-gradient(87deg, var(--primary-blue), var(--seondary-blue));
-		background-clip: text;
-		-webkit-background-clip: text;
-		-webkit-text-fill-color: transparent;
-		-moz-background-clip: text;
-		-moz-text-fill-color: transparent;
 	}
 	.arrow {
 		text-align: center;

@@ -145,10 +145,10 @@
 		gap: 1em;
 	}
 	.member .profile {
-		width: 100%;
+		width: 200px;
 		height: 200px;
 		overflow: hidden;
-		border-radius: 8px;
+		border-radius: 100px;
 		box-shadow: 0px 0px 8px 4px var(--shadow-color);
 		border: 2px solid var(--main-color);
 		position: relative;

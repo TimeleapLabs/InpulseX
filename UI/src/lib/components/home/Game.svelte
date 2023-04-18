@@ -67,6 +67,7 @@
 </script>
 
 <div class="game">
+	<div class="ripple blue" />
 	<div class="video">
 		<div class="player">
 			<div class="title" bind:this={overlay}>
@@ -107,6 +108,7 @@
 		box-sizing: border-box;
 		padding: 24em 12em 12em 12em;
 		background-color: #140f29;
+		position: relative;
 	}
 
 	.title {
@@ -153,6 +155,7 @@
 
 	.description {
 		margin-top: 2em;
+		z-index: 2;
 	}
 
 	button.player-control {
@@ -181,5 +184,19 @@
 		color: white;
 		cursor: pointer;
 		margin: 2em auto;
+		z-index: 2;
+	}
+
+	.ripple.blue {
+		background: url(/images/ripple.blue.png) no-repeat center;
+		background-size: contain;
+		position: absolute;
+		width: 1600px;
+		height: 1600px;
+		opacity: 0.6;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		z-index: 0;
 	}
 </style>
