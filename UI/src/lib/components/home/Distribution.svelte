@@ -35,13 +35,16 @@
 				]
 			},
 			options: {
+				aspectRatio: 1.33,
 				hoverOffset: 50,
 				layout: {
-					padding: 10
+					padding: 40
 				},
 				plugins: {
 					legend: {
-						display: false
+						display: true,
+						align: 'center',
+						position: 'left'
 					}
 				},
 				tooltips: {
@@ -90,7 +93,7 @@
 		position: relative;
 		z-index: 1;
 		width: 800px;
-		height: 800px;
+		height: 600px;
 		z-index: 1;
 		margin: 0 auto;
 	}
