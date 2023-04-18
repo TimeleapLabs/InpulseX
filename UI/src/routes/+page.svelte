@@ -9,6 +9,7 @@
 	import Game from '../lib/components/home/Game.svelte';
 	import Transactions from '../lib/components/home/Transactions.svelte';
 	import Team from '../lib/components/home/Team.svelte';
+	import Distribution from '../lib/components/home/Distribution.svelte';
 
 	import { Toaster } from 'svelte-french-toast';
 </script>
@@ -20,6 +21,7 @@
 <Game />
 <Transactions />
 <Team />
+<Distribution />
 
 <!-- <div class="connect">
 	<ConnectButton />
