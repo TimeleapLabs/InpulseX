@@ -27,7 +27,6 @@
 <Characters />
 <Team />
 <Charts />
-<Distribution />
 <Phases />
 <Partners />
 <Certificates />

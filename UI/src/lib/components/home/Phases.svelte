@@ -5,9 +5,11 @@
 	import ChevronRight from '../../icons/chevron-right.svelte';
 	import Title from '../Title.svelte';
 	import Paragraph from '../Paragraph.svelte';
+	import { elasticOut, linear } from 'svelte/easing';
 
 	const phases = [
 		{
+			index: 0,
 			title: 'The first <span class="blue-highlight">phase</span>',
 			dateStart: '02.02.2022',
 			dateEnd: '31.10.2022',
@@ -26,6 +28,7 @@
 			graphic: '/images/earth.png'
 		},
 		{
+			index: 1,
 			title: '<span class="blue-highlight">The second</span> phase',
 			dateStart: '01.11.2022',
 			dateEnd: '31.07.2023',
@@ -35,38 +38,92 @@
 				'Expand Marketing Campaign <span class="blue-highlight">&#x2714;</span>',
 				'TheNFTX launch <span class="blue-highlight">&#x2714;</span>',
 				'Game Trailer release <span class="blue-highlight">&#x2714;</span>',
-				'Xtronaut Membership Club'
+				'1st AI Art Contest <span class="blue-highlight">&#x2714;</span>',
+				' 2nd Starseed Chapter One Trailer',
+				'1st NFT Collection By Julius Horsthuis'
 			],
 			topicsRight: [
-				'ImpulseX Capital Group launch',
-				'TheGameX launch',
-				'1st NFT collection by Julius Horsthuis',
-				'Implementation of 2nd network',
-				'2nd Contract audit by CERTIK',
-				'2nd CEX listing'
+				'2nd CEX Listing',
+				'2nd Network Launch: Ethereum',
+				'2nd DEX Listing: Uniswap',
+				'Staking Dashboard Launch',
+				'Xstronaut Membership Club Launch',
+				'InpulseX Capital Group Launch',
+				'TheGameX Pillar Launch',
+				'Expand marketing Campaign'
 			],
-			graphic: '/images/moon.png'
+			graphic: '/images/earth.png'
 		},
 		{
+			index: 2,
 			title: 'The third <span class="pink-highlight">phase</span>',
 			dateStart: '01.08.2023',
 			dateEnd: '30.04.2024',
 			topicsLeft: [
-				'2nd NFT collection',
-				'2nd NFT exposition London',
-				'TheAcademiaX launch',
-				'NFT Marketplace launch',
-				'Starseed Game release'
+				'TheAcademiaX Pillar Launch',
+				'2nd NFT Exposition: London',
+				'Starseed Chapter One: Awakening Full Trailer',
+				'3rd CEX Listing',
+				'4th CEX Listing',
+				'3rd Network Launch',
+				'3rd DEX Listing',
+				'4th Network Launch',
+				'4th DEX Listing',
+				'3rd Partnership Game Token'
 			],
 			topicsRight: [
-				'Partnership with 3rd game token',
-				'Merchandise store',
-				'DEX launch (Name TBA)',
-				'Expand Marketing Campaign'
+				'Starseed Chapter One: Awakening Game Demo',
+				'Expand Marketing Campaign',
+				'InpulseX Ecosystem Merchandise Store Launch',
+				'1st InpulseX Video Contest',
+				'AI Powered: Mission Control Launch',
+				'Expand Worldwide Marketing Campaign',
+				'2nd NFT Collection Launch',
+				'TheNFTX Marketplace Launch',
+				'TheAcademiaX Educational Workshops',
+				'Starseed Chapter One: Awakening Game Launch'
+			],
+			graphic: '/images/moon.png'
+		},
+		{
+			index: 3,
+			title: 'The fourth <span class="pink-highlight">phase</span>',
+			dateStart: '01.05.2024',
+			dateEnd: '31.01.2025',
+			topicsLeft: [
+				'5th CEX Listing',
+				'6th CEX Listing',
+				'5th Network Launch',
+				'5th DEX Listing',
+				'4th Partnership Game Token',
+				'Starseed Chapter Two: Voyage Trailer Teaser',
+				'6th Network Launch'
+			],
+			topicsRight: [
+				'6th DEX Listing',
+				'2nd AI Art Contest',
+				'2nd NFT Collection Launch',
+				'3rd NFT Exposition: Dubai',
+				'InpulseX 1st Limited-Edition Clothing',
+				'InpulseX Crypto Payment Card',
+				'1st Brand Sponsored By InpulseX',
+				'Starseed Chapter Two: Voyage Demo Launch',
+				'Expand Worldwide Marketing Campaign'
 			],
 			graphic: '/images/mars.png'
 		}
 	];
+
+	function spin(node, { duration = 400 }) {
+		return {
+			duration,
+			css: (t) => {
+				const eased = linear(t);
+				return `
+					transform: scale(${0.5 + eased / 2}) rotate(${eased * 360}deg);`;
+			}
+		};
+	}
 </script>
 
 {#if browser}
@@ -75,6 +132,7 @@
 			<Carousel
 				dots={false}
 				infinite={false}
+				initialPageIndex={1}
 				let:showPrevPage
 				let:showNextPage
 				let:currentPageIndex
@@ -83,7 +141,7 @@
 				<button slot="prev" class="arrow" on:click={showPrevPage}>
 					<ChevronLeft />
 				</button>
-				{#each phases as { title, dateStart, dateEnd, topicsLeft, topicsRight, graphic } (title)}
+				{#each phases as { title, dateStart, dateEnd, topicsLeft, topicsRight, graphic, index } (title)}
 					<div class="phase">
 						<div class="content">
 							<div class="title">
@@ -101,9 +159,11 @@
 								{/each}
 							</div>
 						</div>
-						<div class="graphic">
-							<img src={graphic} alt={title} />
-						</div>
+						{#if currentPageIndex === index}
+							<div class="graphic" transition:spin>
+								<img src={graphic} alt={title} />
+							</div>
+						{/if}
 					</div>
 				{/each}
 				<button slot="next" class="arrow" on:click={showNextPage}>
@@ -161,7 +221,7 @@
 	.milestones {
 		display: flex;
 		flex-direction: column;
-		gap: 1em;
+		gap: 0.5em;
 	}
 
 	.milestones :global(p) {
@@ -174,5 +234,41 @@
 
 	:global(.pink-highlight) {
 		color: var(--primary-pink);
+	}
+	.graphic img {
+		max-width: 100%;
+	}
+	.milestones :global(p) {
+		max-width: 100%;
+		word-wrap: normal;
+		white-space: normal;
+	}
+	@media only screen and (max-width: 1440px) {
+		.background {
+			padding: 6em 4em;
+		}
+		.content {
+			grid-template-columns: 1fr 1fr 1fr;
+		}
+	}
+	@media only screen and (max-width: 600px) {
+		.background {
+			padding: 1em 2em;
+		}
+		.content {
+			grid-template-columns: 1fr;
+			max-width: 100%;
+			box-sizing: border-box;
+			padding: 1em;
+		}
+		.milestones :global(p) {
+			font-size: 0.8em;
+			max-width: 100%;
+			word-wrap: normal;
+			white-space: normal;
+		}
+		.title {
+			font-size: 0.5em;
+		}
 	}
 </style>

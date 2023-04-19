@@ -134,5 +134,8 @@
 			grid-template-columns: 1fr;
 			grid-template-rows: 500px 500px 500px 500px;
 		}
+		.title {
+			font-size: 1em;
+		}
 	}
 </style>

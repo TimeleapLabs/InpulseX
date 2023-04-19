@@ -87,7 +87,7 @@
 				Custom characters provide players with an exceptional level of personalization and
 				uniqueness, enabling them to leave an indelible mark on the game.
 			</p>
-			<a href="https://bit.ly/TheNFTX_Registration" class="start">
+			<a href="https://bit.ly/TheNFTX_Registration" class="start" target="_blank" rel="noreferrer">
 				<Title as="h4">Secure yours!!!</Title>
 			</a>
 		</Paragraph>
