@@ -66,6 +66,7 @@
 	.title {
 		position: relative;
 		z-index: 2;
+		font-size: 2em;
 	}
 
 	.gradient {
