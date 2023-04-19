@@ -7,7 +7,7 @@
 <div class="utilities">
 	<div class="title">
 		<Title as="h2" centered>
-			<Highlight>$IPX</Highlight>
+			<Highlight>Ecosystem</Highlight>
 			Pillars
 		</Title>
 	</div>
@@ -15,37 +15,42 @@
 	<div class="grid">
 		<div class="card" style="--image: url('/images/treasure-chest.png'); --main-color: #a942aa;">
 			<div class="description">
-				<Title as="h4">Rewards</Title>
-				<Paragraph>Simply by holding, you earn rewards in a stable coin.</Paragraph>
-			</div>
-		</div>
-
-		<div class="card" style="--image: url('/images/spaceship.png'); --main-color: #e49456;">
-			<div class="description">
-				<Title as="h4">Collectable and in-game NFTs</Title>
+				<Title as="h4">TheNFTX</Title>
 				<Paragraph>
-					Super-exciting Airdrops! The most loyal holders will earn a chance to receive rare in-game
-					playable NFTs & collectables.
+					TheNFTX is the leading platform for visionary artists aligned with the consciousness
+					expansion movement, serving as a crucial NFT cornerstone in the InpulseX project.
 				</Paragraph>
 			</div>
 		</div>
 
 		<div class="card" style="--image: url('/images/gamepad.png'); --main-color: #ac8f4b;">
 			<div class="description">
-				<Title as="h4">Play-to-earn game</Title>
+				<Title as="h4">TheGameX</Title>
 				<Paragraph>
-					$IPX token will be used as in-game currency foor our play-to-earn NFT game, to be released
-					in 2023.
+					TheGameX is a vital pillar for InpulseX, driving user engagement, strengthening IPX token
+					utility, and cultivating a thriving community invested in the Starseed game and broader
+					ecosystem.
 				</Paragraph>
 			</div>
 		</div>
 
-		<div class="card" style="--image: url('/images/palace.png'); --main-color: #66aeac;">
+		<div class="card" style="--image: url('/images/palace.jpg'); --main-color: #66aeac;">
 			<div class="description">
-				<Title as="h4">Governance</Title>
+				<Title as="h4">TheAcademiaX</Title>
 				<Paragraph>
-					The governance token holders can influence decisions by exercising their voting right to
-					shape the platform.
+					TheAcademiaX connects industry experts with community members, offering knowledge sharing,
+					networking opportunities, educational content, and community empowerment.
+				</Paragraph>
+			</div>
+		</div>
+
+		<div class="card" style="--image: url('/images/spaceship.png'); --main-color: #a942aa;">
+			<div class="description">
+				<Title as="h4">Xstronaut Membership Club</Title>
+				<Paragraph>
+					XMC is a passionate club offering exclusive benefits, attracting members and driving
+					ecosystem growth. It includes tiered benefits, token launches, VC deals, personalised
+					avatars, one-on-one meetings with the IPX management team, and much more.
 				</Paragraph>
 			</div>
 		</div>
@@ -111,6 +116,10 @@
 		border-top-right-radius: 4em;
 		box-shadow: inset 0px 0px 22px 0px rgba(255, 255, 255, 0.4),
 			inset 0px -8px 12px 0px var(--main-color);
+	}
+	.description :global(h4) {
+		font-size: 2em;
+		margin-bottom: 0.5em;
 	}
 	@media only screen and (max-width: 1440px) {
 		.utilities {
