@@ -23,7 +23,7 @@
 		{#if frame === 0}
 			<img src="/images/members/{member.image}.jpg" alt={member.name} />
 		{:else if frame > 0}
-			<video src="/videos/x.mp4" mute autoplay />
+			<video src="/videos/x.mp4" muted autoplay />
 		{/if}
 		{#if frame === 2}
 			<img

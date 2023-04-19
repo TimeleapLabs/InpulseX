@@ -7,7 +7,7 @@
 	// import Swap from '../lib/components/swap/Swap.svelte';
 	import Utilities from '../lib/components/home/Utilities.svelte';
 	import Game from '../lib/components/home/Game.svelte';
-	import Transactions from '../lib/components/home/Transactions.svelte';
+	import Characters from '../lib/components/home/Characters.svelte';
 	import Team from '../lib/components/home/Team.svelte';
 	import Distribution from '../lib/components/home/Distribution.svelte';
 	import Partners from '../lib/components/home/Partners.svelte';
@@ -21,7 +21,7 @@
 <About />
 <Utilities />
 <Game />
-<Transactions />
+<Characters />
 <Team />
 <Distribution />
 <Partners />

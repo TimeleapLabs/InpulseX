@@ -5,7 +5,7 @@
 <div class="footer">
 	<div class="ripple" />
 	<div class="linktree">
-		<a href="https://linktr.ee">
+		<a href="https://linktr.ee/inpulsex_official" rel="noreferrer" target="_blank">
 			<LinkTree />
 		</a>
 	</div>
