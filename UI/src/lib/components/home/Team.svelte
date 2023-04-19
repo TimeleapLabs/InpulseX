@@ -130,7 +130,7 @@
 			]
 		},
 		{
-			name: 'Michaal',
+			name: 'Michael',
 			role: 'Legal Advisor',
 			color: '#2B7BF3',
 			image: 'michael',

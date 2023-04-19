@@ -87,7 +87,9 @@
 				Custom characters provide players with an exceptional level of personalization and
 				uniqueness, enabling them to leave an indelible mark on the game.
 			</p>
-			<button class="start"><Title as="h4">Secure yours!!!</Title></button>
+			<a href="https://bit.ly/TheNFTX_Registration" class="start">
+				<Title as="h4">Secure yours!!!</Title>
+			</a>
 		</Paragraph>
 	</div>
 </div>
@@ -126,7 +128,7 @@
 		opacity: 0.6;
 		max-width: 80%;
 	}
-	button.start {
+	a.start {
 		border-radius: 1em;
 		background-color: #dc15a4;
 		border: none;
@@ -135,6 +137,11 @@
 		cursor: pointer;
 		margin: 2em auto;
 		z-index: 2;
+		text-decoration: none;
+		display: flex;
+		width: 240px;
+		align-items: center;
+		justify-content: center;
 	}
 	.start :global(h4) {
 		font-size: 2em;
