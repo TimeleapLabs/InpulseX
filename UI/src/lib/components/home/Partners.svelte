@@ -12,7 +12,7 @@
 		//{ image: '/images/partners/theacademiax.png' },
 		{ image: '/images/partners/gotbit.png' },
 		{ image: '/images/partners/exverse.png' },
-		{ image: '/images/partners/outerring.png' },
+		{ image: '/images/partners/outerring.png', twoX: true },
 		{ image: '/images/partners/evocap.png' },
 		{ image: '/images/partners/castrum.png' },
 		{ image: '/images/partners/coinvestor.png' },
@@ -37,7 +37,7 @@
 	<div class="ripple blue" />
 	<div class="ripple pink" />
 	<Title as="h2" class="title">Strategic<br />Partnerships</Title>
-	<Carousel {items} {particlesToShow} pauseOnFocus={true} autoplay={true} height={96} />
+	<Carousel {items} {particlesToShow} pauseOnFocus={true} autoplay={true} height={128} />
 </div>
 
 <style>

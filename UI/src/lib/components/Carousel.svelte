@@ -12,7 +12,7 @@
 		<Carousel dots={false} pauseOnFocus={true} autoplay={true} {...$$restProps}>
 			{#each items as item}
 				<div class="item">
-					<div class="image">
+					<div class="image" class:two-x={item.twoX}>
 						<img src={item.image} alt={item.label || 'Carousel'} />
 					</div>
 					{#if item.label}
@@ -41,5 +41,8 @@
 		width: 100%;
 		height: 100%;
 		object-fit: contain;
+	}
+	.image.two-x img {
+		transform: scale(1.45);
 	}
 </style>
