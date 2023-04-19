@@ -55,7 +55,7 @@
 		object-fit: cover;
 	}
 	.hero :global(.title) {
-		font-size: 3em;
+		font-size: 5em;
 		margin: 0;
 		width: 460px;
 		max-width: 80%;
@@ -75,5 +75,10 @@
 	}
 	a:hover {
 		opacity: 1;
+	}
+	@media only screen and (max-width: 600px) {
+		.hero :global(.title) {
+			font-size: 3em;
+		}
 	}
 </style>

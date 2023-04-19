@@ -199,6 +199,9 @@
 		margin: 2em auto;
 		z-index: 2;
 	}
+	.start :global(h4) {
+		font-size: 2em;
+	}
 
 	.ripple.blue {
 		background: url(/images/ripple.blue.png) no-repeat center;
