@@ -45,12 +45,15 @@
 						display: true,
 						align: 'center',
 						position: 'left'
-					}
-				},
-				tooltips: {
-					callbacks: {
-						label: function (tooltipItem) {
-							return tooltipItem.yLabel;
+					},
+					tooltip: {
+						callbacks: {
+							label: function (context) {
+								const label = context.label,
+									percentage = context.raw;
+
+								return `${label}: ${percentage}%`;
+							}
 						}
 					}
 				}

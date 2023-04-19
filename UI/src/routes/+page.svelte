@@ -11,6 +11,7 @@
 	import Team from '../lib/components/home/Team.svelte';
 	import Distribution from '../lib/components/home/Distribution.svelte';
 	import Partners from '../lib/components/home/Partners.svelte';
+	import Footer from '../lib/components/home/Footer.svelte';
 
 	import { Toaster } from 'svelte-french-toast';
 </script>
@@ -24,6 +25,7 @@
 <Team />
 <Distribution />
 <Partners />
+<Footer />
 
 <!-- <div class="connect">
 	<ConnectButton />
