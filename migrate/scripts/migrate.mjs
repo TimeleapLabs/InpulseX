@@ -16,13 +16,13 @@ const { migrationContractAddress } = JSON.parse(
   fs.readFileSync("./config.json")
 );
 const abi = [
-  "function bulkAirdrop(address[] addresses, uint256[] balances, uint256 length) external",
+  "function bulkAirdrop(address[] addresses, uint256[] balances) external",
 ];
 
 const contract = new ethers.Contract(migrationContractAddress, abi, manager);
 
 const airdrop = async (addresses, balances) => {
-  return await contract.bulkAirdrop(addresses, balances, balances.length);
+  return await contract.bulkAirdrop(addresses, balances);
 };
 
 const excluded = [];
