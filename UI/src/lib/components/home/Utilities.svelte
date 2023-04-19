@@ -6,7 +6,10 @@
 
 <div class="utilities">
 	<div class="title">
-		<Title as="h2" centered>Utilities for <br /><Highlight>$IPX Tokens</Highlight></Title>
+		<Title as="h2" centered>
+			<Highlight>$IPX</Highlight>
+			Pillars
+		</Title>
 	</div>
 
 	<div class="grid">
