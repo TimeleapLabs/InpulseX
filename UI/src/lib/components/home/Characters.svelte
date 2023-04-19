@@ -119,7 +119,7 @@
 		background: url(/images/ripple.pink.png) no-repeat center;
 		background-size: contain;
 		position: absolute;
-		bottom: -280px;
+		bottom: -80px;
 		right: -400px;
 		width: 800px;
 		height: 800px;
