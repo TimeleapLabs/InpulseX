@@ -118,7 +118,7 @@
 	.background {
 		width: 100%;
 		background-color: #140f29;
-		padding: 0 6em;
+		padding: 12em 6em;
 		box-sizing: border-box;
 	}
 
@@ -138,7 +138,7 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		margin-top: 12em;
+		margin-top: 7.5em;
 		border: none;
 		outline: none;
 		width: 3em;
