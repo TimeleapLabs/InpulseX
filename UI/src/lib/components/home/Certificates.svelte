@@ -2,7 +2,7 @@
 	import Title from '../Title.svelte';
 </script>
 
-<div class="certificates">
+<div class="certificates" id="certificates">
 	<div class="ripple pink" />
 	<Title as="h2" class="title" centered>Certificates</Title>
 	<div class="grid">

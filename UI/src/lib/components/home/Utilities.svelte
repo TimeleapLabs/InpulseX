@@ -4,7 +4,7 @@
 	import Title from '../Title.svelte';
 </script>
 
-<div class="utilities">
+<div class="utilities" id="pillars">
 	<div class="title">
 		<Title as="h2" centered>
 			<Highlight>Ecosystem</Highlight>

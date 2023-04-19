@@ -41,7 +41,7 @@
 
 <svelte:window bind:outerWidth />
 
-<div class="characters">
+<div class="characters" id="characters">
 	<div class="ripple blue" />
 	<div class="ripple pink" />
 	<Title as="h2" class="title" centered>Custom Characters</Title>

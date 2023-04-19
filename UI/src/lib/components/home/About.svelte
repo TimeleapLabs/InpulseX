@@ -4,7 +4,7 @@
 	let parallax;
 </script>
 
-<div class="about">
+<div class="about" id="about">
 	<Parallax
 		sections={2}
 		config={{ stiffness: 0.2, damping: 0.3 }}

@@ -155,7 +155,7 @@
 	};
 </script>
 
-<div class="team">
+<div class="team" id="team">
 	<div class="content">
 		<div class="sticky">
 			<img class="title" src="/images/team.svg" alt="The InpulseX Team" />

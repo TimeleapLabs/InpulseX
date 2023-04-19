@@ -66,7 +66,7 @@
 	});
 </script>
 
-<div class="game">
+<div class="game" id="game">
 	<div class="ripple blue" />
 	<div class="video">
 		<div class="player">
@@ -98,7 +98,6 @@
 			of Alien Races."
 		</Paragraph>
 	</div>
-	<button class="start"><Title as="h4">Start right now!</Title></button>
 </div>
 
 <style>
@@ -187,20 +186,6 @@
 
 	button.player-control.hidden {
 		display: none;
-	}
-
-	button.start {
-		border-radius: 1em;
-		background-color: #dc15a4;
-		border: none;
-		padding: 1em;
-		color: white;
-		cursor: pointer;
-		margin: 2em auto;
-		z-index: 2;
-	}
-	.start :global(h4) {
-		font-size: 2em;
 	}
 
 	.ripple.blue {

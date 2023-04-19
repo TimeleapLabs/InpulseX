@@ -26,6 +26,10 @@
 	--primary-pink: #dc15a4;
 }
 
+html {
+	scroll-behavior: smooth;
+}
+
 body {
 	margin: 0;
 	background-color: #140f29;

@@ -10,29 +10,44 @@
 
 <div class="wrap" use:clickOutside={() => (open = false)}>
 	<div class="navbar">
-		<a href="#menu" on:click={() => (open = true)}>
+		<a
+			href="#menu"
+			on:click={(e) => {
+				e.preventDefault();
+				open = true;
+			}}
+		>
 			<Burger />
 		</a>
 		<div class="logo">
-			<img src="/images/logo.webp" alt="InpulseX logo" />
+			<a href="/">
+				<img src="/images/logo.webp" alt="InpulseX logo" />
+			</a>
 		</div>
 		<div class="buttons">
-			<Button href="">Buy now</Button>
+			<Button href="/dashboard">Dashboard</Button>
 		</div>
 	</div>
 
 	{#if open}
 		<div class="sidebar" transition:fly={{ x: -200, duration: 200 }}>
-			<a href="#menu" on:click={() => (open = false)}>
+			<a
+				href="#menu"
+				on:click={(e) => {
+					e.preventDefault();
+					open = false;
+				}}
+			>
 				<X />
 			</a>
-			<a href="#">Beginning</a>
-			<a href="#">Utilities</a>
-			<a href="#">About</a>
-			<a href="#">Team</a>
-			<a href="#">Tokenomics</a>
-			<a href="#">SpaceMap</a>
-			<a href="#">Litepaper</a>
+			<a href="/#about">About</a>
+			<a href="/#pillars">Pillars</a>
+			<a href="/#game">Starseed Awakening</a>
+			<a href="/#characters">Custom Characters</a>
+			<a href="/#team">Team</a>
+			<a href="/#tokenomics">Tokenomics</a>
+			<a href="/#spacemap">SpaceMap</a>
+			<a href="/#certificates">Certificates</a>
 		</div>
 	{/if}
 </div>
@@ -56,7 +71,8 @@
 		text-align: center;
 	}
 	.buttons {
-		text-align: right;
+		display: flex;
+		justify-content: end;
 	}
 	.sidebar {
 		position: fixed;

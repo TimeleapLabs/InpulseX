@@ -6,7 +6,7 @@
 	let chart = 0;
 </script>
 
-<div class="charts">
+<div class="charts" id="tokenomics">
 	<div class="background" />
 
 	{#if chart === 0}

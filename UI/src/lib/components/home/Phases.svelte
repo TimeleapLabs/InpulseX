@@ -127,7 +127,7 @@
 </script>
 
 {#if browser}
-	<div class="background">
+	<div class="background" id="spacemap">
 		<div class="phases">
 			<Carousel
 				dots={false}
@@ -159,7 +159,7 @@
 								{/each}
 							</div>
 						</div>
-						{#if currentPageIndex === index}
+						{#if !currentPageIndex || currentPageIndex === index}
 							<div class="graphic" transition:spin>
 								<img src={graphic} alt={title} />
 							</div>

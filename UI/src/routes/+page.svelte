@@ -10,7 +10,6 @@
 	import Characters from '../lib/components/home/Characters.svelte';
 	import Team from '../lib/components/home/Team.svelte';
 	import Charts from '../lib/components/home/Charts.svelte';
-	import Distribution from '../lib/components/home/Distribution.svelte';
 	import Phases from '../lib/components/home/Phases.svelte';
 	import Partners from '../lib/components/home/Partners.svelte';
 	import Certificates from '../lib/components/home/Certificates.svelte';
