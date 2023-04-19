@@ -34,7 +34,7 @@
 			</div>
 		</div>
 
-		<div class="card" style="--image: url('/images/palace.jpg'); --main-color: #66aeac;">
+		<div class="card" style="--image: url('/images/spaceship.png'); --main-color: #66aeac;">
 			<div class="description">
 				<Title as="h4">TheAcademiaX</Title>
 				<Paragraph>
@@ -44,7 +44,7 @@
 			</div>
 		</div>
 
-		<div class="card" style="--image: url('/images/spaceship.png'); --main-color: #a942aa;">
+		<div class="card" style="--image: url('/images/palace.jpg'); --main-color: #a942aa;">
 			<div class="description">
 				<Title as="h4">Xstronaut Membership Club</Title>
 				<Paragraph>

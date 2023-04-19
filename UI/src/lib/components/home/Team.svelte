@@ -98,7 +98,7 @@
 		},
 		{
 			name: 'Patrick',
-			role: 'Community Manager',
+			role: 'Relations Manager',
 			color: '#2B7BF3',
 			image: 'patrick',
 			bio: ['', '', '', '']
@@ -111,7 +111,7 @@
 			bio: ['', '', '', '']
 		},
 		{
-			name: 'Muzammil',
+			name: 'Muza',
 			role: 'Unreal Engine Developer',
 			color: '#2B7BF3',
 			image: 'muzammil',
@@ -130,7 +130,7 @@
 			]
 		},
 		{
-			name: 'Micheal',
+			name: 'Michaal',
 			role: 'Legal Advisor',
 			color: '#2B7BF3',
 			image: 'michael',
@@ -157,16 +157,18 @@
 
 <div class="team">
 	<div class="content">
-		<img class="title" src="/images/team.svg" alt="The InpulseX Team" />
-		{#if typeof currentIndex === 'number' && !transition}
-			<div class="bio" transition:fade>
-				<Title as="h4">{members[currentIndex].name}</Title>
-				<Title as="h5">{members[currentIndex].role}</Title>
-				{#each members[currentIndex].bio as paragraph}
-					<Paragraph>{paragraph}</Paragraph>
-				{/each}
-			</div>
-		{/if}
+		<div class="sticky">
+			<img class="title" src="/images/team.svg" alt="The InpulseX Team" />
+			{#if typeof currentIndex === 'number' && !transition}
+				<div class="bio" transition:fade>
+					<Title as="h4">{members[currentIndex].name}</Title>
+					<Title as="h5">{members[currentIndex].role}</Title>
+					{#each members[currentIndex].bio as paragraph}
+						<Paragraph>{paragraph}</Paragraph>
+					{/each}
+				</div>
+			{/if}
+		</div>
 	</div>
 	<div class="grid">
 		{#each Object.entries(members) as [index, member]}
@@ -189,6 +191,10 @@
 		position: relative;
 		box-sizing: border-box;
 		background-color: #140f29;
+	}
+	.sticky {
+		position: sticky;
+		top: 8em;
 	}
 	.grid {
 		display: grid;

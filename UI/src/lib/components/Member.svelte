@@ -36,7 +36,7 @@
 				transition:fade={{ duration: 3000 }}
 			/>
 		{/if}
-		<div class="name">
+		<div class="name" class:solid={frame === 2}>
 			<Title as="h4">{member.name}</Title>
 		</div>
 	</div>
@@ -88,6 +88,11 @@
 		top: 50%;
 		left: 50%;
 		transform: translate(-50%, -50%);
+		opacity: 0.4;
+		font-size: 0.8em;
+	}
+	.name.solid {
+		transition: cubic-bezier(0.075, 0.82, 0.165, 1) 0.35s all;
 		opacity: 0.9;
 	}
 	.profile .name :global(h4) {
