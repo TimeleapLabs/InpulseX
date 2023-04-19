@@ -1,23 +1,46 @@
 <script>
 	import Button from './Button.svelte';
+	import Burger from './icons/Burger.svelte';
+	import X from './icons/X.svelte';
+	import { fly } from 'svelte/transition';
+	import { clickOutside } from '../clickOutside';
+
+	let open = false;
 </script>
 
-<div class="navbar">
-	<img src="/images/logo.webp" alt="InpulseX logo" />
-	<div class="spacer" />
-	<a href="#">Beginning</a>
-	<a href="#">Utilities</a>
-	<a href="#">About</a>
-	<a href="#">Team</a>
-	<a href="#">Tokenomics</a>
-	<a href="#">SpaceMap</a>
-	<a href="#">Litepaper</a>
-	<Button href="">Buy now</Button>
+<div class="wrap" use:clickOutside={() => (open = false)}>
+	<div class="navbar">
+		<a href="#menu" on:click={() => (open = true)}>
+			<Burger />
+		</a>
+		<div class="logo">
+			<img src="/images/logo.webp" alt="InpulseX logo" />
+		</div>
+		<div class="buttons">
+			<Button href="">Buy now</Button>
+		</div>
+	</div>
+
+	{#if open}
+		<div class="sidebar" transition:fly={{ x: -200, duration: 200 }}>
+			<a href="#menu" on:click={() => (open = false)}>
+				<X />
+			</a>
+			<a href="#">Beginning</a>
+			<a href="#">Utilities</a>
+			<a href="#">About</a>
+			<a href="#">Team</a>
+			<a href="#">Tokenomics</a>
+			<a href="#">SpaceMap</a>
+			<a href="#">Litepaper</a>
+		</div>
+	{/if}
 </div>
 
 <style>
 	.navbar {
-		display: flex;
+		display: grid;
+		grid-template-columns: 1fr 1fr 1fr;
 		gap: 2em;
 		position: fixed;
 		top: 0;
@@ -28,6 +51,28 @@
 		width: 100%;
 		padding: 1em 4em;
 		box-sizing: border-box;
+	}
+	.logo {
+		text-align: center;
+	}
+	.buttons {
+		text-align: right;
+	}
+	.sidebar {
+		position: fixed;
+		left: 0;
+		top: 0;
+		z-index: 100;
+		width: 320px;
+		height: 100%;
+		background: rgba(0, 0, 0, 0.4);
+		backdrop-filter: blur(16px);
+		box-sizing: border-box;
+		padding: 4em;
+		display: flex;
+		gap: 2em;
+		flex-direction: column;
+		padding-top: 1.5em;
 	}
 	a {
 		color: #fff;
