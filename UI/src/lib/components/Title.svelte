@@ -15,19 +15,19 @@
 	}
 
 	h1 {
-		font-size: 135px;
+		font-size: 4em;
 	}
 
 	h2 {
-		font-size: 69px;
+		font-size: 3em;
 	}
 
 	h3 {
-		font-size: 34px;
+		font-size: 2em;
 	}
 
 	h4 {
-		font-size: 34px;
+		font-size: 1em;
 	}
 
 	.centered {

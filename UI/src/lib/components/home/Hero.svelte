@@ -55,9 +55,10 @@
 		object-fit: cover;
 	}
 	.hero :global(.title) {
-		font-size: 4.5rem;
+		font-size: 3em;
 		margin: 0;
-		max-width: 460px;
+		width: 460px;
+		max-width: 80%;
 		opacity: 0.9;
 	}
 	.arrow {

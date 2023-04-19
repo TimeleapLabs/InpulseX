@@ -190,4 +190,9 @@
 	.inner {
 		margin-left: -32px;
 	}
+	@media only screen and (max-width: 600px) {
+		.transactions {
+			padding: 1em 2em;
+		}
+	}
 </style>

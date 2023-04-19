@@ -31,6 +31,7 @@
 		overflow: hidden;
 		display: flex;
 		gap: 4em;
+		flex-wrap: wrap;
 	}
 	.spacer {
 		flex: 1;
@@ -52,5 +53,10 @@
 		top: 0;
 		opacity: 0.2;
 		z-index: 0;
+	}
+	@media only screen and (max-width: 600px) {
+		.footer {
+			padding: 1em 2em;
+		}
 	}
 </style>

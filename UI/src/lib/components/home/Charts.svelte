@@ -51,4 +51,9 @@
 		gap: 2em;
 		border-radius: 1em;
 	}
+	@media only screen and (max-width: 600px) {
+		.charts {
+			padding: 1em 2em;
+		}
+	}
 </style>

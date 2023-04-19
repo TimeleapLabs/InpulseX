@@ -48,6 +48,7 @@
 		width: 800px;
 		height: 800px;
 		opacity: 0.6;
+		max-width: 80%;
 	}
 	.ripple.pink {
 		background: url(/images/ripple.pink.png) no-repeat center;
@@ -58,5 +59,6 @@
 		width: 800px;
 		height: 800px;
 		opacity: 0.6;
+		max-width: 80%;
 	}
 </style>

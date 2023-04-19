@@ -99,6 +99,7 @@
 		width: 800px;
 		height: 800px;
 		opacity: 0.6;
+		max-width: 80%;
 	}
 	.ripple.pink {
 		background: url(/images/ripple.pink.png) no-repeat center;
@@ -109,6 +110,7 @@
 		width: 800px;
 		height: 800px;
 		opacity: 0.6;
+		max-width: 80%;
 	}
 	.video {
 		display: flex;
@@ -130,5 +132,13 @@
 	.paragraph {
 		padding: 4em 20em;
 		text-align: center;
+	}
+	@media only screen and (max-width: 600px) {
+		.characters {
+			padding: 1em 2em;
+		}
+		.paragraph {
+			padding: 1em;
+		}
 	}
 </style>

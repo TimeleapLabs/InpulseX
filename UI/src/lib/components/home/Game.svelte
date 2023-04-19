@@ -129,6 +129,7 @@
 		background-color: transparent;
 		z-index: 1;
 		width: var(--video-width);
+		max-width: 100%;
 	}
 
 	.title :global(h1) {
@@ -142,6 +143,7 @@
 
 	.video {
 		width: var(--video-width);
+		max-width: 100%;
 		margin: 0 auto;
 	}
 
@@ -157,6 +159,7 @@
 
 	.video video {
 		width: var(--video-width);
+		max-width: 100%;
 		background-color: black;
 		box-shadow: 0 0px 40px 1px #dc15a444;
 		border-radius: 3em;
@@ -178,6 +181,7 @@
 		cursor: pointer;
 		z-index: 1;
 		width: var(--video-width);
+		max-width: 100%;
 		padding: 0;
 	}
 
@@ -207,5 +211,23 @@
 		left: 50%;
 		transform: translate(-50%, -50%);
 		z-index: 0;
+		max-width: 80%;
+	}
+
+	@media only screen and (max-width: 600px) {
+		.game {
+			padding: 1em 2em;
+		}
+		.strip {
+			display: none;
+		}
+		.game-logo {
+			max-width: 80%;
+			margin: 0;
+			margin-left: 100px;
+		}
+		.video {
+			margin: 0;
+		}
 	}
 </style>

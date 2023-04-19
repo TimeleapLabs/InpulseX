@@ -82,10 +82,19 @@
 		transition: cubic-bezier(0.23, 1, 0.32, 1) all 0.4s;
 		color: var(--primary-pink);
 	}
-	.spacer {
-		flex: 1;
-	}
 	img {
 		height: 2em;
+	}
+	@media only screen and (max-width: 600px) {
+		.navbar {
+			padding: 0.5em 1em;
+			grid-template-columns: 1fr 1fr 6fr;
+		}
+		.sidebar {
+			padding: 1em 2em;
+		}
+		img {
+			height: 1.2em;
+		}
 	}
 </style>

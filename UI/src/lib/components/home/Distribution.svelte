@@ -82,10 +82,16 @@
 		height: 600px;
 		z-index: 1;
 		margin: 0 auto;
+		max-width: 100%;
 	}
 	.distribution :global(.title) {
 		position: relative;
 		z-index: 1;
 		margin-bottom: 1em;
+	}
+	@media only screen and (max-width: 600px) {
+		.chart {
+			height: 320px;
+		}
 	}
 </style>

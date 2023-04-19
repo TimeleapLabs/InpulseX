@@ -111,4 +111,13 @@
 		box-shadow: inset 0px 0px 22px 0px rgba(255, 255, 255, 0.4),
 			inset 0px -8px 12px 0px var(--main-color);
 	}
+	@media only screen and (max-width: 600px) {
+		.utilities {
+			padding: 1em 2em;
+		}
+		.grid {
+			grid-template-columns: 1fr;
+			grid-template-rows: 500px 500px 500px 500px;
+		}
+	}
 </style>
