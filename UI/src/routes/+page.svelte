@@ -10,6 +10,8 @@
 	import Characters from '../lib/components/home/Characters.svelte';
 	import Team from '../lib/components/home/Team.svelte';
 	import Charts from '../lib/components/home/Charts.svelte';
+	import Distribution from '../lib/components/home/Distribution.svelte';
+	import Phases from '../lib/components/home/Phases.svelte';
 	import Partners from '../lib/components/home/Partners.svelte';
 	import Footer from '../lib/components/home/Footer.svelte';
 
@@ -24,6 +26,8 @@
 <Characters />
 <Team />
 <Charts />
+<Distribution />
+<Phases />
 <Partners />
 <Footer />
 
