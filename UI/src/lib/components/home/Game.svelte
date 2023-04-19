@@ -92,8 +92,10 @@
 	</div>
 	<div class="description">
 		<Paragraph centered>
-			Lorem ipsum dolor sit amet suspendisse mi neque laoreet leo feugiat amet dolor blandit
-			volutpat quam fames facilisi morbi vulputate.
+			The inventive quest explores Elon Musk's Mars colonisation vision, merging science fiction
+			with facts and inspiration.<br />"Starseed Awakening" presents an immersive narrative derived
+			from sources like<br /> Zecharia Sitchin's "The Complete Earth Chronicles" and the KGB's "Book
+			of Alien Races."
 		</Paragraph>
 	</div>
 	<button class="start"><Title as="h4">Start right now!</Title></button>

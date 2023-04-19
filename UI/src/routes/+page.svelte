@@ -9,7 +9,7 @@
 	import Game from '../lib/components/home/Game.svelte';
 	import Characters from '../lib/components/home/Characters.svelte';
 	import Team from '../lib/components/home/Team.svelte';
-	import Distribution from '../lib/components/home/Distribution.svelte';
+	import Charts from '../lib/components/home/Charts.svelte';
 	import Partners from '../lib/components/home/Partners.svelte';
 	import Footer from '../lib/components/home/Footer.svelte';
 
@@ -23,7 +23,7 @@
 <Game />
 <Characters />
 <Team />
-<Distribution />
+<Charts />
 <Partners />
 <Footer />
 

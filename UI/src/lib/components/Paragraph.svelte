@@ -20,6 +20,7 @@
 		font-family: 'Groningen';
 		font-size: var(--font-size);
 		margin: 0;
+		line-height: 1.4em;
 	}
 
 	.centered {

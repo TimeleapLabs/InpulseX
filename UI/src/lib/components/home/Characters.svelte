@@ -36,7 +36,7 @@
 		<div class="carousel">
 			<Carousel
 				dots={false}
-				pauseOnFocus={true}
+				pauseOnFocus={false}
 				autoplay={true}
 				particlesToShow={3}
 				autoplayDuration={8000}
@@ -52,7 +52,6 @@
 										src={item.video}
 										alt={item.label || 'Carousel'}
 										autoplay
-										loop
 										muted
 									/>
 								{:else}
@@ -69,7 +68,7 @@
 		</div>
 	{/if}
 	<div class="paragraph">
-		<Paragraph>
+		<Paragraph centered>
 			<p>
 				Custom characters provide players with an exceptional level of personalization and
 				uniqueness, enabling them to leave an indelible mark on the game.

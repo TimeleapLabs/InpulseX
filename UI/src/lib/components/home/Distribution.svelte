@@ -75,23 +75,6 @@
 </div>
 
 <style>
-	.distribution {
-		position: relative;
-		padding: 12em;
-		background-color: #140f29;
-	}
-	.background {
-		background: url(/images/grid.pink.png) no-repeat center center;
-		background-size: contain;
-		width: 60%;
-		height: 60%;
-		position: absolute;
-		top: 0;
-		left: 50%;
-		transform: translate(-50%, 0);
-		z-index: 0;
-		opacity: 0.4;
-	}
 	.chart {
 		position: relative;
 		z-index: 1;
