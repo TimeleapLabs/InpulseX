@@ -17,7 +17,7 @@
 		</video>
 	</div>
 	<div class="arrow">
-		<a href="#">
+		<a href="#about">
 			<ArrowDown width="36px" height="36px" />
 		</a>
 	</div>

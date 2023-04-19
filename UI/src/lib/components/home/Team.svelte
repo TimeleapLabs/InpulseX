@@ -136,7 +136,21 @@
 			image: 'michael',
 			bio: [
 				'The Unbounded Finance Aficionado',
-				'Focused on imparting the wisdom gleaned from building companies and investing, striving to help others achieve predictable growth in their businesses and wealth. With a professional foundation in international financial optimisation, an area termed residency arbitrage, this expert provides consultation to companies seeking enhanced financial efficiency, security, and adaptability by leveraging global variations in law, pricing, and infrastructure.'
+				'Focused on imparting the wisdom gleaned from building companies and investing, striving to help others achieve predictable growth in their businesses and wealth. With a professional foundation in international financial optimisation, an area termed residency arbitrage, this expert provides consultation to companies seeking enhanced financial efficiency, security, and adaptability by leveraging global variations in law, pricing, and infrastructure.',
+				'',
+				''
+			]
+		},
+		{
+			name: 'NiKita',
+			role: 'Gaming Advisor',
+			color: '#FFFFFF',
+			image: 'nikita',
+			bio: [
+				'The founder of Exverse.io',
+				'An esteemed figure in the web3 space, has a wealth of experience as a global marketing and business development director. With a proven track record of success, they have established themselves as a highly skilled and knowledgeable professional in the field. Their contributions to the development of web3 technologies have been widely recognised and have earned them a reputation as an innovator and leader in the industry.',
+				'',
+				''
 			]
 		}
 	];
