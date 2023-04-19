@@ -72,7 +72,7 @@
 		<div class="player">
 			<div class="title" bind:this={overlay}>
 				<div class="inner">
-					<Title as="h1"><Highlight>Behold</Highlight> the game!</Title>
+					<img src="/images/starseed.png" alt="Starseed Awakening" class="game-logo" />
 					<div class="strip">
 						<Strip />
 					</div>
@@ -108,6 +108,13 @@
 		box-sizing: border-box;
 		padding: 24em 12em 12em 12em;
 		background-color: #140f29;
+		position: relative;
+	}
+	.game-logo {
+		max-width: 800px;
+		margin-left: 200px;
+		margin-bottom: -160px;
+		z-index: 2;
 		position: relative;
 	}
 
