@@ -139,5 +139,8 @@
 		.grid {
 			grid-template-columns: 1fr;
 		}
+		.bio {
+			display: none;
+		}
 	}
 </style>

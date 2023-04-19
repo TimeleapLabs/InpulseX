@@ -1,5 +1,6 @@
 <script>
 	import Title from './Title.svelte';
+	import Paragraph from './Paragraph.svelte';
 	import { fade } from 'svelte/transition';
 
 	export let member;
@@ -7,10 +8,12 @@
 	export let index;
 
 	let frame = 0;
+	let bio = false;
 
 	const animate = (e) => {
 		e.preventDefault();
 		onSelect(index);
+		bio = !bio;
 		if (frame === 0) {
 			frame = 1;
 			setTimeout(() => (frame = 2), 1000);
@@ -49,6 +52,16 @@
 		</div>
 	</div>
 </a>
+
+{#if bio}
+	<div class="bio" transition:fade>
+		<Title as="h4">{member.name}</Title>
+		<Title as="h5">{member.role}</Title>
+		{#each member.bio as paragraph}
+			<Paragraph>{paragraph}</Paragraph>
+		{/each}
+	</div>
+{/if}
 
 <style>
 	a {
@@ -127,5 +140,10 @@
 		height: 8px;
 		border-radius: 50%;
 		background: var(--main-color);
+	}
+	@media only screen and (min-width: 600px) {
+		.bio {
+			display: none;
+		}
 	}
 </style>

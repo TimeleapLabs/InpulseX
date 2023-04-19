@@ -26,7 +26,20 @@
 	};
 
 	const enumerate = (items) => items.map((item, index) => [item, index]);
+
+	let outerWidth;
+	let particlesToShow = 3;
+
+	$: if (outerWidth < 600) {
+		particlesToShow = 1;
+	} else if (outerWidth < 1200) {
+		particlesToShow = 2;
+	} else {
+		particlesToShow = 3;
+	}
 </script>
+
+<svelte:window bind:outerWidth />
 
 <div class="characters">
 	<div class="ripple blue" />
@@ -38,7 +51,7 @@
 				dots={false}
 				pauseOnFocus={false}
 				autoplay={true}
-				particlesToShow={3}
+				{particlesToShow}
 				autoplayDuration={8000}
 				on:pageChange={onPageChange}
 			>
@@ -46,9 +59,10 @@
 					<div class="item">
 						<div class="video">
 							<div class="frame">
-								{#if index === currentIndex + 1}
+								{#if particlesToShow === 1 || index === currentIndex + 1}
 									<video
 										class="active"
+										class:alone={particlesToShow === 1}
 										src={item.video}
 										alt={item.label || 'Carousel'}
 										autoplay
@@ -128,6 +142,9 @@
 	video.active {
 		opacity: 1;
 		transform: scale(1.5);
+	}
+	video.active.alone {
+		transform: scale(1);
 	}
 	.paragraph {
 		padding: 4em 20em;

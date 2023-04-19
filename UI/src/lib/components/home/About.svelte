@@ -59,4 +59,9 @@
 		margin: 0 auto;
 		margin-bottom: 1em;
 	}
+	@media only screen and (max-width: 600px) {
+		p {
+			max-width: 80%;
+		}
+	}
 </style>

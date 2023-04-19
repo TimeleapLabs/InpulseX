@@ -18,13 +18,26 @@
 		{ image: '/images/partners/coinvestor.png' },
 		{ image: '/images/partners/halvings.png' }
 	];
+
+	let outerWidth;
+	let particlesToShow = 5;
+
+	$: if (outerWidth < 600) {
+		particlesToShow = 1;
+	} else if (outerWidth < 1200) {
+		particlesToShow = 3;
+	} else {
+		particlesToShow = 5;
+	}
 </script>
+
+<svelte:window bind:outerWidth />
 
 <div class="partners">
 	<div class="ripple blue" />
 	<div class="ripple pink" />
 	<Title as="h2" class="title">Strategic<br />Partnerships</Title>
-	<Carousel {items} particlesToShow={5} pauseOnFocus={true} autoplay={true} height={96} />
+	<Carousel {items} {particlesToShow} pauseOnFocus={true} autoplay={true} height={96} />
 </div>
 
 <style>
@@ -60,5 +73,10 @@
 		height: 800px;
 		opacity: 0.6;
 		max-width: 80%;
+	}
+	@media only screen and (max-width: 600px) {
+		.partners {
+			padding: 1em 2em;
+		}
 	}
 </style>
