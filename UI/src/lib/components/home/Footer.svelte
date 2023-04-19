@@ -59,4 +59,9 @@
 			padding: 1em 2em;
 		}
 	}
+	@media only screen and (max-width: 1440px) {
+		.footer {
+			padding: 2em 4em;
+		}
+	}
 </style>

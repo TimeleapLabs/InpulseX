@@ -94,4 +94,9 @@
 			height: 320px;
 		}
 	}
+	@media only screen and (max-width: 960px) {
+		.chart {
+			height: 520px;
+		}
+	}
 </style>

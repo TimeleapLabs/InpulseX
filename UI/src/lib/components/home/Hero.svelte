@@ -76,6 +76,11 @@
 	a:hover {
 		opacity: 1;
 	}
+	@media only screen and (max-width: 1080px) {
+		.hero :global(.title) {
+			font-size: 4em;
+		}
+	}
 	@media only screen and (max-width: 600px) {
 		.hero :global(.title) {
 			font-size: 3em;

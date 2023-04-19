@@ -129,7 +129,7 @@
 		background-color: transparent;
 		z-index: 1;
 		width: var(--video-width);
-		max-width: 100%;
+		max-width: 80%;
 	}
 
 	.title :global(h1) {
@@ -143,7 +143,7 @@
 
 	.video {
 		width: var(--video-width);
-		max-width: 100%;
+		max-width: 80%;
 		margin: 0 auto;
 	}
 
@@ -217,13 +217,35 @@
 		max-width: 80%;
 	}
 
-	@media only screen and (max-width: 600px) {
+	@media only screen and (max-width: 1440px) {
 		.game {
-			padding: 1em 2em;
+			padding: 8em 4em;
+		}
+	}
+	@media only screen and (max-width: 960px) {
+		.game {
+			padding: 8em 2em;
+		}
+	}
+	@media only screen and (max-width: 800px) {
+		.game-logo {
+			max-width: 80%;
+			margin: 0;
+			margin-left: 100px;
 		}
 		.strip {
 			display: none;
 		}
+		.video,
+		video {
+			max-width: 80%;
+		}
+	}
+	@media only screen and (max-width: 600px) {
+		.game {
+			padding: 1em 2em;
+		}
+
 		.game-logo {
 			max-width: 80%;
 			margin: 0;
@@ -231,6 +253,7 @@
 		}
 		.video {
 			margin: 0;
+			max-width: 100%;
 		}
 	}
 </style>

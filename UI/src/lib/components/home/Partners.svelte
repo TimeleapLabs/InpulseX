@@ -74,6 +74,11 @@
 		opacity: 0.6;
 		max-width: 80%;
 	}
+	@media only screen and (max-width: 1440px) {
+		.partners {
+			padding: 6em 4em;
+		}
+	}
 	@media only screen and (max-width: 600px) {
 		.partners {
 			padding: 1em 2em;

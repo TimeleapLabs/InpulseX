@@ -158,4 +158,20 @@
 			padding: 1em;
 		}
 	}
+	@media only screen and (max-width: 1440px) {
+		.characters {
+			padding: 4em;
+		}
+		.paragraph {
+			padding: 2em 8em;
+		}
+	}
+	@media only screen and (max-width: 960px) {
+		.characters {
+			padding: 2em;
+		}
+		.paragraph {
+			padding: 1em 2em;
+		}
+	}
 </style>

@@ -131,6 +131,15 @@
 	.bio :global(p + p) {
 		margin-top: 1em;
 	}
+	@media only screen and (max-width: 1240px) {
+		.team {
+			padding: 4em;
+			grid-template-columns: 1fr 2fr;
+		}
+		.grid {
+			grid-template-columns: 1fr 1fr;
+		}
+	}
 	@media only screen and (max-width: 600px) {
 		.team {
 			padding: 1em 2em;

@@ -56,4 +56,14 @@
 			padding: 1em 2em;
 		}
 	}
+	@media only screen and (max-width: 1440px) {
+		.charts {
+			padding: 6em;
+		}
+	}
+	@media only screen and (max-width: 960px) {
+		.charts {
+			padding: 3em;
+		}
+	}
 </style>

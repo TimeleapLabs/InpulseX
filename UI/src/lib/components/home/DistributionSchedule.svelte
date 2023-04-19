@@ -255,4 +255,9 @@
 			height: 120px;
 		}
 	}
+	@media only screen and (max-width: 960px) {
+		.chart {
+			height: 240px;
+		}
+	}
 </style>
