@@ -42,7 +42,7 @@ const excluded = [
   "0x283B3b8f340E8FB94D55b17E906744a74074cD07".toLowerCase(),
   "0x22a3faA5Ee669C67709198b2BaA4512F46B698f6".toLowerCase(),
   "0xafd5ede8f2a5d712537d941d0ec20778bde2024f".toLowerCase(),
-  "0xbe483805d7a5e2c3417c33a93644735611fbd8ff".toLowerCase(),
+  "0xffefE959d8bAEA028b1697ABfc4285028d6CEB10".toLowerCase(),
 ];
 
 const entries = Object.entries(balances).filter(
