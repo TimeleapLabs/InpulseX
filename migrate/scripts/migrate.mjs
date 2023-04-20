@@ -56,7 +56,7 @@ bar.start(entries.length, 0);
 await Promise.all(
   [...chunks].map(async (chunk) => {
     const addresses = chunk.map((d) => d[0]);
-    const balances = chunk.map((d) => ethers.BigNumber.from(d[1]).div(10000));
+    const balances = chunk.map((d) => ethers.BigNumber.from(d[1]).div(20000));
     await airdrop(addresses, balances);
     bar.increment(chunk.length);
   })
