@@ -2,6 +2,37 @@
 	import Highlight from '../Highlight.svelte';
 	import Paragraph from '../Paragraph.svelte';
 	import Title from '../Title.svelte';
+	import { slide } from 'svelte/transition';
+	import ChevronsUp from '../icons/ChevronsUp.svelte';
+
+	let showOne = false;
+	let showTwo = false;
+	let showThree = false;
+	let showFour = false;
+
+	const onMouseEnter = (n) => () => {
+		if (n === 1) {
+			showOne = true;
+		} else if (n === 2) {
+			showTwo = true;
+		} else if (n === 3) {
+			showThree = true;
+		} else if (n === 4) {
+			showFour = true;
+		}
+	};
+
+	const onMouseLeave = (n) => () => {
+		if (n === 1) {
+			showOne = false;
+		} else if (n === 2) {
+			showTwo = false;
+		} else if (n === 3) {
+			showThree = false;
+		} else if (n === 4) {
+			showFour = false;
+		}
+	};
 </script>
 
 <div class="utilities" id="pillars">
@@ -13,45 +44,112 @@
 	</div>
 
 	<div class="grid">
-		<div class="card" style="--image: url('/images/treasure-chest.png'); --main-color: #a942aa;">
+		<div
+			class="card"
+			style="--image: url('/images/treasure-chest.png'); --main-color: #a942aa;"
+			on:mouseenter={onMouseEnter(1)}
+			on:mouseleave={onMouseLeave(1)}
+		>
 			<div class="description">
-				<Title as="h4">TheNFTX</Title>
-				<Paragraph>
-					TheNFTX is the leading platform for visionary artists aligned with the consciousness
-					expansion movement, serving as a crucial NFT cornerstone in the InpulseX project.
-				</Paragraph>
+				<Title as="h4">
+					<img
+						src="/images/partners/thenftx.png"
+						height="28em"
+						alt="TheNFTX"
+						style="margin-bottom: -8px;"
+					/>
+				</Title>
+				<div class="chevron">
+					<ChevronsUp width={'20px'} height={'20px'} />
+				</div>
+				{#if showOne}
+					<div transition:slide={{ duration: 300 }}>
+						<Paragraph>
+							TheNFTX serves as a crucial NFT cornerstone within the InpulseX ecosystem, striving to
+							establish itself as the premier platform for forward-thinking artists whose creations
+							resonate with the consciousness expansion movement, space exploration and pioneering
+							technologies.
+						</Paragraph>
+					</div>
+				{/if}
 			</div>
 		</div>
 
-		<div class="card" style="--image: url('/images/gamepad.png'); --main-color: #ac8f4b;">
+		<div
+			class="card"
+			style="--image: url('/images/gamepad.png'); --main-color: #ac8f4b;"
+			on:mouseenter={onMouseEnter(2)}
+			on:mouseleave={onMouseLeave(2)}
+		>
 			<div class="description">
-				<Title as="h4">TheGameX</Title>
-				<Paragraph>
-					TheGameX is a vital pillar for InpulseX, driving user engagement, strengthening IPX token
-					utility, and cultivating a thriving community invested in the Starseed game and broader
-					ecosystem.
-				</Paragraph>
+				<Title as="h4">
+					<img src="/images/partners/thegamex.png" height="16em" alt="TheGameX" />
+				</Title>
+				<div class="chevron">
+					<ChevronsUp width={'20px'} height={'20px'} />
+				</div>
+				{#if showTwo}
+					<div transition:slide={{ duration: 300 }}>
+						<Paragraph>
+							TheGameX pillar is paramount to the entire ecosystem. It is a major driver of user
+							engagement, community growth, and long-term sustainability by focusing on developing
+							and managing the Starseed game and associated activities.
+						</Paragraph>
+					</div>
+				{/if}
 			</div>
 		</div>
 
-		<div class="card" style="--image: url('/images/spaceship.png'); --main-color: #66aeac;">
+		<div
+			class="card"
+			style="--image: url('/images/spaceship.png'); --main-color: #66aeac;"
+			on:mouseenter={onMouseEnter(3)}
+			on:mouseleave={onMouseLeave(3)}
+		>
 			<div class="description">
-				<Title as="h4">TheAcademiaX</Title>
-				<Paragraph>
-					TheAcademiaX connects industry experts with community members, offering knowledge sharing,
-					networking opportunities, educational content, and community empowerment.
-				</Paragraph>
+				<Title as="h4">
+					<img
+						src="/images/partners/theacademiax.png"
+						height="20em"
+						alt="TheAcademiaX"
+						style="margin-bottom: -8px;"
+					/>
+				</Title>
+				<div class="chevron">
+					<ChevronsUp width={'20px'} height={'20px'} />
+				</div>
+				{#if showThree}
+					<div transition:slide={{ duration: 300 }}>
+						<Paragraph>
+							The AcademiaX pillar plays a unique and important role, dedicated to enriching the
+							community by bringing together individuals passionate about innovation, exploration,
+							and knowledge.
+						</Paragraph>
+					</div>
+				{/if}
 			</div>
 		</div>
 
-		<div class="card" style="--image: url('/images/palace.jpg'); --main-color: #a942aa;">
+		<div
+			class="card"
+			style="--image: url('/images/palace.jpg'); --main-color: #a942aa;"
+			on:mouseenter={onMouseEnter(4)}
+			on:mouseleave={onMouseLeave(4)}
+		>
 			<div class="description">
 				<Title as="h4">Xstronaut Membership Club</Title>
-				<Paragraph>
-					XMC is a passionate club offering exclusive benefits, attracting members and driving
-					ecosystem growth. It includes tiered benefits, token launches, VC deals, personalised
-					avatars, one-on-one meetings with the IPX management team, and much more.
-				</Paragraph>
+				<div class="chevron">
+					<ChevronsUp width={'20px'} height={'20px'} />
+				</div>
+				{#if showFour}
+					<div transition:slide={{ duration: 300 }}>
+						<Paragraph>
+							The X.M.C. is an exciting and vibrant exclusive club where individuals with a shared
+							passion enjoy unique benefits and fantastic opportunities. As a member, you can take
+							advantage of a wide range of perks, depending on your membership tier.
+						</Paragraph>
+					</div>
+				{/if}
 			</div>
 		</div>
 	</div>
@@ -87,7 +185,7 @@
 
 	.grid {
 		display: grid;
-		grid-template-rows: 500px 500px;
+		grid-template-rows: 320px 320px;
 		grid-template-columns: 1fr 1fr;
 		grid-gap: 4rem;
 		padding: 4em 0;
@@ -108,6 +206,7 @@
 	}
 
 	.description {
+		position: relative;
 		width: 100%;
 		padding: 1em 2em;
 		border: 1px solid var(--main-color);
@@ -117,9 +216,16 @@
 		box-shadow: inset 0px 0px 22px 0px rgba(255, 255, 255, 0.4),
 			inset 0px -8px 12px 0px var(--main-color);
 	}
+	.chevron {
+		position: absolute;
+		top: 1.5em;
+		right: 3em;
+		opacity: 0.7;
+	}
 	.description :global(h4) {
 		font-size: 2em;
 		margin-bottom: 0.5em;
+		text-align: center;
 	}
 	@media only screen and (max-width: 1440px) {
 		.utilities {
@@ -132,10 +238,14 @@
 		}
 		.grid {
 			grid-template-columns: 1fr;
-			grid-template-rows: 500px 500px 500px 500px;
+			grid-template-rows: 320px 320px 320px 320px;
 		}
 		.title {
 			font-size: 1em;
 		}
+	}
+	.description :global(h4) {
+		font-family: 'Groningen';
+		font-size: 1.4em;
 	}
 </style>

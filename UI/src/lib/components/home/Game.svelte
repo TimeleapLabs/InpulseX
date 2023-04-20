@@ -70,32 +70,31 @@
 	<div class="ripple blue" />
 	<div class="video">
 		<div class="player">
-			<div class="title" bind:this={overlay}>
-				<div class="inner">
-					<img src="/images/starseed.png" alt="Starseed Awakening" class="game-logo" />
-					<div class="strip">
-						<Strip />
-					</div>
-				</div>
+			<div class="title">
+				<img src="/images/starseed.png" alt="Starseed Awakening" class="game-logo" />
 			</div>
-			<video bind:this={videoPlayer} src="/videos/game-video.mp4">
-				<track kind="captions" />
-			</video>
-			{#if playing}
-				<button class="player-control" class:hidden={pauseHidden} on:click={pause}>
-					<Pause width="128px" />
-				</button>
-			{:else}
-				<button class="player-control" on:click={play}><Play width="128px" /></button>
-			{/if}
+			<div class="wrap">
+				<video bind:this={videoPlayer} src="/videos/game-video.mp4">
+					<track kind="captions" />
+				</video>
+				{#if playing}
+					<button class="player-control" class:hidden={pauseHidden} on:click={pause}>
+						<Pause width="128px" />
+					</button>
+				{:else}
+					<button class="player-control" on:click={play}><Play width="128px" /></button>
+				{/if}
+			</div>
 		</div>
 	</div>
 	<div class="description">
 		<Paragraph centered>
-			The inventive quest explores Elon Musk's Mars colonisation vision, merging science fiction
-			with facts and inspiration.<br />"Starseed Awakening" presents an immersive narrative derived
-			from sources like<br /> Zecharia Sitchin's "The Complete Earth Chronicles" and the KGB's "Book
-			of Alien Races."
+			"Starseed Awakening" features an immersive narrative meticulously crafted from various
+			sources, including "The Complete Earth Chronicles" by Zecharia Sitchin and much more. This
+			mind-blowing adventure invites players to explore the true motivations behind Elon Musk's
+			vision for colonising Mars.
+			<br />
+			Get ready to embark on the journey of a lifetime with "Starseed Awakening."
 		</Paragraph>
 	</div>
 </div>
@@ -111,39 +110,26 @@
 		background-color: #140f29;
 		position: relative;
 	}
+	.title {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
 	.game-logo {
-		max-width: 800px;
-		margin-left: 200px;
-		margin-bottom: -160px;
+		max-width: 80%;
+		width: 560px;
+		margin-bottom: 2em;
 		z-index: 2;
 		position: relative;
-	}
-
-	.title {
-		position: absolute;
-		left: 0;
-		top: 0;
-		right: 0;
-		bottom: 0;
-		background-color: transparent;
-		z-index: 1;
-		width: var(--video-width);
-		max-width: 80%;
-	}
-
-	.title :global(h1) {
-		margin-left: 135px;
-	}
-
-	.title .inner {
-		transform: rotate(-14deg) scale(0.7) translate(-38%, -105%);
-		width: 100%;
 	}
 
 	.video {
 		width: var(--video-width);
 		max-width: 80%;
 		margin: 0 auto;
+	}
+	.wrap {
+		position: relative;
 	}
 
 	@media (max-width: 1280px) {
@@ -167,6 +153,8 @@
 	.description {
 		margin-top: 2em;
 		z-index: 2;
+		max-width: var(--video-width);
+		align-self: center;
 	}
 
 	button.player-control {
@@ -213,14 +201,6 @@
 		}
 	}
 	@media only screen and (max-width: 800px) {
-		.game-logo {
-			max-width: 80%;
-			margin: 0;
-			margin-left: 100px;
-		}
-		.strip {
-			display: none;
-		}
 		.video,
 		video {
 			max-width: 80%;
@@ -229,12 +209,6 @@
 	@media only screen and (max-width: 600px) {
 		.game {
 			padding: 1em 2em;
-		}
-
-		.game-logo {
-			max-width: 80%;
-			margin: 0;
-			margin-left: 100px;
 		}
 		.video {
 			margin: 0;

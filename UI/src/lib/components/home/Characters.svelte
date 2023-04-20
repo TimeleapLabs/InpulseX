@@ -6,17 +6,17 @@
 
 	const items = [
 		{ video: '/videos/characters/commander.mp4' },
-		{ video: '/videos/characters/eve.mp4' },
-		{ video: '/videos/characters/fomotion.mp4' },
 		{ video: '/videos/characters/jay.mp4' },
-		{ video: '/videos/characters/jerry.mp4' },
-		{ video: '/videos/characters/joe.mp4' },
-		{ video: '/videos/characters/lisa.mp4' },
+		{ video: '/videos/characters/eve.mp4' },
 		{ video: '/videos/characters/rod.mp4' },
 		{ video: '/videos/characters/rv-female.mp4' },
+		{ video: '/videos/characters/xstronaut.mp4' },
 		{ video: '/videos/characters/rv-male.mp4' },
+		{ video: '/videos/characters/lisa.mp4' },
 		{ video: '/videos/characters/suppoman.mp4' },
-		{ video: '/videos/characters/xstronaut.mp4' }
+		{ video: '/videos/characters/jerry.mp4' },
+		{ video: '/videos/characters/joe.mp4' },
+		{ video: '/videos/characters/fomotion.mp4' }
 	];
 
 	let currentIndex = 0;
@@ -44,7 +44,7 @@
 <div class="characters" id="characters">
 	<div class="ripple blue" />
 	<div class="ripple pink" />
-	<Title as="h2" class="title" centered>Custom Characters</Title>
+	<Title as="h2" class="title" centered>NFT Custom Characters</Title>
 	{#if browser}
 		<div class="carousel">
 			<Carousel
@@ -84,11 +84,16 @@
 	<div class="paragraph">
 		<Paragraph centered>
 			<p>
-				Custom characters provide players with an exceptional level of personalization and
-				uniqueness, enabling them to leave an indelible mark on the game.
+				Custom characters in the Starseed game offer players an unparalleled level of
+				personalization, allowing them to create a character that reflects their individuality and
+				unique style.
+			</p>
+			<p>
+				This leads to a more immersive and engaging experience, making the Starseed game more than
+				just a game but a personal adventure.
 			</p>
 			<a href="https://bit.ly/TheNFTX_Registration" class="start" target="_blank" rel="noreferrer">
-				<Title as="h4">Secure yours!!!</Title>
+				<Title as="h4">Secure yours now!</Title>
 			</a>
 		</Paragraph>
 	</div>
@@ -139,7 +144,7 @@
 		z-index: 2;
 		text-decoration: none;
 		display: flex;
-		width: 240px;
+		width: 260px;
 		align-items: center;
 		justify-content: center;
 	}
@@ -167,7 +172,7 @@
 		transform: scale(1);
 	}
 	.paragraph {
-		padding: 4em 20em;
+		padding: 4em 18em;
 		text-align: center;
 	}
 	@media only screen and (max-width: 600px) {

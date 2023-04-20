@@ -15,12 +15,12 @@
 		<DistributionSchedule />
 	{/if}
 
-	<div class="center">
+	<!--div class="center">
 		<div class="buttons">
 			<Button on:click={() => (chart = 0)}>Token Distribution</Button>
 			<Button on:click={() => (chart = 1)}>Distribution Schedule</Button>
 		</div>
-	</div>
+	</div-->
 </div>
 
 <style>

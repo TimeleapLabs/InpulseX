@@ -3,13 +3,10 @@
 	import Title from '../Title.svelte';
 
 	const items = [
-		{ image: '/images/partners/thenftx.png' },
 		//{ image: '/images/partners/wisdome.png' },
 		{ image: '/images/partners/solidproof.png' },
-		{ image: '/images/partners/thegamex.png' },
 		{ image: '/images/partners/kenshi.svg' },
 		{ image: '/images/partners/cls.svg' },
-		//{ image: '/images/partners/theacademiax.png' },
 		{ image: '/images/partners/gotbit.png' },
 		{ image: '/images/partners/exverse.png' },
 		{ image: '/images/partners/outerring.png', twoX: true },

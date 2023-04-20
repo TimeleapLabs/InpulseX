@@ -71,7 +71,7 @@
 	<div class="video">
 		<div class="player">
 			<div class="title">
-				<Title>Coming soon</Title>
+				<Title as="h1" centered>Staking Dashboard</Title>
 			</div>
 			<video bind:this={videoPlayer} src="/videos/welcome.mp4">
 				<track kind="captions" />
@@ -123,6 +123,8 @@
 		background-color: black;
 		box-shadow: 0 0px 40px 1px #dc15a444;
 		border-radius: 3em;
+		max-height: 830px;
+		object-fit: cover;
 	}
 
 	.description {

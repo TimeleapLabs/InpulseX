@@ -6,6 +6,19 @@
 
 	let canvas;
 
+	const colors = [
+		'#3395ff', //15
+		'#687de6', //4
+		'#599dcc', //2
+		'#7649b0', //23
+		'#c961fc', //3
+		'#ee58d5', //5
+		'#3372b5', //10
+		'#d85e5d', //8
+		'#50cef7', //2
+		'#ea7db4' //28
+	];
+
 	const assembleChart = () => {
 		const data = [
 			{ whom: 'Team', count: 15 },
@@ -30,7 +43,8 @@
 					{
 						label: 'Token distribution',
 						data: data.map((row) => row.count),
-						order: 1
+						order: 1,
+						backgroundColor: colors
 					}
 				]
 			},

@@ -88,8 +88,9 @@
 		top: 50%;
 		left: 50%;
 		transform: translate(-50%, -50%);
-		opacity: 0.4;
+		opacity: 0.35;
 		font-size: 0.8em;
+		text-shadow: 0px 0px 4px rgba(0, 0, 0, 0.9), 0px 0px 4px rgba(0, 0, 0, 0.9);
 	}
 	.name.solid {
 		transition: cubic-bezier(0.075, 0.82, 0.165, 1) 0.35s all;

@@ -43,7 +43,7 @@
 			<a href="/#about">About</a>
 			<a href="/#pillars">Pillars</a>
 			<a href="/#game">Starseed Awakening</a>
-			<a href="/#characters">Custom Characters</a>
+			<a href="/#characters">NFT Custom Characters</a>
 			<a href="/#team">Team</a>
 			<a href="/#tokenomics">Tokenomics</a>
 			<a href="/#spacemap">SpaceMap</a>

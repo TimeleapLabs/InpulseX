@@ -12,15 +12,16 @@
 		bind:this={parallax}
 	>
 		<ParallaxLayer rate={0.5} offset={0.4}>
-			<h2>About InpulseX</h2>
+			<h2>About</h2>
 			<h3>A token linked to the interplanetary journey</h3>
 			<p>
-				From the total suppply of $IPX tokens, 28% will be allocated to the greatest mission of
-				humankind - The Mars Mission.
+				InpulseX is a visionary initiative designed to support humanity's greatest goal: the Mars
+				mission. The project is committed to raising awareness and gathering financial resources to
+				contribute to the mission's progress.
 			</p>
 			<p>
-				ImpulseX shall offer financial support to SpaceX based on a progressive schedule triggered
-				by the miilestones associated with its market cap.
+				InpulseX aims to become the leading blockchain powerhouse, offering unwavering support to
+				SpaceX and the entire space exploration industry throughout this extraordinary journey.
 			</p>
 		</ParallaxLayer>
 	</Parallax>

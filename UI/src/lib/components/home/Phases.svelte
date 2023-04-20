@@ -96,18 +96,18 @@
 				'5th Network Launch',
 				'5th DEX Listing',
 				'4th Partnership Game Token',
-				'Starseed Chapter Two: Voyage Trailer Teaser',
-				'6th Network Launch'
+				'Starseed: Voyage Trailer Teaser',
+				'6th Network Launch',
+				'6th DEX Listing'
 			],
 			topicsRight: [
-				'6th DEX Listing',
 				'2nd AI Art Contest',
 				'2nd NFT Collection Launch',
 				'3rd NFT Exposition: Dubai',
 				'InpulseX 1st Limited-Edition Clothing',
 				'InpulseX Crypto Payment Card',
 				'1st Brand Sponsored By InpulseX',
-				'Starseed Chapter Two: Voyage Demo Launch',
+				'Starseed: Voyage Demo Launch',
 				'Expand Worldwide Marketing Campaign'
 			],
 			graphic: '/images/mars.png'
