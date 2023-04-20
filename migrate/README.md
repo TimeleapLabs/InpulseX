@@ -31,8 +31,10 @@ ADMIN_KEY=REPLACE_WITH_AN_ADMIN_WALLET_PRIVATE_KEY
   with the address of the newly deployed token smart contract.
 - The `setAdmin` method of the migration contract should be called by the contract owner
   with the address of the admin wallet.
+- The `setSender` method of the migration contract should be called by the contract owner
+  with the address of the token contract owner.
 - The `approve` method of the token smart contract should be called by the contract
-  owner with the address of the admin wallet, approving the maximum quantity of v2
+  owner with the address of the migration contract, approving the maximum quantity of v2
   tokens.
 
 ### Step 3: Liquidity
