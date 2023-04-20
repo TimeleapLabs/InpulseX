@@ -110,9 +110,9 @@
 				<Title as="h4">
 					<img
 						src="/images/partners/theacademiax.png"
-						height="20em"
+						height="14em"
 						alt="TheAcademiaX"
-						style="margin-bottom: -8px;"
+						style="margin-bottom: -4px;"
 					/>
 				</Title>
 				<div class="chevron">

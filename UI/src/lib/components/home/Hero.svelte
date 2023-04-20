@@ -7,7 +7,12 @@
 <div class="hero">
 	<div class="content">
 		<Title class="title">The journey to become a multiplanetary species</Title>
-		<Button href="#content">Let's go!</Button>
+		<Button
+			href="https://pancakeswap.finance/swap?outputCurrency=0xCDB96d3aEf363a036c6CF6c9b5736d79f0E404e2"
+			target="_blank"
+		>
+			Join now
+		</Button>
 	</div>
 	<div class="background">
 		<video autoplay muted poster="/images/hero.png">

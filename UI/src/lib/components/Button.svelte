@@ -5,7 +5,7 @@
 </script>
 
 {#if href}
-	<a {href} class:full-width={fullWidth} on:click><slot /></a>
+	<a {href} class:full-width={fullWidth} on:click {...$$restProps}><slot /></a>
 {:else}
 	<button class:full-width={fullWidth} on:click {disabled}><slot /></button>
 {/if}

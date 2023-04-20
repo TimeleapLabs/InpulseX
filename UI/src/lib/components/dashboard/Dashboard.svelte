@@ -73,21 +73,26 @@
 			<div class="title">
 				<Title as="h1" centered>Staking Dashboard</Title>
 			</div>
-			<video bind:this={videoPlayer} src="/videos/welcome.mp4">
-				<track kind="captions" />
-			</video>
-			{#if playing}
-				<button class="player-control" class:hidden={pauseHidden} on:click={pause}>
-					<Pause width="128px" />
-				</button>
-			{:else}
-				<button class="player-control" on:click={play}><Play width="128px" /></button>
-			{/if}
+			<div class="wrap">
+				<video bind:this={videoPlayer} src="/videos/welcome.mp4">
+					<track kind="captions" />
+				</video>
+				{#if playing}
+					<button class="player-control" class:hidden={pauseHidden} on:click={pause}>
+						<Pause width="128px" />
+					</button>
+				{:else}
+					<button class="player-control" on:click={play}><Play width="128px" /></button>
+				{/if}
+			</div>
 		</div>
 	</div>
 </div>
 
 <style>
+	.wrap {
+		position: relative;
+	}
 	.game {
 		--video-width: 1024px;
 
@@ -125,11 +130,6 @@
 		border-radius: 3em;
 		max-height: 830px;
 		object-fit: cover;
-	}
-
-	.description {
-		margin-top: 2em;
-		z-index: 2;
 	}
 
 	button.player-control {
@@ -174,34 +174,29 @@
 		.game {
 			padding: 8em 2em;
 		}
+		.video video {
+			max-height: 380px;
+		}
 	}
 	@media only screen and (max-width: 800px) {
-		.game-logo {
-			max-width: 80%;
-			margin: 0;
-			margin-left: 100px;
-		}
-		.strip {
-			display: none;
-		}
 		.video,
 		video {
 			max-width: 80%;
+		}
+		.video video {
+			max-height: 320px;
 		}
 	}
 	@media only screen and (max-width: 600px) {
 		.game {
 			padding: 1em 2em;
 		}
-
-		.game-logo {
-			max-width: 80%;
-			margin: 0;
-			margin-left: 100px;
-		}
 		.video {
 			margin: 0;
 			max-width: 100%;
+		}
+		.video video {
+			max-height: 280px;
 		}
 	}
 </style>
