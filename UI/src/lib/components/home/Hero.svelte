@@ -2,10 +2,35 @@
 	import Button from '../Button.svelte';
 	import ArrowDown from '../icons/ArrowDown.svelte';
 	import Title from '../Title.svelte';
+	import X from '../icons/X.svelte';
+	import { fade } from 'svelte/transition';
+
+	let message = true;
+
+	const close = () => (message = false);
 </script>
 
 <div class="hero">
 	<div class="content">
+		{#if message}
+			<div class="message" transition:fade>
+				<div>
+					InpulseX has recently migrated from Old Contract to New Contract. For more information,
+					please check the new InpulseX profile on
+					<a
+						rel="noreferrer"
+						target="_blank"
+						href="https://coinmarketcap.com/currencies/inpulsex-new/"
+					>
+						Coinmarketcap.
+					</a>
+				</div>
+				<a href="#close" class="close" on:click={close}>
+					<X width="1em" height="1em" />
+				</a>
+			</div>
+		{/if}
+
 		<Title class="title">The journey to become a multiplanetary species</Title>
 		<Button
 			href="https://pancakeswap.finance/swap?outputCurrency=0xCDB96d3aEf363a036c6CF6c9b5736d79f0E404e2"
@@ -33,6 +58,9 @@
 		position: relative;
 		height: 100vh;
 		width: 100vw;
+		display: flex;
+		justify-content: center;
+		flex-direction: column;
 	}
 	.background {
 		position: absolute;
@@ -52,6 +80,7 @@
 		box-sizing: border-box;
 		flex-direction: column;
 		gap: 2em;
+		flex: 1;
 	}
 	video,
 	img {
@@ -68,6 +97,7 @@
 	}
 	.arrow {
 		text-align: center;
+		margin-bottom: 1em;
 	}
 	a {
 		height: 32px;
@@ -89,6 +119,38 @@
 	@media only screen and (max-width: 600px) {
 		.hero :global(.title) {
 			font-size: 3em;
+		}
+	}
+	.message {
+		background: #ffefbd;
+		color: #000;
+		padding: 1em;
+		display: flex;
+		align-items: center;
+		border-radius: 1em;
+		gap: 1em;
+	}
+	a {
+		text-decoration: none;
+	}
+	a.close {
+		color: #000;
+		display: flex;
+		align-items: center;
+	}
+	@media only screen and (max-width: 600px) {
+		a.close {
+			align-self: flex-start;
+		}
+	}
+	@media only screen and (min-width: 600px) and (max-height: 960px) {
+		.hero :global(.title) {
+			font-size: 4em;
+		}
+	}
+	@media only screen and (min-width: 600px) and (max-height: 690px) {
+		.hero :global(.title) {
+			font-size: 2em;
 		}
 	}
 </style>

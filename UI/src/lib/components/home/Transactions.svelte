@@ -181,6 +181,7 @@
 		padding: 1rem 2rem;
 		box-sizing: border-box;
 		backdrop-filter: blur(24px);
+		-webkit-backdrop-filter: blur(24px);
 		text-align: center;
 	}
 	.glass :global(h3) {

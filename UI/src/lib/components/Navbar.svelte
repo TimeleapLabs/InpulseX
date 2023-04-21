@@ -62,6 +62,7 @@
 		z-index: 100;
 		background: rgba(0, 0, 0, 0.4);
 		backdrop-filter: blur(16px);
+		-webkit-backdrop-filter: blur(16px);
 		align-items: center;
 		width: 100%;
 		padding: 1em 4em;
@@ -83,6 +84,7 @@
 		height: 100%;
 		background: rgba(0, 0, 0, 0.4);
 		backdrop-filter: blur(16px);
+		-webkit-backdrop-filter: blur(16px);
 		box-sizing: border-box;
 		padding: 4em;
 		display: flex;

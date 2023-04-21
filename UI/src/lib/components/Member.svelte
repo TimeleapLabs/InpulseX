@@ -131,6 +131,7 @@
 		align-items: center;
 		justify-content: center;
 		backdrop-filter: blur(32px);
+		-webkit-backdrop-filter: blur(32px);
 		padding: 0 1em;
 		box-sizing: border-box;
 	}

@@ -211,6 +211,7 @@
 		padding: 1em 2em;
 		border: 1px solid var(--main-color);
 		backdrop-filter: blur(24px);
+		-webkit-backdrop-filter: blur(24px);
 		border-top-left-radius: 4em;
 		border-top-right-radius: 4em;
 		box-shadow: inset 0px 0px 22px 0px rgba(255, 255, 255, 0.4),
@@ -226,6 +227,8 @@
 		font-size: 2em;
 		margin-bottom: 0.5em;
 		text-align: center;
+		font-family: 'Groningen';
+		font-size: 1.4em;
 	}
 	@media only screen and (max-width: 1440px) {
 		.utilities {
@@ -243,9 +246,8 @@
 		.title {
 			font-size: 1em;
 		}
-	}
-	.description :global(h4) {
-		font-family: 'Groningen';
-		font-size: 1.4em;
+		.description :global(h4) {
+			font-size: 0.8em;
+		}
 	}
 </style>
