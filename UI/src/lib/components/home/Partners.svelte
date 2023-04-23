@@ -70,7 +70,7 @@
 		height: 800px;
 		opacity: 0.6;
 		max-width: 80%;
-		z-index: 1;
+		z-index: 0;
 	}
 	@media only screen and (max-width: 1440px) {
 		.partners {
