@@ -177,9 +177,10 @@
 <style>
 	.background {
 		width: 100%;
-		background-color: #140f29;
 		padding: 12em 6em;
 		box-sizing: border-box;
+		background: #140f29 url(/images/stars.png) no-repeat center center;
+		background-size: contain;
 	}
 
 	.phases {
