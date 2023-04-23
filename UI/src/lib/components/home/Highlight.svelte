@@ -71,7 +71,7 @@
 				<Title as="h1" centered>Highlights</Title>
 			</div>
 			<div class="wrap">
-				<video bind:this={videoPlayer} src="/videos/highlight.mp4">
+				<video bind:this={videoPlayer} src="/videos/highlight.mp4" controls={playing || undefined}>
 					<track kind="captions" />
 				</video>
 				{#if playing}
@@ -146,10 +146,6 @@
 
 	button.player-control.hidden {
 		display: none;
-	}
-
-	.player:hover button.player-control.hidden {
-		display: block;
 	}
 
 	.ripple.blue {
