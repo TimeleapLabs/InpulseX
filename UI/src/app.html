@@ -4,15 +4,53 @@
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<link rel="stylesheet" href="/common.css" />
-		<title>InpulseX &#8211; The Journey To Become A Multiplanetary Species</title>
+		<title>InpulseX — The Journey To Become A Multiplanetary Species</title>
 		<link rel="icon" href="/images/cropped-X-Symbol-black-background-1-32x32.png" sizes="32x32" />
 		<link
 			rel="icon"
 			href="/images/cropped-X-Symbol-black-background-1-192x192.png"
 			sizes="192x192"
 		/>
+		<meta
+			name="description"
+			content="InpulseX is a visionary initiative designed to support humanity's greatest goal: the Mars mission. We are committed to backing SpaceX throughout this journey."
+		/>
+		<!-- Open Graph / Facebook -->
+		<meta property="og:type" content="website" />
+		<meta property="og:url" content="https://inpulsex.io/" />
+		<meta property="og:title" content="InpulseX — The Journey To Become A Multiplanetary Species" />
+		<meta
+			property="og:description"
+			content="InpulseX is a visionary initiative designed to support humanity's greatest goal: the Mars mission. We are committed to backing SpaceX throughout this journey."
+		/>
+		<meta property="og:image" content="https://inpulsex.io/images/social.png" />
+
+		<!-- Twitter -->
+		<meta property="twitter:card" content="summary_large_image" />
+		<meta property="twitter:url" content="https://inpulsex.io/" />
+		<meta
+			property="twitter:title"
+			content="InpulseX — The Journey To Become A Multiplanetary Species"
+		/>
+		<meta
+			property="twitter:description"
+			content="InpulseX is a visionary initiative designed to support humanity's greatest goal: the Mars mission. We are committed to backing SpaceX throughout this journey."
+		/>
+		<meta property="twitter:image" content="https://inpulsex.io/images/social.png" />
 
 		%sveltekit.head%
+
+		<!-- Google tag (gtag.js) -->
+		<script async src="https://www.googletagmanager.com/gtag/js?id=G-RVRP6TLVS0"></script>
+		<script>
+			window.dataLayer = window.dataLayer || [];
+			function gtag() {
+				dataLayer.push(arguments);
+			}
+			gtag('js', new Date());
+
+			gtag('config', 'G-RVRP6TLVS0');
+		</script>
 	</head>
 	<body>
 		<div>%sveltekit.body%</div>

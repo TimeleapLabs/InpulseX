@@ -1,12 +1,9 @@
 <script>
 	import { onMount } from 'svelte';
-	import Button from '../Button.svelte';
-	import Highlight from '../Highlight.svelte';
-	import Paragraph from '../Paragraph.svelte';
+
 	import Title from '../Title.svelte';
 	import Pause from '../graphics/Pause.svelte';
 	import Play from '../graphics/Play.svelte';
-	import Strip from '../graphics/Strip.svelte';
 
 	let videoPlayer;
 	let overlay;
@@ -149,6 +146,10 @@
 
 	button.player-control.hidden {
 		display: none;
+	}
+
+	.player:hover button.player-control.hidden {
+		display: block;
 	}
 
 	.ripple.blue {

@@ -207,7 +207,7 @@
 	<div class="content">
 		<div class="sticky">
 			<img class="title" src="/images/team.svg" alt="The InpulseX Team" />
-			{#if typeof currentIndex === 'number' && !transition}
+			{#if members[currentIndex] && !transition}
 				<div class="bio" transition:fade>
 					<Title as="h4">{members[currentIndex].name}</Title>
 					<Title as="h5">{members[currentIndex].role}</Title>

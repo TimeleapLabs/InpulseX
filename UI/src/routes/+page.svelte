@@ -2,9 +2,6 @@
 	import Hero from '../lib/components/home/Hero.svelte';
 	import About from '../lib/components/home/About.svelte';
 	import Navbar from '../lib/components/Navbar.svelte';
-	// import ConnectButton from '../lib/components/ConnectButton.svelte';
-	// import ERC1363Stake from '../lib/components/staking/ERC1363Stake.svelte';
-	// import Swap from '../lib/components/swap/Swap.svelte';
 	import Utilities from '../lib/components/home/Utilities.svelte';
 	import Game from '../lib/components/home/Game.svelte';
 	import Characters from '../lib/components/home/Characters.svelte';
@@ -13,6 +10,7 @@
 	import Phases from '../lib/components/home/Phases.svelte';
 	import Partners from '../lib/components/home/Partners.svelte';
 	import Certificates from '../lib/components/home/Certificates.svelte';
+	import Highlight from '../lib/components/home/Highlight.svelte';
 	import Footer from '../lib/components/home/Footer.svelte';
 
 	import { Toaster } from 'svelte-french-toast';
@@ -29,6 +27,7 @@
 <Phases />
 <Partners />
 <Certificates />
+<Highlight />
 <Footer />
 
 <!-- <div class="connect">

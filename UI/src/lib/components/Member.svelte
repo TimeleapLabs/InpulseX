@@ -12,11 +12,16 @@
 
 	const animate = (e) => {
 		e.preventDefault();
-		onSelect(index);
-		bio = !bio;
-		if (frame === 0) {
-			frame = 1;
-			setTimeout(() => (frame = 2), 1000);
+		if (!bio) {
+			onSelect(index);
+			bio = !bio;
+			if (frame === 0) {
+				frame = 1;
+				setTimeout(() => (frame = 2), 1000);
+			}
+		} else {
+			onSelect(null);
+			frame = 0;
 		}
 	};
 </script>
