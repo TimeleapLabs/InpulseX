@@ -99,6 +99,7 @@
 		padding: 8em 12em 12em 12em;
 		background-color: #140f29;
 		position: relative;
+		overflow: hidden;
 	}
 	.title {
 		margin-bottom: 4em;
