@@ -166,6 +166,10 @@
 		.highlight {
 			padding: 8em 4em;
 		}
+		.ripple.blue {
+			width: 900px;
+			height: 900px;
+		}
 	}
 	@media only screen and (max-width: 960px) {
 		.highlight {
@@ -173,6 +177,10 @@
 		}
 		.video video {
 			max-height: 380px;
+		}
+		.ripple.blue {
+			width: 760px;
+			height: 760px;
 		}
 	}
 	@media only screen and (max-width: 800px) {
@@ -182,6 +190,10 @@
 		}
 		.video video {
 			max-height: 320px;
+		}
+		.ripple.blue {
+			width: 540px;
+			height: 540px;
 		}
 	}
 	@media only screen and (max-width: 600px) {
@@ -194,6 +206,10 @@
 		}
 		.video video {
 			max-height: 280px;
+		}
+		.ripple.blue {
+			width: 300px;
+			height: 300px;
 		}
 	}
 </style>
