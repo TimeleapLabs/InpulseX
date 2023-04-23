@@ -14,7 +14,6 @@
 		e.preventDefault();
 		if (!bio) {
 			onSelect(index);
-			bio = !bio;
 			if (frame === 0) {
 				frame = 1;
 				setTimeout(() => (frame = 2), 1000);
@@ -23,6 +22,7 @@
 			onSelect(null);
 			frame = 0;
 		}
+		bio = !bio;
 	};
 </script>
 
