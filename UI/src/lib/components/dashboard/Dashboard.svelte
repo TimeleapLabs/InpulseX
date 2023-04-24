@@ -71,7 +71,13 @@
 				<Title as="h1" centered>Staking Dashboard</Title>
 			</div>
 			<div class="wrap">
-				<video bind:this={videoPlayer} src="/videos/welcome.mp4" controls={playing || undefined}>
+				<video
+					bind:this={videoPlayer}
+					src="/videos/welcome.mp4"
+					controls={playing || undefined}
+					controlsList="nodownload"
+					oncontextmenu="return false;"
+				>
 					<track kind="captions" />
 				</video>
 				{#if playing}

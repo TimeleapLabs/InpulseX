@@ -70,7 +70,13 @@
 				<img src="/images/starseed.png" alt="Starseed Awakening" class="game-logo" />
 			</div>
 			<div class="wrap">
-				<video bind:this={videoPlayer} src="/videos/game-video.mp4" controls={playing || undefined}>
+				<video
+					bind:this={videoPlayer}
+					src="/videos/game-video.mp4"
+					controls={playing || undefined}
+					controlsList="nodownload"
+					oncontextmenu="return false;"
+				>
 					<track kind="captions" />
 				</video>
 				{#if playing}

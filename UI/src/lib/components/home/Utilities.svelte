@@ -10,30 +10,53 @@
 	let showThree = false;
 	let showFour = false;
 
+	let outerWidth;
+
 	const onMouseEnter = (n) => () => {
-		if (n === 1) {
-			showOne = true;
-		} else if (n === 2) {
-			showTwo = true;
-		} else if (n === 3) {
-			showThree = true;
-		} else if (n === 4) {
-			showFour = true;
+		if (outerWidth > 600) {
+			if (n === 1) {
+				showOne = true;
+			} else if (n === 2) {
+				showTwo = true;
+			} else if (n === 3) {
+				showThree = true;
+			} else if (n === 4) {
+				showFour = true;
+			}
 		}
 	};
 
 	const onMouseLeave = (n) => () => {
-		if (n === 1) {
-			showOne = false;
-		} else if (n === 2) {
-			showTwo = false;
-		} else if (n === 3) {
-			showThree = false;
-		} else if (n === 4) {
-			showFour = false;
+		if (outerWidth > 600) {
+			if (n === 1) {
+				showOne = false;
+			} else if (n === 2) {
+				showTwo = false;
+			} else if (n === 3) {
+				showThree = false;
+			} else if (n === 4) {
+				showFour = false;
+			}
+		}
+	};
+
+	const onClick = (n) => (e) => {
+		e.preventDefault();
+		if (outerWidth <= 600) {
+			if (n === 1) {
+				showOne = !showOne;
+			} else if (n === 2) {
+				showTwo = !showTwo;
+			} else if (n === 3) {
+				showThree = !showThree;
+			} else if (n === 4) {
+				showFour = !showFour;
+			}
 		}
 	};
 </script>
+
+<svelte:window bind:outerWidth />
 
 <div class="utilities" id="pillars">
 	<div class="title">
@@ -51,27 +74,29 @@
 			on:mouseleave={onMouseLeave(1)}
 		>
 			<div class="description">
-				<Title as="h4">
-					<img
-						src="/images/partners/thenftx.png"
-						height="28em"
-						alt="TheNFTX"
-						style="margin-bottom: -8px;"
-					/>
-				</Title>
-				<div class="chevron">
-					<ChevronsUp width={'20px'} height={'20px'} />
-				</div>
-				{#if showOne}
-					<div transition:slide={{ duration: 300 }}>
-						<Paragraph>
-							TheNFTX serves as a crucial NFT cornerstone within the InpulseX ecosystem, striving to
-							establish itself as the premier platform for forward-thinking artists whose creations
-							resonate with the consciousness expansion movement, space exploration and pioneering
-							technologies.
-						</Paragraph>
+				<a href="#toggle" on:click={onClick(1)}>
+					<Title as="h4">
+						<img
+							src="/images/partners/thenftx.png"
+							height="28em"
+							alt="TheNFTX"
+							style="margin-bottom: -8px;"
+						/>
+					</Title>
+					<div class="chevron">
+						<ChevronsUp width={'20px'} height={'20px'} />
 					</div>
-				{/if}
+					{#if showOne}
+						<div transition:slide={{ duration: 300 }}>
+							<Paragraph>
+								TheNFTX serves as a crucial NFT cornerstone within the InpulseX ecosystem, striving
+								to establish itself as the premier platform for forward-thinking artists whose
+								creations resonate with the consciousness expansion movement, space exploration and
+								pioneering technologies.
+							</Paragraph>
+						</div>
+					{/if}
+				</a>
 			</div>
 		</div>
 
@@ -82,21 +107,23 @@
 			on:mouseleave={onMouseLeave(2)}
 		>
 			<div class="description">
-				<Title as="h4">
-					<img src="/images/partners/thegamex.png" height="16em" alt="TheGameX" />
-				</Title>
-				<div class="chevron">
-					<ChevronsUp width={'20px'} height={'20px'} />
-				</div>
-				{#if showTwo}
-					<div transition:slide={{ duration: 300 }}>
-						<Paragraph>
-							TheGameX pillar is paramount to the entire ecosystem. It is a major driver of user
-							engagement, community growth, and long-term sustainability by focusing on developing
-							and managing the Starseed game and associated activities.
-						</Paragraph>
+				<a href="#toggle" on:click={onClick(2)}>
+					<Title as="h4">
+						<img src="/images/partners/thegamex.png" height="16em" alt="TheGameX" />
+					</Title>
+					<div class="chevron">
+						<ChevronsUp width={'20px'} height={'20px'} />
 					</div>
-				{/if}
+					{#if showTwo}
+						<div transition:slide={{ duration: 300 }}>
+							<Paragraph>
+								TheGameX pillar is paramount to the entire ecosystem. It is a major driver of user
+								engagement, community growth, and long-term sustainability by focusing on developing
+								and managing the Starseed game and associated activities.
+							</Paragraph>
+						</div>
+					{/if}
+				</a>
 			</div>
 		</div>
 
@@ -107,26 +134,28 @@
 			on:mouseleave={onMouseLeave(3)}
 		>
 			<div class="description">
-				<Title as="h4">
-					<img
-						src="/images/partners/theacademiax.png"
-						height="14em"
-						alt="TheAcademiaX"
-						style="margin-bottom: -4px;"
-					/>
-				</Title>
-				<div class="chevron">
-					<ChevronsUp width={'20px'} height={'20px'} />
-				</div>
-				{#if showThree}
-					<div transition:slide={{ duration: 300 }}>
-						<Paragraph>
-							The AcademiaX pillar plays a unique and important role, dedicated to enriching the
-							community by bringing together individuals passionate about innovation, exploration,
-							and knowledge.
-						</Paragraph>
+				<a href="#toggle" on:click={onClick(3)}>
+					<Title as="h4">
+						<img
+							src="/images/partners/theacademiax.png"
+							height="14em"
+							alt="TheAcademiaX"
+							style="margin-bottom: -4px;"
+						/>
+					</Title>
+					<div class="chevron">
+						<ChevronsUp width={'20px'} height={'20px'} />
 					</div>
-				{/if}
+					{#if showThree}
+						<div transition:slide={{ duration: 300 }}>
+							<Paragraph>
+								The AcademiaX pillar plays a unique and important role, dedicated to enriching the
+								community by bringing together individuals passionate about innovation, exploration,
+								and knowledge.
+							</Paragraph>
+						</div>
+					{/if}
+				</a>
 			</div>
 		</div>
 
@@ -137,19 +166,21 @@
 			on:mouseleave={onMouseLeave(4)}
 		>
 			<div class="description">
-				<Title as="h4">Xstronaut Membership Club</Title>
-				<div class="chevron">
-					<ChevronsUp width={'20px'} height={'20px'} />
-				</div>
-				{#if showFour}
-					<div transition:slide={{ duration: 300 }}>
-						<Paragraph>
-							The X.M.C. is an exciting and vibrant exclusive club where individuals with a shared
-							passion enjoy unique benefits and fantastic opportunities. As a member, you can take
-							advantage of a wide range of perks, depending on your membership tier.
-						</Paragraph>
+				<a href="#toggle" on:click={onClick(4)}>
+					<Title as="h4">Xstronaut Membership Club</Title>
+					<div class="chevron">
+						<ChevronsUp width={'20px'} height={'20px'} />
 					</div>
-				{/if}
+					{#if showFour}
+						<div transition:slide={{ duration: 300 }}>
+							<Paragraph>
+								The X.M.C. is an exciting and vibrant exclusive club where individuals with a shared
+								passion enjoy unique benefits and fantastic opportunities. As a member, you can take
+								advantage of a wide range of perks, depending on your membership tier.
+							</Paragraph>
+						</div>
+					{/if}
+				</a>
 			</div>
 		</div>
 	</div>
@@ -216,11 +247,13 @@
 		border-top-right-radius: 4em;
 		box-shadow: inset 0px 0px 22px 0px rgba(255, 255, 255, 0.4),
 			inset 0px -8px 12px 0px var(--main-color);
+		min-height: 64px;
+		box-sizing: border-box;
 	}
 	.chevron {
 		position: absolute;
-		top: 1.5em;
-		right: 3em;
+		top: 20px;
+		right: 3rem;
 		opacity: 0.7;
 	}
 	.description :global(h4) {
@@ -229,6 +262,10 @@
 		text-align: center;
 		font-family: 'Groningen';
 		font-size: 1.4em;
+	}
+	.description > a {
+		text-decoration: none;
+		color: white;
 	}
 	@media only screen and (max-width: 1440px) {
 		.utilities {
