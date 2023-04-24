@@ -1,6 +1,5 @@
 <script>
 	import Chart from 'chart.js/auto';
-	import { onMount } from 'svelte';
 	import Title from '../Title.svelte';
 	import Highlight from '../Highlight.svelte';
 
@@ -49,14 +48,14 @@
 				]
 			},
 			options: {
-				aspectRatio: 1.33,
+				aspectRatio: window.outerWidth > 600 ? 1.33 : 1,
 				hoverOffset: 50,
 				layout: {
 					padding: 40
 				},
 				plugins: {
 					legend: {
-						display: true,
+						display: window.outerWidth > 600,
 						align: 'center',
 						position: 'left'
 					},

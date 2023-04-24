@@ -57,6 +57,10 @@
 	@media only screen and (max-width: 600px) {
 		.footer {
 			padding: 1em 2em;
+			gap: 1.5em;
+		}
+		.spacer {
+			display: none;
 		}
 	}
 	@media only screen and (max-width: 1440px) {

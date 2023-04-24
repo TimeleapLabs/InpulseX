@@ -68,7 +68,7 @@
 	<div class="video">
 		<div class="player">
 			<div class="title">
-				<Title as="h1" centered>Highlights</Title>
+				<Title as="h1" centered>LA Event Highlight</Title>
 			</div>
 			<div class="wrap">
 				<video

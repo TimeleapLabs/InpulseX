@@ -199,4 +199,9 @@
 			padding: 1em 2em;
 		}
 	}
+	@media only screen and (max-width: 600px) {
+		.start :global(h4) {
+			font-size: 1.5em;
+		}
+	}
 </style>

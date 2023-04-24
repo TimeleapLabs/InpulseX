@@ -76,6 +76,7 @@
 					controls={playing || undefined}
 					controlsList="nodownload"
 					oncontextmenu="return false;"
+					poster="/images/game.poster.png"
 				>
 					<track kind="captions" />
 				</video>
