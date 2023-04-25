@@ -1,5 +1,6 @@
 <script>
 	import Title from '../Title.svelte';
+	import Download from '../icons/Download.svelte';
 </script>
 
 <div class="certificates" id="certificates">
@@ -12,7 +13,7 @@
 			class="certificate"
 		>
 			<img src="/images/token.png" alt="Token Audit" />
-			<span>Token Audit</span>
+			<span><Download width="1em" height="1em" /> Token Audit</span>
 		</a>
 		<a
 			href="/audits/SmartContract_Audit_Solidproof_InpulseXSwap.pdf"
@@ -20,7 +21,7 @@
 			class="certificate"
 		>
 			<img src="/images/swap.png" alt="Bridge Audit" />
-			<span>Bridge Audit</span>
+			<span><Download width="1em" height="1em" /> Bridge Audit</span>
 		</a>
 		<a
 			href="/audits/SmartContract_Audit_Solidproof_InpulseXStaking.pdf"
@@ -28,7 +29,7 @@
 			class="certificate"
 		>
 			<img src="/images/staking.png" alt="Staking Audit" />
-			<span>Staking Audit</span>
+			<span><Download width="1em" height="1em" /> Staking Audit</span>
 		</a>
 	</div>
 </div>
@@ -57,10 +58,7 @@
 		position: relative;
 	}
 	.certificate {
-		background: var(--primary-blue);
-		border-radius: 1em;
 		box-shadow: 0px 0px 24px 8px rgba(0, 0, 0, 0.1);
-		padding: 0.5em;
 		box-sizing: border-box;
 		text-decoration: none;
 		display: flex;
@@ -69,25 +67,63 @@
 		width: 300px;
 		max-width: 80%;
 		align-items: center;
-		padding-bottom: 3em;
 	}
 	.certificate span {
-		background: #fff;
-		border-radius: 1em;
+		color: #000;
+		background: rgba(255, 255, 255, 0.7);
 		padding: 1em 2em;
 		border-top-right-radius: 0;
 		border-top-left-radius: 0;
-		color: #000;
 		position: absolute;
-		width: calc(95% - 1em);
+		width: 100%;
 		display: block;
 		box-sizing: border-box;
-		bottom: 1em;
+		bottom: 0;
+		display: flex;
+		align-items: center;
+		gap: 1em;
+		backdrop-filter: blur(32px);
+		-webkit-backdrop-filter: blur(32px);
 	}
 	.certificate img {
-		border-radius: 1em;
-		width: 95%;
-		object-fit: contain;
+		width: 100%;
+		object-fit: cover;
+	}
+	.certificate {
+		clip-path: polygon(
+			0 40px,
+			40px 0,
+			100% 0,
+			100% calc(100% - 40px),
+			calc(100% - 40px) 100%,
+			0 100%
+		);
+		position: relative;
+		overflow: hidden;
+	}
+	.certificate:before {
+		content: '';
+		position: absolute;
+		z-index: 1;
+		inset: 0;
+		background: rgb(43, 123, 243);
+		background: linear-gradient(167deg, rgba(43, 123, 243, 1) 30%, rgba(220, 21, 164, 1) 100%);
+		clip-path: polygon(
+			0 40px,
+			40px 0,
+			100% 0,
+			100% calc(100% - 40px),
+			calc(100% - 40px) 100%,
+			0 100%,
+			0 40px,
+			4px calc(40px + 1.66px),
+			4px calc(100% - 4px),
+			calc(100% - 40px - 1.66px) calc(100% - 4px),
+			calc(100% - 4px) calc(100% - 40px - 1.66px),
+			calc(100% - 4px) 4px,
+			calc(40px + 1.66px) 4px,
+			4px calc(40px + 1.66px)
+		);
 	}
 	.grid {
 		display: flex;

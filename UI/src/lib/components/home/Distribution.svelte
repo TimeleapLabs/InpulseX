@@ -28,7 +28,7 @@
 			{ whom: 'Game Development', count: 5 },
 			{ whom: 'Liquidity', count: 3 },
 			{ whom: 'Marketing', count: 10 },
-			{ whom: 'Net Development', count: 3 },
+			{ whom: 'NFT Development', count: 3 },
 			{ whom: 'Public Sale', count: 18 },
 			{ whom: 'Reserves', count: 2 },
 			{ whom: 'Seed Sale', count: 3 }
