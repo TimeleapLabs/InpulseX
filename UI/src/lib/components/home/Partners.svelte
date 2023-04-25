@@ -23,6 +23,8 @@
 		particlesToShow = 1;
 	} else if (outerWidth < 1200) {
 		particlesToShow = 3;
+	} else if (outerWidth < 1600) {
+		particlesToShow = 4;
 	} else {
 		particlesToShow = 5;
 	}

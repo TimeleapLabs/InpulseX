@@ -289,7 +289,7 @@
 	}
 	@media only screen and (max-width: 600px) {
 		.background {
-			padding: 1em 2em;
+			padding: 1em;
 		}
 		.content {
 			grid-template-columns: 1fr;
@@ -303,8 +303,13 @@
 			word-wrap: normal;
 			white-space: normal;
 		}
+		.content-right {
+			margin-top: -5em;
+		}
 		.title {
 			font-size: 0.5em;
+			grid-column: 1;
+			text-align: center;
 		}
 	}
 </style>

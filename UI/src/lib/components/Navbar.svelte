@@ -48,6 +48,7 @@
 			<a href="/#tokenomics">Tokenomics</a>
 			<a href="/#spacemap">SpaceMap</a>
 			<a href="/#certificates">Certificates</a>
+			<a href="/dashboard">Dashboard</a>
 		</div>
 	{/if}
 </div>

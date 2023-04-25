@@ -1,7 +1,7 @@
 <script>
 	import DistributionSchedule from './DistributionSchedule.svelte';
 	import Distribution from './Distribution.svelte';
-	import Button from '../Button.svelte';
+	import Social from '../Social.svelte';
 
 	let chart = 0;
 </script>
@@ -21,6 +21,8 @@
 			<Button on:click={() => (chart = 1)}>Distribution Schedule</Button>
 		</div>
 	</div-->
+
+	<Social />
 </div>
 
 <style>
