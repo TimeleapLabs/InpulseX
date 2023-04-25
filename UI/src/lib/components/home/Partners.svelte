@@ -9,6 +9,7 @@
 		{ image: '/images/partners/cls.svg' },
 		{ image: '/images/partners/gotbit.png' },
 		{ image: '/images/partners/exverse.png' },
+		{ image: '/images/partners/n3on.png' },
 		{ image: '/images/partners/outerring.png', twoX: true },
 		{ image: '/images/partners/evocap.png' },
 		{ image: '/images/partners/castrum.png' },

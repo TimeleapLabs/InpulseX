@@ -5,6 +5,7 @@
 	import { browser } from '$app/environment';
 
 	const items = [
+		{},
 		{ video: '/videos/characters/commander.mp4' },
 		{ video: '/videos/characters/jay.mp4' },
 		{ video: '/videos/characters/eve.mp4' },
@@ -16,7 +17,8 @@
 		{ video: '/videos/characters/suppoman.mp4' },
 		{ video: '/videos/characters/jerry.mp4' },
 		{ video: '/videos/characters/joe.mp4' },
-		{ video: '/videos/characters/fomotion.mp4' }
+		{ video: '/videos/characters/fomotion.mp4' },
+		{}
 	];
 
 	let currentIndex = 0;
@@ -37,6 +39,10 @@
 	} else {
 		particlesToShow = 3;
 	}
+
+	const isCurrentItem = (index, currentIndex) => {
+		return index === currentIndex + 1;
+	};
 </script>
 
 <svelte:window bind:outerWidth />
@@ -54,29 +60,34 @@
 				{particlesToShow}
 				autoplayDuration={8000}
 				on:pageChange={onPageChange}
+				infinite={false}
 			>
 				{#each enumerate(items) as [item, index]}
-					<div class="item">
-						<div class="video">
-							<div class="frame">
-								{#if particlesToShow === 1 || index === currentIndex + 1}
-									<video
-										class="active"
-										class:alone={particlesToShow === 1}
-										src={item.video}
-										alt={item.label || 'Carousel'}
-										autoplay
-										muted
-									/>
-								{:else}
-									<video src={item.video} alt={item.label || 'Carousel'} muted />
-								{/if}
+					{#if item.video}
+						<div class="item">
+							<div class="video">
+								<div class="frame">
+									{#if particlesToShow === 1 || isCurrentItem(index, currentIndex)}
+										<video
+											class="active"
+											data-index={index}
+											data-condition={isCurrentItem(index, currentIndex)}
+											data-current={currentIndex}
+											class:alone={particlesToShow === 1}
+											src={item.video}
+											alt={item.label || 'Carousel'}
+											autoplay
+											muted
+										/>
+									{:else}
+										<video src={item.video} alt={item.label || 'Carousel'} muted />
+									{/if}
+								</div>
 							</div>
 						</div>
-						{#if item.label}
-							<span> {item.label} </span>
-						{/if}
-					</div>
+					{:else}
+						<span />
+					{/if}
 				{/each}
 			</Carousel>
 		</div>
