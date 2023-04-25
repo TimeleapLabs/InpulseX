@@ -5,7 +5,8 @@
 	import ChevronRight from '../../icons/chevron-right.svelte';
 	import Title from '../Title.svelte';
 	import Paragraph from '../Paragraph.svelte';
-	import { elasticOut, linear } from 'svelte/easing';
+	import { linear } from 'svelte/easing';
+	import { fade } from 'svelte/transition';
 
 	const phases = [
 		{
@@ -143,23 +144,31 @@
 				</button>
 				{#each phases as { title, dateStart, dateEnd, topicsLeft, topicsRight, graphic, index } (title)}
 					<div class="phase">
-						<div class="content">
-							<div class="title">
-								<Title>{@html title}</Title>
-								<Title as="h3">{dateStart} - {dateEnd}</Title>
-							</div>
-							<div class="milestones content-left">
-								{#each topicsLeft as topic (topic)}
-									<Paragraph>{@html topic}</Paragraph>
-								{/each}
-							</div>
-							<div class="milestones content-right">
-								{#each topicsRight as topic (topic)}
-									<Paragraph>{@html topic}</Paragraph>
-								{/each}
-							</div>
-						</div>
 						{#if !currentPageIndex || currentPageIndex === index}
+							<div class="content" transition:fade>
+								<div class="title">
+									<Title>{@html title}</Title>
+									<Title as="h3">{dateStart} - {dateEnd}</Title>
+								</div>
+								<div class="milestones content-left">
+									<ul>
+										{#each Object.entries(topicsLeft) as [index, topic]}
+											<Paragraph>
+												<li transition:fade={{ delay: parseInt(index) * 100 }}>{@html topic}</li>
+											</Paragraph>
+										{/each}
+									</ul>
+								</div>
+								<div class="milestones content-right">
+									<ul>
+										{#each Object.entries(topicsRight) as [index, topic]}
+											<Paragraph>
+												<li transition:fade={{ delay: parseInt(index) * 100 }}>{@html topic}</li>
+											</Paragraph>
+										{/each}
+									</ul>
+								</div>
+							</div>
 							<div class="graphic" transition:spin>
 								<img src={graphic} alt={title} />
 							</div>
@@ -250,6 +259,32 @@
 		}
 		.content {
 			grid-template-columns: 1fr 1fr 1fr;
+		}
+	}
+	@media only screen and (max-width: 1240px) {
+		.background {
+			padding: 3em 4em;
+		}
+		.content {
+			grid-template-columns: 1fr 1fr;
+		}
+		.title {
+			grid-column: span 2;
+			padding: 1em;
+		}
+	}
+	@media only screen and (min-width: 1200px) {
+		.title {
+			position: relative;
+		}
+		.title:after {
+			content: '';
+			background: #fff;
+			position: absolute;
+			width: 100px;
+			height: 1em;
+			right: 0;
+			top: 50%;
 		}
 	}
 	@media only screen and (max-width: 600px) {
