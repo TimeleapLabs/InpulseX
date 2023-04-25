@@ -39,6 +39,7 @@
 		justify-content: center;
 		flex-direction: column;
 		text-align: center;
+		box-shadow: 0px -4px 3px rgba(50, 50, 50, 0.75);
 	}
 	h2,
 	h3 {

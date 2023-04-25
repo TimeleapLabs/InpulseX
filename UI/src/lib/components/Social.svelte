@@ -6,16 +6,16 @@
 </script>
 
 <div class="socials">
-	<a href="https://t.me/InpulseX_Official">
+	<a target="_blank" rel="noreferrer" href="https://t.me/InpulseX_Official">
 		<Telegram />
 	</a>
-	<a href="https://twitter.com/InpulseX_io">
+	<a target="_blank" rel="noreferrer" href="https://twitter.com/InpulseX_io">
 		<Twitter />
 	</a>
-	<a href="https://discord.gg/kH6PaHsNHK">
+	<a target="_blank" rel="noreferrer" href="https://discord.gg/kH6PaHsNHK">
 		<Discord />
 	</a>
-	<a href="https://www.facebook.com/InpulseX/">
+	<a target="_blank" rel="noreferrer" href="https://www.facebook.com/InpulseX/">
 		<Facebook />
 	</a>
 </div>
@@ -34,7 +34,6 @@
 		flex-direction: column;
 		padding: 1em;
 		gap: 1em;
-		background: rgba(255, 255, 255, 0.2);
 		padding-right: 0.75em;
 	}
 	a {

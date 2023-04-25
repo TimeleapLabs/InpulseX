@@ -137,12 +137,12 @@
 		},
 		{
 			name: 'Muza',
-			role: 'The 3D Expert',
+			role: 'Unreal Engine Developer',
 			color: '#2B7BF3',
 			image: 'muzammil',
 			bio: [
+				'The 3D Expert',
 				'As a 3D artist, my area of expertise lies in Unreal Engine 5, where I specialize in character modeling, animation, and environment design, etc. I possess the skill to create exceptional 3D models and animations that cater to video games, product visualization projects, and short films. Over the years, I have accumulated vast experience, and with this, I am dedicated to bringing the InpulseX vision to life with mesmerizing 3D models, breathtaking environments, and much more.',
-				'',
 				'',
 				'',
 				''
@@ -154,11 +154,11 @@
 			color: '#DC15A4',
 			image: 'pouya',
 			bio: [
+				'Cross-Domain Tech Prodigy',
 				"As CEO and Founder of Kenshi, I spearhead a team creating an innovative all-in-one platform for blockchain development. Our focus on cutting-edge technology and user experience propels us to push the limits of what's possible in the blockchain world.",
 				"As CTO of Equip, I oversee the development of custom electronics, firmware, backends, and mobile apps. With vast software development experience and a passion for innovation, I'm excited to be part of such an exciting project.",
 				"At InpulseX, I'm responsible for developing their website, staking dashboard, and smart contracts. It's an honor to work with a talented team on a project with the potential to revolutionize the crypto world, providing support for the Mars mission.",
-				"Driven by a passion for decentralized computing, I invented my own distributed programming language. My involvement in the blockchain industry is driven by this fascination, and I'm thrilled to continue pushing the boundaries of what's possible. With 15+ years of software development experience and a proven record of running successful businesses, I bring knowledge and expertise to every project I undertake.",
-				''
+				"Driven by a passion for decentralized computing, I invented my own distributed programming language. My involvement in the blockchain industry is driven by this fascination, and I'm thrilled to continue pushing the boundaries of what's possible. With 15+ years of software development experience and a proven record of running successful businesses, I bring knowledge and expertise to every project I undertake."
 			]
 		},
 		{
@@ -183,6 +183,19 @@
 				'The founder of Exverse.io',
 				'An esteemed figure in the web3 space, has a wealth of experience as a global marketing and business development director. With a proven track record of success, they have established themselves as a highly skilled and knowledgeable professional in the field. Their contributions to the development of web3 technologies have been widely recognised and have earned them a reputation as an innovator and leader in the industry.',
 				'',
+				'',
+				''
+			]
+		},
+		{
+			name: 'Ryan',
+			role: 'Global Advisor',
+			color: '#DC15A4',
+			image: 'ryan',
+			bio: [
+				'Trailblazer in Web3 & Sports',
+				'Ryan Horn is a renowned business leader with over 25 years of experience across the dynamic fields of sports, fashion, entertainment, brands, web3 and gaming. His extensive experience spans building world-class businesses in various sectors.',
+				'Ryan held a significant position in sports, NFTs, and fan tokens at Binance, a top global cryptocurrency platform. Presently, he co-founded N3ON, an innovative platform focused on IP - Web3 - Blockchain - Fintech - Loyalty - Payments & Funding. Alongside his involvement with N3ON, Ryan is advising for multiple projects such as InpulseX, showcasing his dedication to nurturing progress and expansion within the Web3 and crypto domains.',
 				'',
 				''
 			]

@@ -13,6 +13,10 @@
 	import Highlight from '../lib/components/home/Highlight.svelte';
 	import Footer from '../lib/components/home/Footer.svelte';
 
+	// import ConnectButton from '../lib/components/ConnectButton.svelte';
+	// import ERC1363Stake from '../lib/components/staking/ERC1363Stake.svelte';
+	// import Swap from '../lib/components/swap/Swap.svelte';
+
 	import { Toaster } from 'svelte-french-toast';
 </script>
 

@@ -195,6 +195,7 @@
 		box-sizing: border-box;
 		padding: 4em 24em;
 		background-color: #140f29;
+		overflow: hidden;
 	}
 
 	.title {

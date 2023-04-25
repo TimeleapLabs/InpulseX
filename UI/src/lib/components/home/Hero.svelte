@@ -7,7 +7,10 @@
 
 	let message = true;
 
-	const close = () => (message = false);
+	const close = (e) => {
+		e.preventDefault();
+		message = false;
+	};
 </script>
 
 <div class="hero">
@@ -150,7 +153,10 @@
 	}
 	@media only screen and (min-width: 600px) and (max-height: 690px) {
 		.hero :global(.title) {
-			font-size: 2em;
+			font-size: 3.5em;
+		}
+		.content {
+			padding-bottom: 0;
 		}
 	}
 </style>

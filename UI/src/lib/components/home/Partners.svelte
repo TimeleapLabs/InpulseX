@@ -3,7 +3,7 @@
 	import Title from '../Title.svelte';
 
 	const items = [
-		//{ image: '/images/partners/wisdome.png' },
+		{ image: '/images/partners/wisdome.png' },
 		{ image: '/images/partners/solidproof.png' },
 		{ image: '/images/partners/kenshi.svg' },
 		{ image: '/images/partners/cls.svg' },

@@ -31,6 +31,10 @@
 			<img src="/images/staking.png" alt="Staking Audit" />
 			<span><Download width="1em" height="1em" /> Staking Audit</span>
 		</a>
+		<a href="/audits/KYC_Certificate_InpulseX.png" target="_blank" class="certificate">
+			<img src="/images/kyc.png" alt="KYC Verification" />
+			<span><Download width="1em" height="1em" /> KYC Verification</span>
+		</a>
 	</div>
 </div>
 
@@ -67,6 +71,7 @@
 		width: 300px;
 		max-width: 80%;
 		align-items: center;
+		height: 100%;
 	}
 	.certificate span {
 		color: #000;
