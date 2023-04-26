@@ -21,7 +21,7 @@
 		</a>
 		<div class="logo">
 			<a href="/">
-				<img src="/images/logo.webp" alt="InpulseX logo" />
+				<img src="/images/logo.png" alt="InpulseX logo" />
 			</a>
 		</div>
 		<div class="buttons">
