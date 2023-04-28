@@ -15,6 +15,8 @@
 
 	import Calculator from '../../icons/calculator.svelte';
 	import Coins from '../../icons/coins.svelte';
+	import Title from '../Title.svelte';
+	import FancyButton from '../FancyButton.svelte';
 
 	export let title;
 	export let address;
@@ -141,17 +143,17 @@
 </script>
 
 <div class="container">
-	<Card>
+	<Card isPrimary={false}>
 		<div class="inner">
-			<h4>{title}</h4>
+			<Title as="h3">{title}</Title>
 			<div class="amount">
 				<div class="field-wrap">
-					<NumberInput bind:value={amount} placeholder="Tokens to stake" label="Amount" />
+					<NumberInput fullWidth bind:value={amount} placeholder="Tokens to stake" label="Amount" />
 				</div>
-				<Button on:click={getMax}>Max</Button>
+				<FancyButton on:click={getMax}>Max</FancyButton>
 			</div>
 			<div class="buttons">
-				<Button fullWidth disabled={busy} on:click={toggleStake}>
+				<FancyButton fullWidth disabled={busy} on:click={toggleStake}>
 					<span class="info-button">
 						{#if showStake}
 							<Calculator /> APY
@@ -159,7 +161,7 @@
 							<Coins /> Show stake
 						{/if}
 					</span>
-				</Button>
+				</FancyButton>
 				{#if unlockTime > new Date().valueOf()}
 					<Button fullWidth disabled={busy} on:click={onStake}>Stake</Button>
 				{:else if unlockTime}
@@ -177,6 +179,9 @@
 </div>
 
 <style>
+	.container {
+		width: 580px;
+	}
 	.amount {
 		display: flex;
 		gap: 1em;
@@ -190,9 +195,6 @@
 		display: flex;
 		gap: 1em;
 		flex-direction: column;
-	}
-	h4 {
-		margin: 0;
 	}
 	.buttons {
 		display: flex;

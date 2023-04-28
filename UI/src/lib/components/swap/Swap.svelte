@@ -46,5 +46,7 @@
 	}
 	.swap {
 		display: flex;
+
+		width: 580px;
 	}
 </style>
