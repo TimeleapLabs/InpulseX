@@ -100,7 +100,7 @@
 	}
 	.arrow {
 		text-align: center;
-		margin-bottom: 1em;
+		margin-bottom: 4em;
 	}
 	a {
 		height: 32px;
