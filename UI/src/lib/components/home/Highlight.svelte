@@ -118,7 +118,7 @@
 
 	@media (max-width: 1280px) {
 		.video {
-			margin: 0 3em;
+			margin: 0 auto;
 		}
 	}
 

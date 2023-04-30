@@ -35,6 +35,8 @@
 	"type": "module",
 	"dependencies": {
 		"@openzeppelin/contracts": "^4.8.2",
-		"chart.js": "^4.2.1"
+		"chart.js": "^4.2.1",
+		"dotenv": "^16.0.3",
+		"google-spreadsheet": "^3.3.0"
 	}
 }

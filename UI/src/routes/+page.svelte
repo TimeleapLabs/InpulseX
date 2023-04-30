@@ -11,6 +11,7 @@
 	import Partners from '../lib/components/home/Partners.svelte';
 	import Certificates from '../lib/components/home/Certificates.svelte';
 	import Highlight from '../lib/components/home/Highlight.svelte';
+	import Subscribe from '../lib/components/home/Subscribe.svelte';
 	import Footer from '../lib/components/home/Footer.svelte';
 
 	// import ConnectButton from '../lib/components/ConnectButton.svelte';
@@ -32,6 +33,7 @@
 <Partners />
 <Certificates />
 <Highlight />
+<Subscribe />
 <Footer />
 
 <!-- <div class="connect">
