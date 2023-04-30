@@ -5,6 +5,7 @@
 </script>
 
 <div class="about" id="about">
+	<div class="fade" />
 	<Parallax
 		sections={2}
 		config={{ stiffness: 0.2, damping: 0.3 }}
@@ -39,7 +40,22 @@
 		justify-content: center;
 		flex-direction: column;
 		text-align: center;
-		box-shadow: 0px -4px 3px rgba(50, 50, 50, 0.75);
+		box-shadow: 0px -4px 32px 20px rgba(0, 0, 0, 1);
+		position: relative;
+	}
+	.fade {
+		background: linear-gradient(
+			180deg,
+			rgba(0, 0, 0, 0.9402354691876751) 10%,
+			rgba(0, 0, 0, 0.6181066176470589) 40%,
+			rgba(0, 0, 0, 0) 100%
+		);
+		height: 10vh;
+		position: absolute;
+		z-index: 1;
+		top: 0;
+		left: 0;
+		width: 100vw;
 	}
 	h2,
 	h3 {
