@@ -2,6 +2,7 @@
 	import DistributionSchedule from './DistributionSchedule.svelte';
 	import Distribution from './Distribution.svelte';
 	import Social from '../Social.svelte';
+	import Button from '../Button.svelte';
 
 	let chart = 0;
 </script>
@@ -15,12 +16,15 @@
 		<DistributionSchedule />
 	{/if}
 
-	<!--div class="center">
+	<div class="center">
 		<div class="buttons">
-			<Button on:click={() => (chart = 0)}>Token Distribution</Button>
-			<Button on:click={() => (chart = 1)}>Distribution Schedule</Button>
+			{#if chart === 1}
+				<Button on:click={() => (chart = 0)}>See Token Distribution</Button>
+			{:else}
+				<Button on:click={() => (chart = 1)}>See Distribution Schedule</Button>
+			{/if}
 		</div>
-	</div-->
+	</div>
 
 	<Social />
 </div>
