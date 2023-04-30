@@ -18,14 +18,9 @@
 		{ video: '/videos/characters/jerry.mp4' },
 		{ video: '/videos/characters/joe.mp4' },
 		{ video: '/videos/characters/fomotion.mp4' },
+		{},
 		{}
 	];
-
-	let currentIndex = 0;
-
-	const onPageChange = (event) => {
-		currentIndex = event.detail;
-	};
 
 	const enumerate = (items) => items.map((item, index) => [item, index]);
 
@@ -47,8 +42,18 @@
 	let items = itemsFix;
 
 	$: if (outerWidth < 600) {
-		items = itemsFix.slice(1, -1);
+		items = itemsFix.slice(1);
 	}
+
+	let currentIndex = 0;
+	let carousel;
+
+	const onPageChange = (event) => {
+		currentIndex = event.detail;
+		if (!items[currentIndex + (outerWidth < 600 ? 0 : 1)].video) {
+			setTimeout(() => carousel.goTo(0), 500);
+		}
+	};
 </script>
 
 <svelte:window bind:outerWidth />
@@ -67,6 +72,7 @@
 				autoplayDuration={8000}
 				on:pageChange={onPageChange}
 				infinite={false}
+				bind:this={carousel}
 			>
 				{#each enumerate(items) as [item, index]}
 					{#if item.video}
@@ -219,6 +225,10 @@
 	@media only screen and (max-width: 600px) {
 		.start :global(h4) {
 			font-size: 1.5em;
+		}
+		a.start {
+			width: 100%;
+			box-sizing: border-box;
 		}
 	}
 </style>

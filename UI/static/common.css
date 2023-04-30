@@ -1,5 +1,17 @@
 @font-face {
 	font-family: 'Groningen';
+	src: url('/fonts/Groningen-Bold.eot');
+	src: local('Groningen Bold'), local('Groningen-Bold'),
+		url('/fonts/Groningen-Bold.eot?#iefix') format('embedded-opentype'),
+		url('/fonts/Groningen-Bold.woff2') format('woff2'),
+		url('/fonts/Groningen-Bold.woff') format('woff'),
+		url('/fonts/Groningen-Bold.ttf') format('truetype');
+	font-weight: bold;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'Groningen';
 	src: url('/fonts/Groningen-Regular.eot');
 	src: local('Groningen Regular'), local('Groningen-Regular'),
 		url('/fonts/Groningen-Regular.eot?#iefix') format('embedded-opentype'),

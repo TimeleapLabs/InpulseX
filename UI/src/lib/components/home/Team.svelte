@@ -306,15 +306,13 @@
 	}
 	.bio :global(h4) {
 		font-size: 1.5em;
-		margin-bottom: -0.5em;
 	}
 	.bio :global(h5) {
-		margin-bottom: 0.5em;
+		font-weight: bold;
+		font-family: 'Groningen';
 	}
 	.bio :global(b) {
-		font-weight: 700;
-		font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu,
-			Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-		font-size: 0.9em;
+		font-weight: bold;
+		font-family: 'Groningen';
 	}
 </style>
