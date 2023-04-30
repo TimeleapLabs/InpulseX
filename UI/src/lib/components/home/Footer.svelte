@@ -1,26 +1,33 @@
 <script>
 	import LinkTree from '../icons/LinkTree.svelte';
+
+	const year = new Date().getFullYear();
 </script>
 
 <div class="footer">
 	<div class="ripple" />
-	<div class="linktree">
-		<a href="https://linktr.ee/inpulsex_official" rel="noreferrer" target="_blank">
-			<LinkTree />
-		</a>
+	<div class="grid">
+		<div class="linktree">
+			<a href="https://linktr.ee/inpulsex_official" rel="noreferrer" target="_blank">
+				<LinkTree />
+			</a>
+		</div>
+		<div class="spacer" />
+		<address>
+			InpulseX UK <br />
+			Buckingham Palace Road <br />
+			London, United Kingdom
+		</address>
+		<address>
+			InpulseX FZCO <br />
+			DSO - IFZA <br />
+			Digital Park, Silicon Oasis <br />
+			Dubai, UAE
+		</address>
 	</div>
-	<div class="spacer" />
-	<address>
-		InpulseX UK <br />
-		Buckingham Palace Road <br />
-		London, United Kingdom
-	</address>
-	<address>
-		InpulseX FZCO <br />
-		DSO - IFZA <br />
-		Digital Park, Silicon Oasis <br />
-		Dubai, UAE
-	</address>
+	<div class="copyright">
+		Copyright © 2022 - {year}
+	</div>
 </div>
 
 <style>
@@ -29,6 +36,11 @@
 		padding: 2em 12em;
 		background-color: #1c163e;
 		overflow: hidden;
+	}
+	.copyright {
+		text-align: left;
+	}
+	.grid {
 		display: flex;
 		gap: 4em;
 		flex-wrap: wrap;
@@ -57,10 +69,15 @@
 	@media only screen and (max-width: 600px) {
 		.footer {
 			padding: 1em 2em;
+		}
+		.grid {
 			gap: 1.5em;
 		}
 		.spacer {
 			display: none;
+		}
+		.copyright {
+			margin-top: 2em;
 		}
 	}
 	@media only screen and (max-width: 1440px) {

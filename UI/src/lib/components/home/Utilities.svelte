@@ -167,7 +167,14 @@
 		>
 			<div class="description">
 				<a href="#toggle" on:click={onClick(4)}>
-					<Title as="h4">Xstronaut Membership Club</Title>
+					<Title as="h4">
+						<img
+							src="/images/xmc.png"
+							height="14em"
+							alt="TheAcademiaX"
+							style="margin-bottom: -4px;"
+						/>
+					</Title>
 					<div class="chevron">
 						<ChevronsUp width={'20px'} height={'20px'} />
 					</div>

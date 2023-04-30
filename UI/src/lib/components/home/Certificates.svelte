@@ -142,6 +142,11 @@
 			padding: 1em 2em;
 		}
 	}
+	@media only screen and (max-width: 1700px) {
+		.certificate {
+			width: 240px;
+		}
+	}
 	@media only screen and (max-width: 1440px) {
 		.certificates {
 			padding: 4em;

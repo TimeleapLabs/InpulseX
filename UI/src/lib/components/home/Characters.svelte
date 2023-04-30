@@ -4,7 +4,7 @@
 	import Paragraph from '../Paragraph.svelte';
 	import { browser } from '$app/environment';
 
-	const items = [
+	const itemsFix = [
 		{},
 		{ video: '/videos/characters/commander.mp4' },
 		{ video: '/videos/characters/jay.mp4' },
@@ -43,6 +43,12 @@
 	const isCurrentItem = (index, currentIndex) => {
 		return index === currentIndex + 1;
 	};
+
+	let items = itemsFix;
+
+	$: if (outerWidth < 600) {
+		items = itemsFix.slice(1, -1);
+	}
 </script>
 
 <svelte:window bind:outerWidth />

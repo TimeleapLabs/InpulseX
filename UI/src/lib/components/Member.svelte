@@ -60,10 +60,8 @@
 
 {#if bio}
 	<div class="bio" transition:fade>
-		<Title as="h4">{member.name}</Title>
-		<Title as="h5">{member.role}</Title>
 		{#each member.bio as paragraph}
-			<Paragraph>{paragraph}</Paragraph>
+			<Paragraph>{@html paragraph}</Paragraph>
 		{/each}
 	</div>
 {/if}
@@ -157,5 +155,11 @@
 		.bio {
 			display: none;
 		}
+	}
+	.bio :global(b) {
+		font-weight: 700;
+		font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu,
+			Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+		font-size: 0.9em;
 	}
 </style>

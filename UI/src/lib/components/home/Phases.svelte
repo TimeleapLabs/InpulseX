@@ -40,7 +40,7 @@
 				'TheNFTX launch <span class="blue-highlight">&#x2714;</span>',
 				'Game Trailer release <span class="blue-highlight">&#x2714;</span>',
 				'1st AI Art Contest <span class="blue-highlight">&#x2714;</span>',
-				' 2nd Starseed Chapter One Trailer',
+				'2nd Starseed Chapter One Trailer',
 				'1st NFT Collection By Julius Horsthuis'
 			],
 			topicsRight: [
@@ -63,7 +63,7 @@
 			topicsLeft: [
 				'TheAcademiaX Pillar Launch',
 				'2nd NFT Exposition: London',
-				'Starseed Chapter One: Awakening Full Trailer',
+				'Starseed: Awakening Full Trailer',
 				'3rd CEX Listing',
 				'4th CEX Listing',
 				'3rd Network Launch',
@@ -73,7 +73,7 @@
 				'3rd Partnership Game Token'
 			],
 			topicsRight: [
-				'Starseed Chapter One: Awakening Game Demo',
+				'Starseed: Awakening Game Demo',
 				'Expand Marketing Campaign',
 				'InpulseX Ecosystem Merchandise Store Launch',
 				'1st InpulseX Video Contest',
@@ -82,7 +82,7 @@
 				'2nd NFT Collection Launch',
 				'TheNFTX Marketplace Launch',
 				'TheAcademiaX Educational Workshops',
-				'Starseed Chapter One: Awakening Game Launch'
+				'Starseed: Awakening Game Launch'
 			],
 			graphic: '/images/moon.png'
 		},
@@ -114,6 +114,13 @@
 			graphic: '/images/mars.png'
 		}
 	];
+
+	const showMore = [...phases].map((_) => false);
+
+	const toggleShowMore = (index) => (event) => {
+		event.preventDefault();
+		showMore[index] = !showMore[index];
+	};
 
 	function spin(node, { duration = 400 }) {
 		return {
@@ -157,7 +164,23 @@
 												<li transition:fade={{ delay: parseInt(index) * 100 }}>{@html topic}</li>
 											</Paragraph>
 										{/each}
+										{#if showMore[index]}
+											{#each Object.entries(topicsRight) as [index, topic]}
+												<Paragraph>
+													<li transition:fade={{ delay: parseInt(index) * 100 }}>{@html topic}</li>
+												</Paragraph>
+											{/each}
+										{/if}
 									</ul>
+									{#if !showMore[index]}
+										<a href="#show-more" class="show-more" on:click={toggleShowMore(index)}>
+											Show more →
+										</a>
+									{:else}
+										<a href="#show-more" class="show-more" on:click={toggleShowMore(index)}>
+											Show less →
+										</a>
+									{/if}
 								</div>
 								<div class="milestones content-right">
 									<ul>
@@ -287,6 +310,11 @@
 			top: 50%;
 		}
 	}
+	@media only screen and (min-width: 600px) {
+		.show-more {
+			display: none;
+		}
+	}
 	@media only screen and (max-width: 600px) {
 		.background {
 			padding: 1em;
@@ -295,7 +323,7 @@
 			grid-template-columns: 1fr;
 			max-width: 100%;
 			box-sizing: border-box;
-			padding: 1em;
+			padding: 0;
 		}
 		.milestones :global(p) {
 			font-size: 0.8em;
@@ -304,12 +332,37 @@
 			white-space: normal;
 		}
 		.content-right {
-			margin-top: -5em;
+			display: none;
 		}
 		.title {
 			font-size: 0.5em;
 			grid-column: 1;
 			text-align: center;
+		}
+		.show-more {
+			text-decoration: none;
+			display: inline-flex;
+			align-items: center;
+			gap: 0.5em;
+			color: #fff;
+			margin-top: 1em;
+			padding-left: 2rem;
+			animation: pulsate 0.11s ease-in-out infinite alternate;
+		}
+		.show-more:hover {
+			text-decoration: underline;
+		}
+	}
+	@keyframes pulsate {
+		100% {
+			/* Larger blur radius */
+			text-shadow: 0 0 4px #fff, 0 0 11px #fff, 0 0 19px #fff, 0 0 40px #f09, 0 0 80px #f09,
+				0 0 90px #f09, 0 0 100px #f09, 0 0 150px #f09;
+		}
+		0% {
+			/* A slightly smaller blur radius */
+			text-shadow: 0 0 4px #fff, 0 0 10px #fff, 0 0 18px #fff, 0 0 38px #f09, 0 0 73px #f09,
+				0 0 80px #f09, 0 0 94px #f09, 0 0 140px #f09;
 		}
 	}
 </style>
