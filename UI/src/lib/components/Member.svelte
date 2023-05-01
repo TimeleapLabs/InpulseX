@@ -29,13 +29,13 @@
 <a class="wrap" href="#animate" on:click={animate}>
 	<div class="profile">
 		{#if frame === 0}
-			<img src="/images/members/{member.image}.jpg" alt={member.name} />
+			<img src={member.portrait} alt={member.name} />
 		{:else if frame > 0}
 			<video src="/videos/x.mp4" muted autoplay />
 		{/if}
 		{#if frame === 2}
 			<img
-				src="/images/members/{member.image}.suite.jpg"
+				src={member.image}
 				alt={member.name}
 				class="overlay"
 				transition:fade={{ duration: 3000 }}
@@ -51,7 +51,7 @@
 		{/each}
 	</div>
 	<div class="role">
-		<img src="/images/members/{member.image}.jpg" alt={member.name} />
+		<img src={member.portrait} alt={member.name} />
 		<div class="text">
 			<Title as="h5">{member.role}</Title>
 		</div>
@@ -60,9 +60,7 @@
 
 {#if bio}
 	<div class="bio" transition:fade>
-		{#each member.bio as paragraph}
-			<Paragraph>{@html paragraph}</Paragraph>
-		{/each}
+		<Paragraph>{@html member.description}</Paragraph>
 	</div>
 {/if}
 

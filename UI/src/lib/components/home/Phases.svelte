@@ -7,113 +7,10 @@
 	import Paragraph from '../Paragraph.svelte';
 	import { linear } from 'svelte/easing';
 	import { fade } from 'svelte/transition';
+	import { onMount } from 'svelte';
+	import { getFullImagePath, getPhases } from '../../api';
 
-	const phases = [
-		{
-			index: 0,
-			title: 'The first <span class="blue-highlight">phase</span>',
-			dateStart: '02.02.2022',
-			dateEnd: '31.10.2022',
-			topicsLeft: [
-				'Pancakeswap listing <span class="blue-highlight">&#x2714;</span>',
-				'1st Meme contest <span class="blue-highlight">&#x2714;</span>',
-				'Digifinex listing <span class="blue-highlight">&#x2714;</span>',
-				'1st $IPX token airdrop <span class="blue-highlight">&#x2714;</span>'
-			],
-			topicsRight: [
-				'1st NFT exposition Los Angeles <span class="blue-highlight">&#x2714;</span>',
-				'1st Celebrity endorsement <span class="blue-highlight">&#x2714;</span>',
-				'1st Partnership: Akkadia One <span class="blue-highlight">&#x2714;</span>',
-				'Marketing Campaign <span class="blue-highlight">&#x2714;</span>'
-			],
-			graphic: '/images/earth.png'
-		},
-		{
-			index: 1,
-			title: '<span class="blue-highlight">The second</span> phase',
-			dateStart: '01.11.2022',
-			dateEnd: '31.07.2023',
-			topicsLeft: [
-				'2nd Celebrity endorsement <span class="blue-highlight">&#x2714;</span>',
-				'2nd Partnership: Outer Ring <span class="blue-highlight">&#x2714;</span>',
-				'Expand Marketing Campaign <span class="blue-highlight">&#x2714;</span>',
-				'TheNFTX launch <span class="blue-highlight">&#x2714;</span>',
-				'Game Trailer release <span class="blue-highlight">&#x2714;</span>',
-				'1st AI Art Contest <span class="blue-highlight">&#x2714;</span>',
-				'2nd Starseed Chapter One Trailer',
-				'1st NFT Collection By Julius Horsthuis'
-			],
-			topicsRight: [
-				'2nd CEX Listing',
-				'2nd Network Launch: Ethereum',
-				'2nd DEX Listing: Uniswap',
-				'Staking Dashboard Launch',
-				'Xstronaut Membership Club Launch',
-				'InpulseX Capital Group Launch',
-				'TheGameX Pillar Launch',
-				'Expand marketing Campaign'
-			],
-			graphic: '/images/earth.png'
-		},
-		{
-			index: 2,
-			title: 'The third <span class="pink-highlight">phase</span>',
-			dateStart: '01.08.2023',
-			dateEnd: '30.04.2024',
-			topicsLeft: [
-				'TheAcademiaX Pillar Launch',
-				'2nd NFT Exposition: London',
-				'Starseed: Awakening Full Trailer',
-				'3rd CEX Listing',
-				'4th CEX Listing',
-				'3rd Network Launch',
-				'3rd DEX Listing',
-				'4th Network Launch',
-				'4th DEX Listing',
-				'3rd Partnership Game Token'
-			],
-			topicsRight: [
-				'Starseed: Awakening Game Demo',
-				'Expand Marketing Campaign',
-				'InpulseX Ecosystem Merchandise Store Launch',
-				'1st InpulseX Video Contest',
-				'AI Powered: Mission Control Launch',
-				'Expand Worldwide Marketing Campaign',
-				'2nd NFT Collection Launch',
-				'TheNFTX Marketplace Launch',
-				'TheAcademiaX Educational Workshops',
-				'Starseed: Awakening Game Launch'
-			],
-			graphic: '/images/moon.png'
-		},
-		{
-			index: 3,
-			title: 'The fourth <span class="pink-highlight">phase</span>',
-			dateStart: '01.05.2024',
-			dateEnd: '31.01.2025',
-			topicsLeft: [
-				'5th CEX Listing',
-				'6th CEX Listing',
-				'5th Network Launch',
-				'5th DEX Listing',
-				'4th Partnership Game Token',
-				'Starseed: Voyage Trailer Teaser',
-				'6th Network Launch',
-				'6th DEX Listing'
-			],
-			topicsRight: [
-				'2nd AI Art Contest',
-				'2nd NFT Collection Launch',
-				'3rd NFT Exposition: Dubai',
-				'InpulseX 1st Limited-Edition Clothing',
-				'InpulseX Crypto Payment Card',
-				'1st Brand Sponsored By InpulseX',
-				'Starseed: Voyage Demo Launch',
-				'Expand Worldwide Marketing Campaign'
-			],
-			graphic: '/images/mars.png'
-		}
-	];
+	let phases = [];
 
 	const showMore = [...phases].map((_) => false);
 
@@ -132,76 +29,105 @@
 			}
 		};
 	}
+
+	function splitSteps(steps, side = 'left') {
+		const half = Math.ceil(steps.length / 2);
+		return side === 'left' ? steps.slice(0, half) : steps.slice(half);
+	}
+
+	onMount(async () => {
+		const phasesData = await getPhases();
+		phases = phasesData.map((phase, index) => ({
+			...phase,
+			index,
+			stepsLeft: splitSteps(phase.steps, 'left'),
+			stepsRight: splitSteps(phase.steps, 'right'),
+			graphic: getFullImagePath(phase.graphic, 'large')
+		}));
+	});
 </script>
 
 {#if browser}
 	<div class="background" id="spacemap">
 		<div class="phases">
-			<Carousel
-				dots={false}
-				infinite={false}
-				initialPageIndex={1}
-				let:showPrevPage
-				let:showNextPage
-				let:currentPageIndex
-				let:pagesCount
-			>
-				<button slot="prev" class="arrow" on:click={showPrevPage}>
-					<ChevronLeft />
-				</button>
-				{#each phases as { title, dateStart, dateEnd, topicsLeft, topicsRight, graphic, index } (title)}
-					<div class="phase">
-						{#if !currentPageIndex || currentPageIndex === index}
-							<div class="content" transition:fade>
-								<div class="title">
-									<Title>{@html title}</Title>
-									<Title as="h3">{dateStart} - {dateEnd}</Title>
-								</div>
-								<div class="milestones content-left">
-									<ul>
-										{#each Object.entries(topicsLeft) as [index, topic]}
-											<Paragraph>
-												<li transition:fade={{ delay: parseInt(index) * 100 }}>{@html topic}</li>
-											</Paragraph>
-										{/each}
-										{#if showMore[index]}
-											{#each Object.entries(topicsRight) as [index, topic]}
+			{#if phases.length}
+				<Carousel
+					dots={false}
+					infinite={false}
+					initialPageIndex={1}
+					let:showPrevPage
+					let:showNextPage
+					let:currentPageIndex
+				>
+					<button slot="prev" class="arrow" on:click={showPrevPage}>
+						<ChevronLeft />
+					</button>
+					{#each phases as { title, from, to, stepsLeft, stepsRight, graphic, index } (title)}
+						<div class="phase">
+							{#if !currentPageIndex || currentPageIndex === index}
+								<div class="content" transition:fade>
+									<div class="title">
+										<Title>{@html title}</Title>
+										<Title as="h3">{from} - {to}</Title>
+									</div>
+									<div class="milestones content-left">
+										<ul>
+											{#each stepsLeft as { title, done }}
 												<Paragraph>
-													<li transition:fade={{ delay: parseInt(index) * 100 }}>{@html topic}</li>
+													<li transition:fade={{ delay: parseInt(index) * 100 }}>
+														{title}{@html done
+															? ' <span class="blue-highlight">&#x2714;</span>'
+															: ''}
+													</li>
 												</Paragraph>
 											{/each}
+											{#if showMore[index]}
+												{#each stepsRight as { title, done }}
+													<Paragraph>
+														<li transition:fade={{ delay: parseInt(index) * 100 }}>
+															{title}{@html done
+																? ' <span class="blue-highlight">&#x2714;</span>'
+																: ''}
+														</li>
+													</Paragraph>
+												{/each}
+											{/if}
+										</ul>
+										{#if !showMore[index]}
+											<a href="#show-more" class="show-more" on:click={toggleShowMore(index)}>
+												Show more →
+											</a>
+										{:else}
+											<a href="#show-more" class="show-more" on:click={toggleShowMore(index)}>
+												Show less →
+											</a>
 										{/if}
-									</ul>
-									{#if !showMore[index]}
-										<a href="#show-more" class="show-more" on:click={toggleShowMore(index)}>
-											Show more →
-										</a>
-									{:else}
-										<a href="#show-more" class="show-more" on:click={toggleShowMore(index)}>
-											Show less →
-										</a>
-									{/if}
+									</div>
+									<div class="milestones content-right">
+										<ul>
+											{#each stepsRight as { title, done }}
+												<Paragraph>
+													<li transition:fade={{ delay: parseInt(index) * 100 }}>
+														{title}{@html done
+															? ' <span class="blue-highlight">&#x2714;</span>'
+															: ''}
+													</li>
+												</Paragraph>
+											{/each}
+										</ul>
+									</div>
 								</div>
-								<div class="milestones content-right">
-									<ul>
-										{#each Object.entries(topicsRight) as [index, topic]}
-											<Paragraph>
-												<li transition:fade={{ delay: parseInt(index) * 100 }}>{@html topic}</li>
-											</Paragraph>
-										{/each}
-									</ul>
+								<div class="graphic" transition:spin>
+									<img src={graphic} alt={title} />
 								</div>
-							</div>
-							<div class="graphic" transition:spin>
-								<img src={graphic} alt={title} />
-							</div>
-						{/if}
-					</div>
-				{/each}
-				<button slot="next" class="arrow" on:click={showNextPage}>
-					<ChevronRight />
-				</button>
-			</Carousel>
+							{/if}
+						</div>
+					{/each}
+					<button slot="next" class="arrow" on:click={showNextPage}>
+						<ChevronRight />
+					</button>
+				</Carousel>
+			{/if}
 		</div>
 	</div>
 {/if}
