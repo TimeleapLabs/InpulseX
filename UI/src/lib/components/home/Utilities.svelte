@@ -181,9 +181,10 @@
 					{#if showFour}
 						<div transition:slide={{ duration: 300 }}>
 							<Paragraph>
-								The X.M.C. is an exciting and vibrant exclusive club where individuals with a shared
-								passion enjoy unique benefits and fantastic opportunities. As a member, you can take
-								advantage of a wide range of perks, depending on your membership tier.
+								The Xstronaut Membership Club is an exciting and vibrant exclusive club where
+								individuals with a shared passion enjoy unique benefits and fantastic opportunities.
+								As a member, you can take advantage of a wide range of perks, depending on your
+								membership tier.
 							</Paragraph>
 						</div>
 					{/if}

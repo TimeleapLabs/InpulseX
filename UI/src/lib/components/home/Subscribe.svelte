@@ -14,7 +14,7 @@
 
 <div class="subscribe">
 	<div class="form">
-		<div class="header">InpulseX FZCO</div>
+		<div class="header">InpulseX Newsletter</div>
 		<div class="message">
 			{#if subscribed}
 				Thanks for subscribing!

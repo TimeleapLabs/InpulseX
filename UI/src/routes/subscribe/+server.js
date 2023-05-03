@@ -23,10 +23,10 @@ export async function POST({ request }) {
 	const sheet = doc.sheetsByIndex[0];
 	const rows = await sheet.getRows();
 
-	for (const row of rows) {
-		if (row.Email !== email) {
-			await sheet.addRow({ Email: email });
-		}
+	const alreadyAdded = rows.some((row) => row.Email === email);
+
+	if (!alreadyAdded) {
+		await sheet.addRow({ Email: email });
 	}
 
 	return new Response('Email is required');
