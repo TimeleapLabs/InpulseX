@@ -39,6 +39,7 @@
 				<div class="bio" transition:fade>
 					<Title as="h4">{members[currentIndex].name}</Title>
 					<Title as="h5">{members[currentIndex].role}</Title>
+					<Paragraph class="member-title">{members[currentIndex].title}</Paragraph>
 					<Paragraph>{@html members[currentIndex].description}</Paragraph>
 				</div>
 			{/if}
@@ -86,6 +87,10 @@
 	}
 	.bio :global(p + p) {
 		margin-top: 1em;
+	}
+
+	.bio :global(.member-title) {
+		font-weight: bold;
 	}
 	@media only screen and (max-width: 1700px) {
 		.team {
