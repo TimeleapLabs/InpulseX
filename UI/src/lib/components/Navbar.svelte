@@ -4,7 +4,9 @@
 	import X from './icons/X.svelte';
 	import { fly } from 'svelte/transition';
 	import { clickOutside } from '../clickOutside';
+	import ConnectButton from './ConnectButton.svelte';
 
+	export let dashboard = false;
 	let open = false;
 </script>
 
@@ -19,13 +21,17 @@
 		>
 			<Burger />
 		</a>
-		<div class="logo">
+		<div class="logo" class:dashboard>
 			<a href="/">
 				<img src="/images/logo.png" alt="InpulseX logo" />
 			</a>
 		</div>
-		<div class="buttons">
-			<Button href="/dashboard">Dashboard</Button>
+		<div class="buttons" class:dashboard>
+			{#if dashboard}
+				<ConnectButton />
+			{:else}
+				<Button href="/dashboard">Dashboard</Button>
+			{/if}
 		</div>
 	</div>
 
@@ -115,6 +121,10 @@
 		.sidebar {
 			padding: 1em 2em;
 		}
+		.logo.dashboard {
+			visibility: hidden;
+			opacity: 0;
+		}
 		img {
 			height: 1.2em;
 			position: absolute;
@@ -122,7 +132,7 @@
 			left: 50%;
 			transform: translate(-50%, -50%);
 		}
-		.buttons {
+		.buttons:not(.dashboard) {
 			display: none;
 		}
 	}

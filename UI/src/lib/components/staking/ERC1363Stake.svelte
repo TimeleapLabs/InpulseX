@@ -1,6 +1,5 @@
 <script>
 	import Card from '../Card.svelte';
-	import Button from '../Button.svelte';
 	import NumberInput from '../NumberInput.svelte';
 	import Table from '../Table.svelte';
 
@@ -68,7 +67,7 @@
 		} else {
 			const stakePool = await token.balanceOf(address);
 			const rewardPool = await rewardToken.balanceOf(address);
-			daily = number(rewardPool) / number(stakePool) / daysTotal;
+			daily = number(rewardPool) / number(stakePool) / daysTotal || 0;
 		}
 		apyData = [
 			{ title: 'Daily', value: `${daily.toFixed(4)} ${rewardSymbol}`, icon: rewardLogo },
@@ -163,9 +162,9 @@
 					</span>
 				</FancyButton>
 				{#if unlockTime > new Date().valueOf()}
-					<Button fullWidth disabled={busy} on:click={onStake}>Stake</Button>
+					<FancyButton fullWidth disabled={busy} on:click={onStake}>Stake</FancyButton>
 				{:else if unlockTime}
-					<Button fullWidth disabled={busy} on:click={onUnstake}>Unstake</Button>
+					<FancyButton fullWidth disabled={busy} on:click={onUnstake}>Unstake</FancyButton>
 				{/if}
 			</div>
 			{#if data && showStake}

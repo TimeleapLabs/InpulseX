@@ -46,7 +46,10 @@
 	}
 	.swap {
 		display: flex;
-
 		width: 580px;
+		max-width: 100%;
+	}
+	h2 {
+		margin-top: 2em;
 	}
 </style>
