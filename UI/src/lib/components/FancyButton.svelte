@@ -1,13 +1,22 @@
 <script>
 	import Paragraph from './Paragraph.svelte';
+	import { Confetti } from 'svelte-confetti';
 
 	export let primary = false;
 	export let fullWidth = false;
 	export let disabled = false;
+	export let confetti = false;
 </script>
 
 <button on:click {disabled} class:primary class:full-width={fullWidth}>
 	<span><Paragraph><slot /></Paragraph></span>
+	{#if confetti}
+		<div class="confetti">
+			<Confetti x={[-0.5, 0.5]} />
+			<Confetti amount="10" x={[-0.75, -0.3]} y={[0.15, 0.75]} />
+			<Confetti amount="10" x={[0.3, 0.75]} y={[0.15, 0.75]} />
+		</div>
+	{/if}
 </button>
 
 <style>
@@ -20,6 +29,7 @@
 		background-color: rgba(20, 15, 41, 1);
 		background: linear-gradient(270deg, rgba(43, 123, 243, 0.5) 0%, rgba(20, 15, 41, 1) 100%);
 		cursor: pointer;
+		position: relative;
 	}
 
 	button span {
@@ -61,5 +71,14 @@
 
 	button.primary:hover {
 		background: linear-gradient(90deg, rgba(220, 21, 164, 0.5) 0%, rgba(220, 21, 164, 0) 100%);
+	}
+
+	.confetti {
+		width: 2px;
+		height: 2px;
+		left: 50%;
+		top: 50%;
+		transform: translateX(-50%) translateY(-50%);
+		position: absolute;
 	}
 </style>

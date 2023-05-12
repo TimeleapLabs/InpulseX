@@ -34,7 +34,7 @@
 
 	let data = [
 		{ title: 'Your stake', value: `0 ${stakeSymbol}`, icon: stakeLogo },
-		{ title: 'Reward', value: `0 ${rewardSymbol}`, icon: rewardLogo }
+		{ title: 'Rewards at Unlock', value: `0 ${rewardSymbol}`, icon: rewardLogo }
 	];
 
 	let apyData;
@@ -56,7 +56,7 @@
 				icon: stakeLogo
 			},
 			{
-				title: 'Reward',
+				title: 'Rewards at Unlock',
 				value: `${ethers.utils.formatUnits(reward)} ${rewardSymbol}`,
 				icon: rewardLogo
 			}

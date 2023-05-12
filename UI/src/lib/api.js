@@ -30,3 +30,13 @@ export async function getMembers() {
 	const res = await makeRequest('/api/members?populate=*');
 	return res.data.map((member) => member.attributes);
 }
+
+export async function getStakings() {
+	const res = await makeRequest('/api/stakings?populate=*');
+	return res.data.map((staking) => ({ ...staking.attributes, id: staking.id }));
+}
+
+export async function getStakingById(id) {
+	const res = await makeRequest(`/api/stakings/${id}?populate=*`);
+	return res.data.attributes;
+}

@@ -11,7 +11,7 @@ const options = {
 	appMetadata: {
 		name: appName,
 		description: 'InpulseX dApp',
-		icon: '/images/logo.svg'
+		icon: '/images/logo.shadow.png'
 	},
 	accountCenter: {
 		desktop: {
@@ -60,6 +60,13 @@ const options = {
 		}
 	],
 	wallets: [walletConnect, injected]
+};
+
+export const chainToId = {
+	binance: '0x61',
+	ethereum: '0x1',
+	polygon: '0x89',
+	avalanche: '0xa86a'
 };
 
 export const onboard = Onboard(options);

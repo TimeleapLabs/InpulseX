@@ -6,6 +6,7 @@
 	import { wallet } from '../../../stores/wallet';
 	import { ethers } from 'ethers';
 	import { onMount } from 'svelte';
+	import { chainToId, onboard } from '$lib/onboard';
 
 	import toast from 'svelte-french-toast';
 
@@ -24,16 +25,19 @@
 	export let rewardSymbol = 'BUSD';
 	export let rewardLogo = '';
 	export let start;
+	export let unlockTime = null;
+	export let userApy = 0;
+	export let chain = 'binance';
 
+	let confetti = false;
 	let contract, token, rewardToken, provider, user, signer;
 	let amount = 0;
-	let unlockTime;
 	let busy = false;
 	let showStake = true;
 
 	let data = [
 		{ title: 'Your stake', value: `0 ${stakeSymbol}`, icon: stakeLogo },
-		{ title: 'Reward', value: `0 ${rewardSymbol}`, icon: rewardLogo }
+		{ title: 'Rewards at Unlock', value: `0 ${rewardSymbol}`, icon: rewardLogo }
 	];
 
 	let apyData;
@@ -46,6 +50,9 @@
 	const number = (k) => Number(ethers.utils.formatUnits(k));
 
 	const getStakeStats = async () => {
+		if (!contract) {
+			return;
+		}
 		const stake = await contract.getStake(user);
 		const reward = await contract.getRewardSize(user).catch(() => 0);
 		data = [
@@ -55,28 +62,42 @@
 				icon: stakeLogo
 			},
 			{
-				title: 'Reward',
-				value: `${ethers.utils.formatUnits(reward)} ${rewardSymbol}`,
+				title: 'Rewards at Unlock',
+				value: parseFloat(ethers.utils.formatUnits(reward)),
+				countUp: true,
+				suffix: rewardSymbol,
 				icon: rewardLogo
 			}
 		];
 		const daysTotal = (unlockTime - start.valueOf()) / 86400000;
-		let daily = 0;
 		if (stake.gt(0)) {
-			daily = number(reward) / daysTotal;
+			userApy = number(reward) / daysTotal;
 		} else {
 			const stakePool = await token.balanceOf(address);
 			const rewardPool = await rewardToken.balanceOf(address);
-			daily = number(rewardPool) / number(stakePool) / daysTotal || 0;
+			userApy = number(rewardPool) / number(stakePool) / daysTotal || 0;
 		}
 		apyData = [
-			{ title: 'Daily', value: `${daily.toFixed(4)} ${rewardSymbol}`, icon: rewardLogo },
-			{ title: 'Weekly', value: `${(daily * 7).toFixed(4)} ${rewardSymbol}`, icon: rewardLogo },
-			{ title: 'Monthly', value: `${(daily * 30).toFixed(4)} ${rewardSymbol}`, icon: rewardLogo }
+			{ title: 'Daily', value: userApy, countUp: true, suffix: rewardSymbol, icon: rewardLogo },
+			{
+				title: 'Weekly',
+				value: userApy * 7,
+				countUp: true,
+				suffix: rewardSymbol,
+				icon: rewardLogo
+			},
+			{
+				title: 'Monthly',
+				value: userApy * 30,
+				countUp: true,
+				suffix: rewardSymbol,
+				icon: rewardLogo
+			}
 		];
 	};
 
 	const onProvider = async () => {
+		await onboard.setChain({ chainId: chainToId[chain] });
 		provider = new ethers.providers.Web3Provider($wallet.provider);
 		user = $wallet.accounts[0].address;
 		signer = provider.getSigner(user);
@@ -90,10 +111,11 @@
 	};
 
 	const stake = async () => {
-		await token['transferAndCall(address,uint256)'](
+		const tx = await token['transferAndCall(address,uint256)'](
 			address,
 			ethers.utils.parseUnits(amount.toString())
 		);
+		await tx.wait(1);
 	};
 
 	const unstake = async () => {
@@ -107,15 +129,24 @@
 			return toast.error('Must stake more than 0 tokens!');
 		}
 		busy = true;
+		let err = false;
 		await toast
 			.promise(stake(), {
 				loading: 'Staking...',
 				success: 'Staking successful!',
 				error: 'There was an issue staking your tokens!'
 			})
-			.catch(() => null);
+			.catch(() => {
+				err = true;
+			});
 		busy = false;
-		getStakeStats();
+		if (!err) {
+			getStakeStats();
+			confetti = true;
+			setTimeout(() => {
+				confetti = false;
+			}, 3000);
+		}
 	};
 
 	const onUnstake = async () => {
@@ -162,7 +193,7 @@
 					</span>
 				</FancyButton>
 				{#if unlockTime > new Date().valueOf()}
-					<FancyButton fullWidth disabled={busy} on:click={onStake}>Stake</FancyButton>
+					<FancyButton {confetti} fullWidth disabled={busy} on:click={onStake}>Stake</FancyButton>
 				{:else if unlockTime}
 					<FancyButton fullWidth disabled={busy} on:click={onUnstake}>Unstake</FancyButton>
 				{/if}
@@ -179,7 +210,8 @@
 
 <style>
 	.container {
-		width: 580px;
+		width: 100%;
+		height: 100%;
 	}
 	.amount {
 		display: flex;
@@ -208,5 +240,13 @@
 	.info-button :global(svg) {
 		height: 1em;
 		fill: currentColor;
+	}
+	@media only screen and (max-width: 600px) {
+		.inner {
+			padding: 0;
+		}
+		.buttons {
+			flex-wrap: wrap;
+		}
 	}
 </style>

@@ -48,3 +48,7 @@ body {
 	color: #fff;
 	font-family: 'Groningen';
 }
+
+.icon-container img {
+	object-fit: contain;
+}

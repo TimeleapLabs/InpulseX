@@ -1,4 +1,6 @@
 <script>
+	import Countup from 'svelte-countup';
+
 	export let data = [];
 </script>
 
@@ -6,7 +8,16 @@
 	{#each data as item}
 		<div class="row" class:has-icon={item.icon}>
 			<div class="col title">{item.title}</div>
-			<div class="col value">{item.value}</div>
+			<div class="col value">
+				{#if item.countUp}
+					<Countup value={item.value} />
+				{:else}
+					{item.value}
+				{/if}
+				{#if item.suffix}
+					{item.suffix}
+				{/if}
+			</div>
 			{#if item.icon}
 				<div class="col icon">
 					<img src={item.icon} alt="Icon" />

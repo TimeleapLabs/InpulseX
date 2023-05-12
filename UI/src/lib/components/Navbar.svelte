@@ -135,5 +135,8 @@
 		.buttons:not(.dashboard) {
 			display: none;
 		}
+		.buttons {
+			font-size: 0.8em;
+		}
 	}
 </style>
