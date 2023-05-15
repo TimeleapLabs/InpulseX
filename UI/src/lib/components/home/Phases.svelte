@@ -8,7 +8,7 @@
 	import { linear } from 'svelte/easing';
 	import { fade } from 'svelte/transition';
 	import { onMount } from 'svelte';
-	import { getFullImagePath, getPhases } from '../../api';
+	import { getImageFormatPath, getPhases } from '../../api';
 
 	let phases = [];
 
@@ -42,7 +42,7 @@
 			index,
 			stepsLeft: splitSteps(phase.steps, 'left'),
 			stepsRight: splitSteps(phase.steps, 'right'),
-			graphic: getFullImagePath(phase.graphic, 'large')
+			graphic: getImageFormatPath(phase.graphic, 'large')
 		}));
 	});
 </script>

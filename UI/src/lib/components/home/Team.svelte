@@ -4,7 +4,7 @@
 	import Member from '../Member.svelte';
 	import { fade } from 'svelte/transition';
 	import { onMount } from 'svelte';
-	import { getFullImagePath, getMembers } from '../../api';
+	import { getImagePath, getMembers } from '../../api';
 
 	let members = [];
 
@@ -25,8 +25,8 @@
 		const membersData = await getMembers();
 		members = membersData.map((member) => ({
 			...member,
-			portrait: getFullImagePath(member.portrait, 'thumbnail'),
-			image: getFullImagePath(member.image, 'thumbnail')
+			portrait: getImagePath(member.portrait),
+			image: getImagePath(member.image)
 		}));
 	});
 </script>
