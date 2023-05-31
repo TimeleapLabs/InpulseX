@@ -9,18 +9,18 @@ const pegswapEndpoint = 'https://29q4wlts70.execute-api.us-east-1.amazonaws.com/
 
 export const chains = {
 	polygon: '0x89',
-	//bsc: '0x38',
-	bsc: '0x61',
+	bsc: '0x38',
+	//bsc: '0x61',
 	ethereum: '0x01',
 	//avax: '0xa86a'
-	avax: '0xa869'
+	avax: '0xa86a'
 };
 
 export const ipxAddresses = {
-	bsc: '0xB5649E0558890EAbd70e018Aaf015cC8242f4C0A',
+	bsc: '0xCDB96d3aEf363a036c6CF6c9b5736d79f0E404e2',
 	polygon: '',
-	ethereum: '',
-	avax: '0x48afe04958d195C076fBE44b5861aaDA8445673B'
+	ethereum: '0xc5Be5F4B9aeEC885D8c9E506901477A950663BC3',
+	avax: ''
 };
 
 export const operatorAddresses = {
@@ -31,33 +31,31 @@ export const operatorAddresses = {
 };
 
 export const pegswapAddresses = {
-	bsc: '0xd735FBACD92adf8c1cF20201C6a17F37149301BC',
+	bsc: '0xfFdCc5dEA93aF2dc0a179553eFE4C5dd8685D493',
 	polygon: '',
-	ethereum: '',
-	avax: '0x97E07b516Ef405aE7B3639eae2c034CE855Ffbec'
+	ethereum: '0xCDB96d3aEf363a036c6CF6c9b5736d79f0E404e2',
+	avax: ''
 };
 
 export const chainIds = {
-	//'0x38': {
-	'0x61': {
+	'0x38': {
 		key: 'bsc',
 		icon: 'binance',
 		title: 'BNB Smart Chain',
 		shortTitle: 'BSC'
 	},
-	'0x89': {
-		key: 'polygon',
-		icon: 'polygon',
-		title: 'Polygon',
-		shortTitle: 'MATIC'
-	},
-	//'0xa86a': {
-	'0xa869': {
-		key: 'avax',
-		icon: 'avalanche',
-		title: 'Avalanche',
-		shortTitle: 'AVAX'
-	},
+	// '0x89': {
+	// 	key: 'polygon',
+	// 	icon: 'polygon',
+	// 	title: 'Polygon',
+	// 	shortTitle: 'MATIC'
+	// },
+	// '0xa869': {
+	// 	key: 'avax',
+	// 	icon: 'avalanche',
+	// 	title: 'Avalanche',
+	// 	shortTitle: 'AVAX'
+	// },
 	'0x01': { key: 'ethereum', icon: 'ethereum', title: 'Ethereum', shortTitle: 'ETH' }
 };
 

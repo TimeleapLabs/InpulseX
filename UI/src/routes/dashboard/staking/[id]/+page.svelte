@@ -22,7 +22,6 @@
 			rewardIcon: getFullImagePath(data.rewardIcon, 'thumbnail'),
 			start: new Date(data.start)
 		};
-		console.log({ staking });
 	});
 </script>
 
@@ -36,7 +35,7 @@
 		{#if staking}
 			<ERC1363Stake
 				title={staking.title}
-				address={staking.contract}
+				addresses={staking.contracts.map(({ contract }) => contract)}
 				stakeSymbol={staking.stakeTokenSymbol}
 				rewardSymbol={staking.rewardTokenSymbol}
 				rewardLogo={staking.rewardIcon}
@@ -51,7 +50,9 @@
 		{/if}
 		{#if userApy && unlockTime}
 			<ApyChart start={staking.start} {unlockTime} {userApy} />
-			<RewardCounter {userApy} start={staking.start} units={'GC'} />
+			<RewardCounter {userApy} start={staking.start} units={staking.rewardTokenSymbol} />
+		{/if}
+		{#if unlockTime}
 			<Progress start={staking.start} {unlockTime} />
 		{/if}
 	</div>

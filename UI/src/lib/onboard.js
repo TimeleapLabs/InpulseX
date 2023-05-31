@@ -63,7 +63,7 @@ const options = {
 };
 
 export const chainToId = {
-	binance: '0x61',
+	binance: '0x38',
 	ethereum: '0x1',
 	polygon: '0x89',
 	avalanche: '0xa86a'

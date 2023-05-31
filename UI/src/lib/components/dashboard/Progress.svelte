@@ -7,7 +7,7 @@
 	export let start;
 	export let unlockTime;
 
-	const daysPassed = DateTime.fromMillis(unlockTime).diff(DateTime.fromJSDate(start), 'days').days;
+	const daysPassed = DateTime.now().diff(DateTime.fromJSDate(start), 'days').days;
 	const daysLeft = DateTime.fromMillis(unlockTime).diff(DateTime.now(), 'days').days;
 	const daysTotal = daysPassed + daysLeft;
 	const percent = (daysPassed / daysTotal) * 100;

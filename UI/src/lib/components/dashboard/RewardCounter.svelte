@@ -16,7 +16,7 @@
 
 <Card>
 	<div class="inner">
-		<Title as="h3">Estimated rewards</Title>
+		<Title as="h3">Estimated earned rewards</Title>
 		<div class="reward">
 			<span class="count">
 				<Countup value={rewards} />

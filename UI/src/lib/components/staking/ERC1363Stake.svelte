@@ -17,9 +17,10 @@
 	import Coins from '../../icons/coins.svelte';
 	import Title from '../Title.svelte';
 	import FancyButton from '../FancyButton.svelte';
+	import Select from '../Select.svelte';
 
 	export let title;
-	export let address;
+	export let addresses;
 	export let stakeSymbol = 'IPX';
 	export let stakeLogo = '';
 	export let rewardSymbol = 'BUSD';
@@ -34,6 +35,7 @@
 	let amount = 0;
 	let busy = false;
 	let showStake = true;
+	let contracts;
 
 	let data = [
 		{ title: 'Your stake', value: `0 ${stakeSymbol}`, icon: stakeLogo },
@@ -73,9 +75,7 @@
 		if (stake.gt(0)) {
 			userApy = number(reward) / daysTotal;
 		} else {
-			const stakePool = await token.balanceOf(address);
-			const rewardPool = await rewardToken.balanceOf(address);
-			userApy = number(rewardPool) / number(stakePool) / daysTotal || 0;
+			userApy = 0;
 		}
 		apyData = [
 			{ title: 'Daily', value: userApy, countUp: true, suffix: rewardSymbol, icon: rewardLogo },
@@ -96,12 +96,7 @@
 		];
 	};
 
-	const onProvider = async () => {
-		await onboard.setChain({ chainId: chainToId[chain] });
-		provider = new ethers.providers.Web3Provider($wallet.provider);
-		user = $wallet.accounts[0].address;
-		signer = provider.getSigner(user);
-		contract = new ethers.Contract(address, abi, signer);
+	const onContract = async () => {
 		const stakeTokenAddress = await contract.getStakingToken();
 		const rewardTokenAddress = await contract.getRewardToken();
 		token = new ethers.Contract(stakeTokenAddress, tokenAbi.abi, signer);
@@ -110,9 +105,27 @@
 		getStakeStats();
 	};
 
+	const onProvider = async () => {
+		await onboard.setChain({ chainId: chainToId[chain] });
+		provider = new ethers.providers.Web3Provider($wallet.provider);
+		user = $wallet.accounts[0].address;
+		signer = provider.getSigner(user);
+		contracts = await Promise.all(
+			addresses.map(async (address) => {
+				const contract = new ethers.Contract(address, abi, signer);
+				const unlockTime = (await contract.getUnlockTime()) * 1000;
+				const unlock = new Date(unlockTime).toLocaleDateString();
+				return { value: contract, title: `Unlock at ${unlock}` };
+			})
+		);
+		contract = contracts[0].value;
+	};
+
+	$: if (contract) onContract();
+
 	const stake = async () => {
 		const tx = await token['transferAndCall(address,uint256)'](
-			address,
+			contract.address,
 			ethers.utils.parseUnits(amount.toString())
 		);
 		await tx.wait(1);
@@ -162,10 +175,10 @@
 		getStakeStats();
 	};
 
-	$: if (address && $wallet?.provider) onProvider();
+	$: if ($wallet?.provider) onProvider();
 
 	onMount(() => {
-		const interval = setInterval(getStakeStats, 20000);
+		const interval = setInterval(getStakeStats, 30000);
 		return () => {
 			clearInterval(interval);
 		};
@@ -181,6 +194,9 @@
 					<NumberInput fullWidth bind:value={amount} placeholder="Tokens to stake" label="Amount" />
 				</div>
 				<FancyButton on:click={getMax}>Max</FancyButton>
+			</div>
+			<div class="duration">
+				<Select options={contracts} bind:value={contract} label="Duration" />
 			</div>
 			<div class="buttons">
 				<FancyButton fullWidth disabled={busy} on:click={toggleStake}>

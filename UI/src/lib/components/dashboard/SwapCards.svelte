@@ -10,9 +10,9 @@
 	</div>
 	<div class="swap-wrap">
 		<Card
-			title="Multichain"
+			title="Multichain Bridge"
 			body="Bridge your IPX tokens to one of the supported chains"
-			href="/dashboard"
+			href="/dashboard/bridge"
 		/>
 	</div>
 </div>
@@ -61,11 +61,18 @@
 		.swap {
 			padding: 8em 2em;
 		}
+		.swap-wrap {
+			grid-template-columns: 1fr 1fr;
+		}
 	}
 
 	@media only screen and (max-width: 600px) {
 		.swap {
 			padding: 1em 2em;
+			padding-bottom: 4em;
+		}
+		.swap-wrap {
+			grid-template-columns: 1fr;
 		}
 	}
 </style>

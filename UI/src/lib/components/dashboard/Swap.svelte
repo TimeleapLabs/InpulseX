@@ -18,7 +18,7 @@
 		display: flex;
 		flex-direction: column;
 		box-sizing: border-box;
-		padding: 8em 12em 0em 12em;
+		padding: 8em 12em 8em 12em;
 		position: relative;
 	}
 	.swap > * {
