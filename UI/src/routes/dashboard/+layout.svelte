@@ -1,7 +1,6 @@
 <script>
 	import Navbar from '$lib/components/Navbar.svelte';
 	import Footer from '$lib/components/home/Footer.svelte';
-	import Subscribe from '$lib/components/home/Subscribe.svelte';
 
 	import { Toaster } from 'svelte-french-toast';
 </script>

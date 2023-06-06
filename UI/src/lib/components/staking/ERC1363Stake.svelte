@@ -7,6 +7,8 @@
 	import { ethers } from 'ethers';
 	import { onMount } from 'svelte';
 	import { chainToId, onboard } from '$lib/onboard';
+	import { fade } from 'svelte/transition';
+	import Confetti from 'svelte-confetti';
 
 	import toast from 'svelte-french-toast';
 
@@ -36,6 +38,7 @@
 	let busy = false;
 	let showStake = true;
 	let contracts;
+	let address;
 
 	let data = [
 		{ title: 'Your stake', value: `0 ${stakeSymbol}`, icon: stakeLogo },
@@ -105,6 +108,11 @@
 		getStakeStats();
 	};
 
+	const onAddress = () => {
+		contract = new ethers.Contract(address, abi, signer);
+		onContract();
+	};
+
 	const onProvider = async () => {
 		await onboard.setChain({ chainId: chainToId[chain] });
 		provider = new ethers.providers.Web3Provider($wallet.provider);
@@ -115,13 +123,13 @@
 				const contract = new ethers.Contract(address, abi, signer);
 				const unlockTime = (await contract.getUnlockTime()) * 1000;
 				const unlock = new Date(unlockTime).toLocaleDateString();
-				return { value: contract, title: `Unlock at ${unlock}` };
+				return { value: address, title: `Unlock at ${unlock}` };
 			})
 		);
-		contract = contracts[0].value;
+		address = contracts[0].value;
 	};
 
-	$: if (contract) onContract();
+	$: if (address) onAddress();
 
 	const stake = async () => {
 		const tx = await token['transferAndCall(address,uint256)'](
@@ -158,7 +166,7 @@
 			confetti = true;
 			setTimeout(() => {
 				confetti = false;
-			}, 3000);
+			}, 10000);
 		}
 	};
 
@@ -186,6 +194,19 @@
 </script>
 
 <div class="container">
+	{#if confetti}
+		<div class="confetti" out:fade>
+			<Confetti
+				x={[-5, 5]}
+				y={[0, 0.1]}
+				delay={[500, 2000]}
+				infinite
+				duration="5000"
+				amount="200"
+				fallDistance="100vh"
+			/>
+		</div>
+	{/if}
 	<Card isPrimary={false}>
 		<div class="inner">
 			<Title as="h3">{title}</Title>
@@ -196,7 +217,7 @@
 				<FancyButton on:click={getMax}>Max</FancyButton>
 			</div>
 			<div class="duration">
-				<Select options={contracts} bind:value={contract} label="Duration" />
+				<Select options={contracts} bind:value={address} label="Duration" />
 			</div>
 			<div class="buttons">
 				<FancyButton fullWidth disabled={busy} on:click={toggleStake}>
@@ -264,5 +285,16 @@
 		.buttons {
 			flex-wrap: wrap;
 		}
+	}
+	.confetti {
+		position: fixed;
+		top: -50px;
+		left: 0;
+		height: 100vh;
+		width: 100vw;
+		display: flex;
+		justify-content: center;
+		overflow: hidden;
+		pointer-events: none;
 	}
 </style>

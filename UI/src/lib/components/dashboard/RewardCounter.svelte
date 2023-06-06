@@ -19,7 +19,9 @@
 		<Title as="h3">Estimated earned rewards</Title>
 		<div class="reward">
 			<span class="count">
-				<Countup value={rewards} />
+				{#key rewards}
+					<Countup value={rewards} />
+				{/key}
 			</span>
 			{units}
 		</div>

@@ -10,7 +10,9 @@
 			<div class="col title">{item.title}</div>
 			<div class="col value">
 				{#if item.countUp}
-					<Countup value={item.value} />
+					{#key item.value}
+						<Countup value={item.value} />
+					{/key}
 				{:else}
 					{item.value}
 				{/if}

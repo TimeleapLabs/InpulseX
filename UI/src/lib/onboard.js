@@ -1,6 +1,7 @@
 import Onboard from '@web3-onboard/core';
 import walletConnectModule from '@web3-onboard/walletconnect';
 import injectedModule from '@web3-onboard/injected-wallets';
+import { icon } from './icon';
 
 const appName = 'InpulseX';
 
@@ -11,7 +12,7 @@ const options = {
 	appMetadata: {
 		name: appName,
 		description: 'InpulseX dApp',
-		icon: '/images/logo.shadow.png'
+		icon
 	},
 	accountCenter: {
 		desktop: {

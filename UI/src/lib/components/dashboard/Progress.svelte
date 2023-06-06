@@ -15,7 +15,7 @@
 
 <Card>
 	<div class="inner">
-		<Title as="h3">Progress</Title>
+		<Title as="h3">Pool progress</Title>
 		<div class="progress">
 			<div class="bar-wrap">
 				<div class="bar" style="--width: {percent}%" />
