@@ -7,7 +7,7 @@
 
 	import { page } from '$app/stores';
 	import { onMount } from 'svelte';
-	import { getStakingById, getFullImagePath } from '$lib/api';
+	import { getStakingById, getImageFormatPath } from '$lib/api';
 
 	let staking;
 
@@ -18,8 +18,8 @@
 		const data = await getStakingById($page.params.id);
 		staking = {
 			...data,
-			stakingIcon: getFullImagePath(data.stakingIcon, 'thumbnail'),
-			rewardIcon: getFullImagePath(data.rewardIcon, 'thumbnail'),
+			stakingIcon: getImageFormatPath(data.stakingIcon, 'thumbnail'),
+			rewardIcon: getImageFormatPath(data.rewardIcon, 'thumbnail'),
 			start: new Date(data.start)
 		};
 	});
