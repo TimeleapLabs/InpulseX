@@ -77,10 +77,10 @@ abstract contract BaseStaking is Context, Ownable {
      * @param user Address of the user to add to exceptions
      * @param penalty The penalty percentage (e.g. 5 means 5% penalty)
      */
-    function allowUnstakeWithPenalty(address user, uint256 penalty)
-        external
-        onlyOwner
-    {
+    function allowUnstakeWithPenalty(
+        address user,
+        uint256 penalty
+    ) external onlyOwner {
         require(penalty <= 25, "Cannot set penalty over 25%");
         _exceptions[user] = true;
         _penalties[user] = penalty;
@@ -113,6 +113,28 @@ abstract contract BaseStaking is Context, Ownable {
     function getRewardSize(address user) public view returns (uint256) {
         uint256 weight = _stakeWeight[user];
         return (weight * _rewardPoolSize) / _stakePoolWeight;
+    }
+
+    /**
+     * @dev Get the current reward weight for `user`
+     * @param user Address of the user
+     */
+    function getRewardWeight(address user) public view returns (uint256) {
+        return _stakeWeight[user];
+    }
+
+    /**
+     * @dev Get the current pool reward size
+     */
+    function getTotalPoolRewards() public view returns (uint256) {
+        return _rewardPoolSize;
+    }
+
+    /**
+     * @dev Get the current pool weight
+     */
+    function getTotalPoolWeight() public view returns (uint256) {
+        return _stakePoolWeight;
     }
 
     /**
