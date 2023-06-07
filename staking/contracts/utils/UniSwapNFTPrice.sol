@@ -50,17 +50,17 @@ contract UniSwapNFTPrice {
     /**
      * @notice The token of interest
      */
-    address private token;
+    address private poolToken;
 
     /**
      * @param _positionManager The address of Uniswap position manager
      * @param _pool The address of Uniswap pool
-     * @param _token The address of the token of interest
+     * @param _poolToken The address of the token of interest
      */
-    constructor(address _positionManager, address _pool, address _token) {
+    constructor(address _positionManager, address _pool, address _poolToken) {
         positionManager = INonfungiblePositionManager(_positionManager);
         pool = IUniswapV3Pool(_pool);
-        token = _token;
+        poolToken = _poolToken;
     }
 
     /**
@@ -87,7 +87,7 @@ contract UniSwapNFTPrice {
             ,
             address token0,
             address token1,
-            ,
+            uint24 fee,
             int24 tickLower,
             int24 tickUpper,
             uint128 liquidity,
@@ -96,6 +96,14 @@ contract UniSwapNFTPrice {
             ,
 
         ) = positionManager.positions(tokenId);
+
+        require(
+            (token0 == poolToken) || (token1 == poolToken),
+            "Wrong token for pool"
+        );
+
+        uint256 poolFee = pool.fee();
+        require(fee == poolFee, "Wrong fee for pool");
 
         (, int24 tick, , , , , ) = pool.slot0();
 
@@ -107,17 +115,18 @@ contract UniSwapNFTPrice {
                 liquidity
             );
 
-        uint256 decimalsToken1 = IERC20Extented(pool.token1()).decimals();
+        uint256 decimalsToken0 = IERC20Extented(token0).decimals();
+        uint256 decimalsToken1 = IERC20Extented(token1).decimals();
         uint256 price = calculatePriceFromLiquidity();
 
-        // If our token is token1, then amount0 is the amount of eth
+        // If our poolToken is token1, then amount0 is the amount of eth
         // and vice-versa
-        if (token == token1) {
+        if (poolToken == token1) {
             return (amount0 +
                 FullMath.mulDiv(amount1, 10 ** decimalsToken1, price));
         } else {
             return (amount1 +
-                FullMath.mulDiv(amount1, price, 10 ** decimalsToken1));
+                FullMath.mulDiv(amount0, price, 10 ** decimalsToken0));
         }
     }
 }

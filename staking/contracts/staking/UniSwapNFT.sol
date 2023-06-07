@@ -15,6 +15,8 @@ abstract contract UniSwapStaking is BaseStaking, IERC165, IERC721Receiver {
     IERC721 private _stakeToken;
     UniSwapNFTPrice private _uniSwapNftPrice;
 
+    event LPStakingTokenChanged(address token);
+
     /**
      * @param positionManager The address of Uniswap position manager
      * @param pool The address of Uniswap pool
@@ -28,8 +30,9 @@ abstract contract UniSwapStaking is BaseStaking, IERC165, IERC721Receiver {
             "Can't set position manager to address(0)"
         );
         _uniSwapNftPrice = new UniSwapNFTPrice(positionManager, pool, token);
-        _stakeToken = IERC721(token);
-        emit StakingTokenChanged(token);
+        _stakeToken = IERC721(positionManager);
+        emit StakingTokenChanged(positionManager);
+        emit LPStakingTokenChanged(token);
     }
 
     mapping(address => uint256[]) _stakeIds;
@@ -159,17 +162,29 @@ abstract contract UniSwapStaking is BaseStaking, IERC165, IERC721Receiver {
     }
 }
 
-contract UniSwapStakerERC20Rewarder is UniSwapStaking, ERC20Rewards {}
+contract UniSwapStakerERC20Rewarder is UniSwapStaking, ERC20Rewards {
+    constructor(
+        address positionManager,
+        address pool,
+        address token
+    ) UniSwapStaking(positionManager, pool, token) {}
+}
 
 contract UniSwapStakerERC1155Rewarder is UniSwapStaking, ERC1155Rewards {
+    constructor(
+        address positionManager,
+        address pool,
+        address token
+    ) UniSwapStaking(positionManager, pool, token) {}
+
     /**
      * @dev See {IERC165-supportsInterface}.
      */
     function supportsInterface(
         bytes4 interfaceId
-    ) public pure override(ERC721Staking, ERC1155Rewards) returns (bool) {
+    ) public pure override(UniSwapStaking, ERC1155Rewards) returns (bool) {
         return
-            ERC721Staking.supportsInterface(interfaceId) ||
+            UniSwapStaking.supportsInterface(interfaceId) ||
             ERC1155Rewards.supportsInterface(interfaceId);
     }
 }
