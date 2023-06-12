@@ -5,3 +5,4 @@ import "./staking/ERC20.sol";
 import "./staking/ERC721.sol";
 import "./staking/ERC1155.sol";
 import "./staking/ERC1363.sol";
+import "./staking/UniSwapNFT.sol";
