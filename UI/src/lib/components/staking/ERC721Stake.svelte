@@ -8,12 +8,13 @@
 	import { onMount } from 'svelte';
 	import { chainToId, onboard } from '$lib/onboard';
 	import { fade } from 'svelte/transition';
-
 	import Confetti from 'svelte-confetti';
+
 	import toast from 'svelte-french-toast';
 
-	import abi from '../../abi/staking/contracts/staking/ERC1363.sol/ERC1363StakerERC20Rewarder.json';
-	import tokenAbi from '@openzeppelin/contracts/build/contracts/IERC1363.json';
+	import abi from '../../abi/staking/contracts/staking/UniSwapNFT.sol/UniSwapStakerERC20Rewarder.json';
+	import tokenAbi from '../../abi/staking/contracts/staking/UniSwapNFT.sol/INonFungiblePositionManager.json';
+	import rewardAbi from '@openzeppelin/contracts/build/contracts/IERC20.json';
 
 	import Calculator from '../../icons/calculator.svelte';
 	import Coins from '../../icons/coins.svelte';
@@ -23,6 +24,7 @@
 	import Select from '../Select.svelte';
 
 	import { publicRpcs } from '../../onboard';
+	import { getIpxEthPrice } from '../../uniswap';
 
 	export let title;
 	export let addresses;
@@ -34,11 +36,10 @@
 	export let unlockTime = null;
 	export let userApy = 0;
 	export let chain = 'binance';
-	export let rewards = ['0'];
 
 	let confetti = false;
 	let contract, token, rewardToken, provider, user, signer;
-	let amount = 0;
+	let id = 0;
 	let busy = false;
 	let showStake = true;
 	let showEarnings = false;
@@ -55,23 +56,19 @@
 
 	let earningData;
 
-	const getMax = async () => {
-		const balance = await token.balanceOf(user);
-		amount = ethers.utils.formatUnits(balance);
-	};
-
 	const number = (k) => Number(ethers.utils.formatUnits(k));
 
 	const getStakeStats = async () => {
 		if (!contract) {
 			return;
 		}
-		const stake = await contract.getStake(user);
+		const stakeIds = await contract.getStakeIds(user);
+		const stake = stakeIds.length;
 		const reward = await contract.getRewardSize(user).catch(() => 0);
 		data = [
 			{
 				title: 'Your stake',
-				value: `${ethers.utils.formatUnits(stake)} ${stakeSymbol}`,
+				value: `${stake} ${stakeSymbol}`,
 				icon: stakeLogo
 			},
 			{
@@ -83,7 +80,7 @@
 			}
 		];
 		const daysTotal = (unlockTime - start.valueOf()) / 86400000;
-		if (stake.gt(0)) {
+		if (stake > 0) {
 			userApy = number(reward) / daysTotal;
 		} else {
 			userApy = 0;
@@ -110,8 +107,8 @@
 	const onContract = async () => {
 		const stakeTokenAddress = await contract.getStakingToken();
 		const rewardTokenAddress = await contract.getRewardToken();
-		token = new ethers.Contract(stakeTokenAddress, tokenAbi.abi, signer);
-		rewardToken = new ethers.Contract(rewardTokenAddress, tokenAbi.abi, signer);
+		token = new ethers.Contract(stakeTokenAddress, tokenAbi, signer);
+		rewardToken = new ethers.Contract(rewardTokenAddress, rewardAbi.abi, signer);
 		unlockTime = (await contract.getUnlockTime()) * 1000;
 		getStakeStats();
 	};
@@ -140,11 +137,10 @@
 	$: if (address) onAddress();
 
 	const stake = async () => {
-		const tx = await token['transferAndCall(address,uint256)'](
-			contract.address,
-			ethers.utils.parseUnits(amount.toString())
-		);
-		await tx.wait(1);
+		const approveTx = await token.setApprovalForAll(address, true);
+		await approveTx.wait(1);
+		const stakeTx = await contract.stake(id.toString());
+		await stakeTx.wait(1);
 	};
 
 	const unstake = async () => {
@@ -164,8 +160,8 @@
 	};
 
 	const onStake = async () => {
-		if (amount.toString() === '0') {
-			return toast.error('Must stake more than 0 tokens!');
+		if (!id) {
+			return toast.error('NFT ID is needed!');
 		}
 		busy = true;
 		let err = false;
@@ -205,31 +201,23 @@
 
 	let poolApr = '7%';
 
-	const GOLD = 1.618033988749894;
 	const SECONDS_IN_YEAR = 365 * 86400;
-	const USER_STAKE = 1350000;
+	const USER_STAKE = 1e18;
 
 	const getPoolApr = async () => {
 		const aprs = [];
-		const zipped = addresses.map((address, i) => [address, rewards[i]]);
-		for (const [address, rewardSize] of zipped) {
+		for (const address of addresses) {
 			const contract = new ethers.Contract(address, abi, publicProvider);
-			const stakeTokenAddress = await contract.getStakingToken();
-			const rewardTokenAddress = await contract.getRewardToken();
-			const stakeToken = new ethers.Contract(stakeTokenAddress, tokenAbi.abi, publicProvider);
-			const contractBalance = await stakeToken.balanceOf(address);
+			const rewardSize = await contract.getTotalPoolRewards();
 			const unlockTime = Number(await contract.getUnlockTime());
-			const staked =
-				rewardTokenAddress === stakeTokenAddress
-					? contractBalance.sub(ethers.utils.parseUnits(rewardSize))
-					: contractBalance;
 			const timeLeft = unlockTime - new Date().valueOf() / 1000;
-			const timeSpent = (new Date().valueOf() - new Date(start).valueOf()) / 1000;
-			const poolWeight = (timeLeft + timeSpent / GOLD) * Number(ethers.utils.formatUnits(staked));
+			const poolWeight = await contract.getTotalPoolWeight();
 			const userWeight = USER_STAKE * timeLeft;
 			const userShare = userWeight / poolWeight;
 			const rewardShare = userShare * Number(rewardSize);
-			const percentEarned = rewardShare / USER_STAKE;
+			const ipxPrice = await getIpxEthPrice();
+			const rewardsInEth = (rewardShare / 1e18) * ipxPrice;
+			const percentEarned = rewardsInEth / (USER_STAKE / 1e18);
 			const apr = (SECONDS_IN_YEAR / timeLeft) * percentEarned;
 			const poolApr = `${(apr * 100).toFixed(2)}%`;
 			aprs.push({ poolApr, unlock: new Date(unlockTime * 1000) });
@@ -268,11 +256,10 @@
 	<Card isPrimary={false}>
 		<div class="inner">
 			<Title as="h3">{title}</Title>
-			<div class="amount">
+			<div class="id">
 				<div class="field-wrap">
-					<NumberInput fullWidth bind:value={amount} placeholder="Tokens to stake" label="Amount" />
+					<NumberInput fullWidth bind:value={id} placeholder="NFT to stake" label="NFT ID" />
 				</div>
-				<FancyButton on:click={getMax}>Max</FancyButton>
 			</div>
 			<div class="duration">
 				<Select options={contracts} bind:value={address} label="Duration" />
@@ -311,10 +298,6 @@
 				{#if unlockTime > new Date().valueOf()}
 					<FancyButton {confetti} primary fullWidth disabled={busy} on:click={onStake}>
 						Stake
-						{#if amount}
-							{amount.toString().slice(0, 6)}{amount.toString().length > 6 ? '...' : ''}
-							token{amount === 1 ? '' : 's'}
-						{/if}
 					</FancyButton>
 				{:else if unlockTime}
 					<FancyButton primary fullWidth disabled={busy} on:click={onUnstake}>Unstake</FancyButton>
@@ -338,7 +321,7 @@
 		width: 100%;
 		height: 100%;
 	}
-	.amount {
+	.id {
 		display: flex;
 		gap: 1em;
 		flex-wrap: wrap;

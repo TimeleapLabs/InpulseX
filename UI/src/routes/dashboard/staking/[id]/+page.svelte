@@ -1,6 +1,7 @@
 <script>
 	import Title from '$lib/components/Title.svelte';
 	import ERC1363Stake from '$lib/components/staking/ERC1363Stake.svelte';
+	import ERC721Stake from '$lib/components/staking/ERC721Stake.svelte';
 	import ApyChart from '$lib/components/dashboard/ApyChart.svelte';
 	import RewardCounter from '$lib/components/dashboard/RewardCounter.svelte';
 	import Progress from '$lib/components/dashboard/Progress.svelte';
@@ -32,7 +33,20 @@
 		<Title as="h1">Staking</Title>
 	</div>
 	<div class="grid">
-		{#if staking}
+		{#if staking?.stakeTokenType === 'ERC721'}
+			<ERC721Stake
+				title={staking.title}
+				addresses={staking.contracts.map(({ contract }) => contract)}
+				stakeSymbol={staking.stakeTokenSymbol}
+				rewardSymbol={staking.rewardTokenSymbol}
+				rewardLogo={staking.rewardIcon}
+				stakeLogo={staking.stakingIcon}
+				start={staking.start}
+				chain={staking.blockchain.toLowerCase()}
+				bind:unlockTime
+				bind:userApy
+			/>
+		{:else if staking?.stakeTokenType === 'ERC1363'}
 			<ERC1363Stake
 				title={staking.title}
 				addresses={staking.contracts.map(({ contract }) => contract)}
@@ -42,6 +56,7 @@
 				stakeLogo={staking.stakingIcon}
 				start={staking.start}
 				chain={staking.blockchain.toLowerCase()}
+				rewards={staking.rewards || ['22950000', '30300000']}
 				bind:unlockTime
 				bind:userApy
 			/>
