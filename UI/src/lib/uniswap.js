@@ -45,7 +45,7 @@ const getPrice = async (poolAddress, deltaDecimals = 0n, invert = true) => {
 		Number(
 			sqrtPriceX96
 				.pow(2)
-				.mul(10n ** deltaDecimals)
+				.div(10n ** deltaDecimals)
 				.mul('1' + '0'.repeat(18))
 				.div(ethers.BigNumber.from(2).pow(192))
 				.toString()
@@ -58,13 +58,13 @@ export const inpulseXPool = '0x829336b1d7828fa3ad990dbb6e735bba61c401df';
 export const positionManagerAddr = '0xC36442b4a4522E871399CD717aBDD847Ab11FE88';
 
 export const getEthUSDPrice = async () => {
-	const ethUsdPrice = await getPrice(ethUsdPool, 12n, false);
+	const ethUsdPrice = await getPrice(ethUsdPool, 12n);
 	return ethUsdPrice;
 };
 
 export const getIpxUSDPrice = async () => {
 	const ipxEthPrice = await getPrice(inpulseXPool);
-	const ethUsdPrice = await getPrice(ethUsdPool, 12n, false);
+	const ethUsdPrice = await getPrice(ethUsdPool, 12n);
 	const ipxUsdPrice = ipxEthPrice * ethUsdPrice;
 	return ipxUsdPrice;
 };

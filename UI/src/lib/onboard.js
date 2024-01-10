@@ -5,8 +5,14 @@ import { icon } from './icon';
 
 const appName = 'InpulseX';
 
+const walletConnectProjectId = '72d140c2ce114e0d26a288940936ccd9';
+
 const injected = injectedModule();
-const walletConnect = walletConnectModule();
+
+const walletConnect = walletConnectModule({
+	projectId: walletConnectProjectId,
+	requiredChains: [0x1, 0x38]
+});
 
 export const publicRpcs = {
 	binance: 'https://bsc-dataseed.binance.org',

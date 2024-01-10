@@ -7,23 +7,29 @@
 	export let start;
 	export let unlockTime;
 
-	const daysPassed = DateTime.now().diff(DateTime.fromJSDate(start), 'days').days;
-	const daysLeft = DateTime.fromMillis(unlockTime).diff(DateTime.now(), 'days').days;
-	const daysTotal = daysPassed + daysLeft;
-	const percent = (daysPassed / daysTotal) * 100;
+	let daysPassed, daysLeft, daysTotal, percent;
+
+	$: if (start && unlockTime) {
+		daysPassed = DateTime.now().diff(DateTime.fromJSDate(start), 'days').days;
+		daysLeft = DateTime.fromMillis(unlockTime).diff(DateTime.now(), 'days').days;
+		daysTotal = daysPassed + daysLeft;
+		percent = (daysPassed / daysTotal) * 100;
+	}
 </script>
 
 <Card>
 	<div class="inner">
 		<Title as="h3">Pool progress</Title>
-		<div class="progress">
-			<div class="bar-wrap">
-				<div class="bar" style="--width: {percent}%" />
+		{#key percent}
+			<div class="progress">
+				<div class="bar-wrap">
+					<div class="bar" style="--width: {percent}%" />
+				</div>
+				<div class="percentage">
+					<Countup value={percent} />%
+				</div>
 			</div>
-			<div class="percentage">
-				<Countup value={percent} />%
-			</div>
-		</div>
+		{/key}
 	</div>
 </Card>
 

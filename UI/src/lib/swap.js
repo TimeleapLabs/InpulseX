@@ -11,7 +11,7 @@ export const chains = {
 	polygon: '0x89',
 	bsc: '0x38',
 	//bsc: '0x61',
-	ethereum: '0x01',
+	ethereum: '0x1',
 	//avax: '0xa86a'
 	avax: '0xa86a'
 };
@@ -56,14 +56,14 @@ export const chainIds = {
 	// 	title: 'Avalanche',
 	// 	shortTitle: 'AVAX'
 	// },
-	'0x01': { key: 'ethereum', icon: 'ethereum', title: 'Ethereum', shortTitle: 'ETH' }
+	'0x1': { key: 'ethereum', icon: 'ethereum', title: 'Ethereum', shortTitle: 'ETH' }
 };
 
 export const rpcList = {
 	'0x38': 'https://bsc-dataseed.binance.org',
 	'0x61': 'https://data-seed-prebsc-1-s1.binance.org:8545',
 	'0x89': 'https://polygon-rpc.com',
-	'0x01': 'https://eth.llamarpc.com',
+	'0x1': 'https://eth.llamarpc.com',
 	'0xa86a': 'https://api.avax.network/ext/bc/C/rpc',
 	'0xa869': 'https://api.avax-test.network/ext/bc/C/rpc'
 };

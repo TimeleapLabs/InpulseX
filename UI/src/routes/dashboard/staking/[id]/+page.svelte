@@ -5,15 +5,24 @@
 	import ApyChart from '$lib/components/dashboard/ApyChart.svelte';
 	import RewardCounter from '$lib/components/dashboard/RewardCounter.svelte';
 	import Progress from '$lib/components/dashboard/Progress.svelte';
+	import Tier from '$lib/components/Tier.svelte';
 
 	import { page } from '$app/stores';
 	import { onMount } from 'svelte';
 	import { getStakingById, getImageFormatPath } from '$lib/api';
+	import { wallet } from '../../../../stores/wallet';
+	import { ethers } from 'ethers';
 
+	let tier;
 	let staking;
-
+	let showTiers = true;
 	let userApy = 0;
 	let unlockTime = null;
+	let address;
+
+	$: if ($wallet?.provider) {
+		address = ethers.utils.getAddress($wallet.accounts[0].address);
+	}
 
 	onMount(async () => {
 		const data = await getStakingById($page.params.id);
@@ -56,12 +65,17 @@
 				stakeLogo={staking.stakingIcon}
 				start={staking.start}
 				chain={staking.blockchain.toLowerCase()}
-				rewards={staking.rewards || ['22950000', '30300000']}
+				rewards={staking.rewards || ['22950000', '30300000', '30000000']}
 				bind:unlockTime
 				bind:userApy
 			/>
 		{:else}
 			Loading
+		{/if}
+		{#if showTiers && address}
+			<div class="tier-wrap" class:has-tier={tier}>
+				<Tier bind:tier {address} />
+			</div>
 		{/if}
 		{#if userApy && unlockTime}
 			<ApyChart start={staking.start} {unlockTime} {userApy} />
@@ -141,5 +155,13 @@
 		.staking {
 			padding: 6em 2em;
 		}
+	}
+	.tier-wrap {
+		display: none;
+	}
+	.tier-wrap.has-tier {
+		grid-row: 1 / span 4;
+		grid-column: 2;
+		display: block;
 	}
 </style>

@@ -1,8 +1,6 @@
 <script>
 	import Carousel from 'svelte-carousel';
 	import { browser } from '$app/environment';
-	import ChevronLeft from '../../icons/chevron-left.svelte';
-	import ChevronRight from '../../icons/chevron-right.svelte';
 	import Title from '../Title.svelte';
 	import Paragraph from '../Paragraph.svelte';
 	import { linear } from 'svelte/easing';
@@ -45,26 +43,22 @@
 			graphic: getImageFormatPath(phase.graphic, 'large')
 		}));
 	});
+
+	let currentPageIndex = 1;
+
+	const onPageChange = (event) => {
+		currentPageIndex = event.detail;
+	};
 </script>
 
 {#if browser}
 	<div class="background" id="spacemap">
 		<div class="phases">
 			{#if phases.length}
-				<Carousel
-					dots={false}
-					infinite={false}
-					initialPageIndex={1}
-					let:showPrevPage
-					let:showNextPage
-					let:currentPageIndex
-				>
-					<button slot="prev" class="arrow" on:click={showPrevPage}>
-						<ChevronLeft />
-					</button>
+				<Carousel dots={false} infinite={false} initialPageIndex={1} on:pageChange={onPageChange}>
 					{#each phases as { title, from, to, stepsLeft, stepsRight, graphic, index } (title)}
 						<div class="phase">
-							{#if !currentPageIndex || currentPageIndex === index}
+							{#if currentPageIndex === index}
 								<div class="content" transition:fade>
 									<div class="title">
 										<Title>{@html title}</Title>
@@ -123,9 +117,6 @@
 							{/if}
 						</div>
 					{/each}
-					<button slot="next" class="arrow" on:click={showNextPage}>
-						<ChevronRight />
-					</button>
 				</Carousel>
 			{/if}
 		</div>
@@ -151,22 +142,6 @@
 		align-items: center;
 		justify-content: center;
 		box-sizing: border-box;
-	}
-
-	.arrow {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		margin-top: 7.5em;
-		border: none;
-		outline: none;
-		width: 3em;
-		height: 3em;
-		padding: 1em;
-		border-radius: 50%;
-		background-color: white;
-		color: var(--primary-blue);
-		cursor: pointer;
 	}
 
 	.content {
@@ -282,13 +257,27 @@
 	@keyframes pulsate {
 		100% {
 			/* Larger blur radius */
-			text-shadow: 0 0 4px #fff, 0 0 11px #fff, 0 0 19px #fff, 0 0 40px #f09, 0 0 80px #f09,
-				0 0 90px #f09, 0 0 100px #f09, 0 0 150px #f09;
+			text-shadow:
+				0 0 4px #fff,
+				0 0 11px #fff,
+				0 0 19px #fff,
+				0 0 40px #f09,
+				0 0 80px #f09,
+				0 0 90px #f09,
+				0 0 100px #f09,
+				0 0 150px #f09;
 		}
 		0% {
 			/* A slightly smaller blur radius */
-			text-shadow: 0 0 4px #fff, 0 0 10px #fff, 0 0 18px #fff, 0 0 38px #f09, 0 0 73px #f09,
-				0 0 80px #f09, 0 0 94px #f09, 0 0 140px #f09;
+			text-shadow:
+				0 0 4px #fff,
+				0 0 10px #fff,
+				0 0 18px #fff,
+				0 0 38px #f09,
+				0 0 73px #f09,
+				0 0 80px #f09,
+				0 0 94px #f09,
+				0 0 140px #f09;
 		}
 	}
 </style>
