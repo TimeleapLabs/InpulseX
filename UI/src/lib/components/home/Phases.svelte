@@ -44,7 +44,7 @@
 		}));
 	});
 
-	let currentPageIndex = 1;
+	let currentPageIndex = 2;
 
 	const onPageChange = (event) => {
 		currentPageIndex = event.detail;

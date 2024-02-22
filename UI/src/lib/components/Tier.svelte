@@ -106,6 +106,7 @@
 		const query = getQuery(address);
 		const req = await fetch(tiersEndpoint, { method: 'POST', body: JSON.stringify({ query }) });
 		const res = await req.json();
+		console.log({ res });
 		const data = composite(aggregate(res?.data?.getTiers || []));
 		const tiers = Object.entries(data).map(getTierByContract).filter(Boolean).sort(sortTiers);
 		tier = tiers[0];

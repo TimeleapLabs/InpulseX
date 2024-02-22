@@ -181,6 +181,14 @@
 			{ amount: 1500, tier: 'recruit' },
 			{ amount: 750, tier: 'trainee' }
 		],
+		// 6 months single
+		'0x2d55f2dda62184bcf43d8f3cb0e9bd16ddd20b8a': [
+			{ amount: Infinity, tier: 'super_xstronaut' },
+			{ amount: 10000, tier: 'space_major' },
+			{ amount: 4000, tier: 'space_captain' },
+			{ amount: 1500, tier: 'recruit' },
+			{ amount: 750, tier: 'trainee' }
+		],
 		// lp
 		'0xa4191eb9b4e9cec404e9a03c7a09b72a6cca8013': [
 			{ amount: 6250, tier: 'super_xstronaut' },
@@ -194,6 +202,7 @@
 	const contractDurationMap = {
 		'0x6aa00f43372c4951f1485994aa59d5a8d6f38880': 18,
 		'0x2ce9a2253c6aca52923d0c8467deccc5dd6ba60e': 6,
+		'0x2d55f2dda62184bcf43d8f3cb0e9bd16ddd20b8a': 6,
 		'0xa4191eb9b4e9cec404e9a03c7a09b72a6cca8013': 12
 	};
 
