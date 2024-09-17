@@ -59,13 +59,14 @@
 			<ERC1363Stake
 				title={staking.title}
 				addresses={staking.contracts.map(({ contract }) => contract)}
+				names={staking.contracts.map(({ name }) => name)}
 				stakeSymbol={staking.stakeTokenSymbol}
 				rewardSymbol={staking.rewardTokenSymbol}
 				rewardLogo={staking.rewardIcon}
 				stakeLogo={staking.stakingIcon}
 				start={staking.start}
 				chain={staking.blockchain.toLowerCase()}
-				rewards={staking.rewards || ['22950000', '30300000', '30000000']}
+				rewards={staking.rewards || ['16250000', '8750000', '22950000', '30300000', '30000000']}
 				bind:unlockTime
 				bind:userApy
 			/>

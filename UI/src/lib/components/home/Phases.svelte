@@ -55,7 +55,7 @@
 	<div class="background" id="spacemap">
 		<div class="phases">
 			{#if phases.length}
-				<Carousel dots={false} infinite={false} initialPageIndex={1} on:pageChange={onPageChange}>
+				<Carousel dots={false} infinite={false} initialPageIndex={2} on:pageChange={onPageChange}>
 					{#each phases as { title, from, to, stepsLeft, stepsRight, graphic, index } (title)}
 						<div class="phase">
 							{#if currentPageIndex === index}

@@ -56,7 +56,8 @@ export const chainIds = {
 	// 	title: 'Avalanche',
 	// 	shortTitle: 'AVAX'
 	// },
-	'0x1': { key: 'ethereum', icon: 'ethereum', title: 'Ethereum', shortTitle: 'ETH' }
+	'0x1': { key: 'ethereum', icon: 'ethereum', title: 'Ethereum', shortTitle: 'ETH' },
+	'0x01': { key: 'ethereum', icon: 'ethereum', title: 'Ethereum', shortTitle: 'ETH', hide: true }
 };
 
 export const rpcList = {
@@ -64,6 +65,7 @@ export const rpcList = {
 	'0x61': 'https://data-seed-prebsc-1-s1.binance.org:8545',
 	'0x89': 'https://polygon-rpc.com',
 	'0x1': 'https://eth.llamarpc.com',
+	'0x01': 'https://eth.llamarpc.com',
 	'0xa86a': 'https://api.avax.network/ext/bc/C/rpc',
 	'0xa869': 'https://api.avax-test.network/ext/bc/C/rpc'
 };
@@ -214,6 +216,7 @@ export const getUserRequests = async ($wallet) => {
 		const pending = [];
 
 		for (const entry of userRequests) {
+			if (!chainIds[entry.request.toChain]) continue;
 			const claimed = await isClaimed(entry.request);
 			if (!claimed) pending.push(entry);
 		}

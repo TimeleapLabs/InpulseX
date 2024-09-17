@@ -26,6 +26,7 @@
 
 	export let title;
 	export let addresses;
+	export let names;
 	export let stakeSymbol = 'IPX';
 	export let stakeLogo = '';
 	export let rewardSymbol = 'BUSD';
@@ -127,11 +128,16 @@
 		user = $wallet.accounts[0].address;
 		signer = provider.getSigner(user);
 		contracts = await Promise.all(
-			addresses.map(async (address) => {
+			addresses.map(async (address, index) => {
 				const contract = new ethers.Contract(address, abi, signer);
 				const unlockTime = (await contract.getUnlockTime()) * 1000;
 				const unlock = new Date(unlockTime).toLocaleDateString();
-				return { value: address, title: `Unlock at ${unlock}` };
+				const isUnlocked = unlockTime < Date.now();
+				const name = names[index];
+				return {
+					value: address,
+					title: `${name} - ${isUnlocked ? 'Unlocked' : 'Unlock'} at ${unlock}`
+				};
 			})
 		);
 		address = contracts[0].value;
@@ -234,12 +240,16 @@
 			const poolApr = `${(apr * 100).toFixed(2)}%`;
 			aprs.push({ poolApr, unlock: new Date(unlockTime * 1000) });
 		}
-		poolApr = aprs.map(({ poolApr, unlock }) => ({
-			title: `Unlock at ${unlock.toLocaleDateString()}`,
-			value: poolApr,
-			suffix: rewardSymbol,
-			icon: rewardLogo
-		}));
+		poolApr = aprs.map(({ poolApr, unlock }) => {
+			const isUnlocked = unlock < Date.now();
+			const formattedUnlock = unlock.toLocaleDateString();
+			return {
+				title: `${isUnlocked ? 'Unlocked' : 'Unlock'} at ${formattedUnlock}`,
+				value: poolApr,
+				suffix: rewardSymbol,
+				icon: rewardLogo
+			};
+		});
 	};
 
 	onMount(() => {
@@ -316,9 +326,8 @@
 							token{amount === 1 ? '' : 's'}
 						{/if}
 					</FancyButton>
-				{:else if unlockTime}
-					<FancyButton primary fullWidth disabled={busy} on:click={onUnstake}>Unstake</FancyButton>
 				{/if}
+				<FancyButton primary fullWidth disabled={busy} on:click={onUnstake}>Unstake</FancyButton>
 			</div>
 			{#if data && showStake}
 				<Table {data} />

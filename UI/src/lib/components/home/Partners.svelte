@@ -14,7 +14,8 @@
 		{ image: '/images/partners/evocap.png' },
 		{ image: '/images/partners/castrum.png' },
 		{ image: '/images/partners/coinvestor.png' },
-		{ image: '/images/partners/halvings.png' }
+		{ image: '/images/partners/halvings.png' },
+		{ image: '/images/partners/dimensi.png' }
 	];
 
 	let outerWidth;
