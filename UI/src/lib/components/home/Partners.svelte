@@ -5,7 +5,7 @@
 	const items = [
 		{ image: '/images/partners/wisdome.png' },
 		{ image: '/images/partners/solidproof.png' },
-		{ image: '/images/partners/kenshi.svg' },
+		{ image: '/images/partners/timeleap.svg' },
 		{ image: '/images/partners/cls.svg' },
 		{ image: '/images/partners/gotbit.png' },
 		{ image: '/images/partners/exverse.png' },
@@ -15,7 +15,11 @@
 		{ image: '/images/partners/castrum.png' },
 		{ image: '/images/partners/coinvestor.png' },
 		{ image: '/images/partners/halvings.png' },
-		{ image: '/images/partners/dimensi.png' }
+		{ image: '/images/partners/dimensi.png' },
+		{ image: '/images/partners/chateau-crypto.png' },
+		{ image: '/images/partners/grand-gangsta-city.png' },
+		{ image: '/images/partners/str8fire.png' },
+		{ image: '/images/partners/ultrade.png' }
 	];
 
 	let outerWidth;
