@@ -1,9 +1,10 @@
 <script>
 	export let as = 'h1';
 	export let centered = false;
+	export let anchor = '';
 </script>
 
-<svelte:element this={as} class={$$props.class} class:centered><slot /></svelte:element>
+<svelte:element this={as} class={$$props.class} class:centered id={anchor}><slot /></svelte:element>
 
 <style>
 	h1,

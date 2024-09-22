@@ -1,7 +1,9 @@
 @font-face {
 	font-family: 'Groningen';
 	src: url('/fonts/Groningen-Bold.eot');
-	src: local('Groningen Bold'), local('Groningen-Bold'),
+	src:
+		local('Groningen Bold'),
+		local('Groningen-Bold'),
 		url('/fonts/Groningen-Bold.eot?#iefix') format('embedded-opentype'),
 		url('/fonts/Groningen-Bold.woff2') format('woff2'),
 		url('/fonts/Groningen-Bold.woff') format('woff'),
@@ -13,7 +15,9 @@
 @font-face {
 	font-family: 'Groningen';
 	src: url('/fonts/Groningen-Regular.eot');
-	src: local('Groningen Regular'), local('Groningen-Regular'),
+	src:
+		local('Groningen Regular'),
+		local('Groningen-Regular'),
 		url('/fonts/Groningen-Regular.eot?#iefix') format('embedded-opentype'),
 		url('/fonts/Groningen-Regular.woff2') format('woff2'),
 		url('/fonts/Groningen-Regular.woff') format('woff'),
@@ -25,7 +29,9 @@
 @font-face {
 	font-family: 'Bebas';
 	src: url('/fonts/Bebas-Regular.ttf');
-	src: local('Bebas Regular'), local('Bebas-Regular'),
+	src:
+		local('Bebas Regular'),
+		local('Bebas-Regular'),
 		url('/fonts/Bebas-Regular.otf') format('opentype'),
 		url('/fonts/Bebas-Regular.ttf') format('truetype');
 	font-weight: normal;
@@ -34,8 +40,10 @@
 
 :root {
 	--primary-blue: #2b7bf3;
-	--seondary-blue: #6cade1;
+	--secondary-blue: #6cade1;
 	--primary-pink: #dc15a4;
+	--secondary-blue-transparent: #6cade199;
+	--primary-pink-transparent: #dc15a499;
 }
 
 html {
@@ -47,4 +55,8 @@ body {
 	background-color: #140f29;
 	color: #fff;
 	font-family: 'Groningen';
+}
+
+.toaster {
+	margin-top: 5em;
 }

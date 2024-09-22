@@ -67,8 +67,8 @@
 	<div class="ripple blue" />
 	<div class="video">
 		<div class="player">
-			<div class="title">
-				<Title as="h1" centered>LA Event Highlight</Title>
+			<div class="title" id="highlights">
+				<Title as="h1" centered>LA Event Highlights</Title>
 			</div>
 			<div class="wrap">
 				<video

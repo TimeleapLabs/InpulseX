@@ -16,10 +16,12 @@
 	let amount;
 	let requesting;
 
-	const chainOptions = Object.values(chainIds).map((chain) => ({
-		value: chain.key,
-		title: chain.title
-	}));
+	const chainOptions = Object.values(chainIds)
+		.filter((chain) => !chain.hide)
+		.map((chain) => ({
+			value: chain.key,
+			title: chain.title
+		}));
 
 	$: if (fromChain === toChain) {
 		toChain = chainOptions.filter((option) => option.value !== fromChain)[0].value;

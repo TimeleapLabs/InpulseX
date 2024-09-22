@@ -17,7 +17,7 @@
 	}
 	a,
 	button {
-		font-size: 1.2rem;
+		font-size: 1.2em;
 		padding: 0.5em 1em;
 		background: radial-gradient(#257ee4 30%, #104e95);
 		border: none;
@@ -25,6 +25,7 @@
 		font-weight: 600;
 		font-family: 'Groningen';
 		color: #fff;
+		white-space: nowrap;
 	}
 	.full-width {
 		width: 100%;

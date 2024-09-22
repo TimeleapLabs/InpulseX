@@ -29,11 +29,11 @@ export const pegSwaps = {
 
 export const chainIds = {
   "binance-mainnet": "0x38",
-  "binance-testnet": "0x61",
-  "polygon-mainnet": "0x89",
-  "polygon-mumbai": "0x13881",
+  //"binance-testnet": "0x61",
+  //"polygon-mainnet": "0x89",
+  //"polygon-mumbai": "0x13881",
   "ethereum-mainnet": "0x01",
-  "ethereum-goerli": "0x05",
-  "avalanche-mainnet": "0xa86a",
-  "avalanche-fuji": "0xa869",
+  //"ethereum-goerli": "0x05",
+  //"avalanche-mainnet": "0xa86a",
+  //"avalanche-fuji": "0xa869",
 };

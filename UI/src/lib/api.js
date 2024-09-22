@@ -12,8 +12,12 @@ function makeRequest(path, method = 'GET', options = {}) {
 	}).then((res) => res.json());
 }
 
-export function getFullImagePath(imageData, size = 'large') {
+export function getImageFormatPath(imageData, size = 'large') {
 	return new URL(imageData.data.attributes.formats[size].url, PUBLIC_STRAPI_BASE_URL).href;
+}
+
+export function getImagePath(imageData) {
+	return new URL(imageData.data.attributes.url, PUBLIC_STRAPI_BASE_URL).href;
 }
 
 export async function getAboutSection() {
@@ -29,4 +33,14 @@ export async function getPhases() {
 export async function getMembers() {
 	const res = await makeRequest('/api/members?populate=*');
 	return res.data.map((member) => member.attributes);
+}
+
+export async function getStakings() {
+	const res = await makeRequest('/api/stakings?populate=*');
+	return res.data.map((staking) => ({ ...staking.attributes, id: staking.id }));
+}
+
+export async function getStakingById(id) {
+	const res = await makeRequest(`/api/stakings/${id}?populate=*`);
+	return res.data.attributes;
 }

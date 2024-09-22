@@ -68,6 +68,7 @@
 		flex-direction: column;
 		gap: 2em;
 		max-width: 40%;
+		min-width: 280px;
 		margin: 0 auto;
 	}
 </style>

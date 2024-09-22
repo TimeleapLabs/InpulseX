@@ -58,6 +58,7 @@
 				Social Channels
 			</a>
 			<a href="/dashboard">Dashboard</a>
+			<a href="/dashboard#how-to-buy">How to Buy</a>
 		</div>
 	{/if}
 </div>
@@ -134,6 +135,9 @@
 		}
 		.buttons:not(.dashboard) {
 			display: none;
+		}
+		.buttons {
+			font-size: 0.8em;
 		}
 	}
 </style>

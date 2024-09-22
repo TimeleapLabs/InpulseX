@@ -2,38 +2,10 @@
 	import Button from '../Button.svelte';
 	import ArrowDown from '../icons/ArrowDown.svelte';
 	import Title from '../Title.svelte';
-	import X from '../icons/X.svelte';
-	import { fade } from 'svelte/transition';
-
-	let message = true;
-
-	const close = (e) => {
-		e.preventDefault();
-		message = false;
-	};
 </script>
 
 <div class="hero">
 	<div class="content">
-		{#if message}
-			<div class="message" transition:fade>
-				<div>
-					InpulseX has recently migrated from Old Contract to New Contract. For more information,
-					please check the new InpulseX profile on
-					<a
-						rel="noreferrer"
-						target="_blank"
-						href="https://coinmarketcap.com/currencies/inpulsex-new/"
-					>
-						Coinmarketcap.
-					</a>
-				</div>
-				<a href="#close" class="close" on:click={close}>
-					<X width="1em" height="1em" />
-				</a>
-			</div>
-		{/if}
-
 		<Title class="title">The journey to become a multiplanetary species</Title>
 		<Button
 			href="https://pancakeswap.finance/swap?outputCurrency=0xCDB96d3aEf363a036c6CF6c9b5736d79f0E404e2"

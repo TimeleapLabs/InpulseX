@@ -66,7 +66,7 @@
 	<div class="ripple blue" />
 	<div class="video">
 		<div class="player">
-			<div class="title">
+			<div class="title" id="trailer">
 				<img src="/images/starseed.png" alt="Starseed Awakening" class="game-logo" />
 			</div>
 			<div class="wrap">
